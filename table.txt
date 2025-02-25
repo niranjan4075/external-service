@@ -115,6 +115,16 @@ INSERT INTO requests (
 
 
 
+INSERT INTO requests (
+    request_reference, first_name, last_name, recipient_email, requester_email, 
+    phone_number, device_quantities, request_time_local, address_id, 
+    action_email_status, confirmation_email_status, replaced_item_id, replaced_item_code
+) 
+VALUES (
+    1001, 'John', 'Doe', 'john.doe@example.com', 'requester@example.com', 
+    '1234567890', '{"laptops": 2, "tablets": 1}', '2025-02-26 14:30:00+00', 5, 
+    1, 0, NULL, NULL
+);
 
 
 
