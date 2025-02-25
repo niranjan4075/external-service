@@ -134,6 +134,14 @@ VALUES (
     '123 Main St', 'Apt 4B', 'New York', 'NY', '10001', 'Residential'
 );
 
+INSERT INTO REQUESTS (
+    first_name, last_name, recipient_email, requester_email, phone_number, 
+    device_quantities, request_time_local, address_id, emailstatus
+) 
+VALUES (
+    'Alice', 'Johnson', 'alice.johnson@example.com', 'requester@example.com', '9876543210', 
+    '{"laptops": 1, "monitors": 2}', '2025-02-26 15:45:00+00', 3, 0
+);
 
 
 
