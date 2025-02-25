@@ -87,6 +87,25 @@ async def slack_interactive(payload: str = Form(...)):
     except Exception as e:
         logging.error(f"Error processing Slack interaction: {str(e)}")
         return {"text": "An error occurred while processing your response."}
+@app.post("/create_request/")
+def create_request(first_name: str, last_name: str, recipient_email: str, requester_email: str, device_quantities: dict, address_id: int, db: Session = Depends(get_db)):
+    db_request = Request(
+        first_name=first_name,
+        last_name=last_name,
+        recipient_email=recipient_email,
+        requester_email=requester_email,
+        device_quantities=device_quantities,
+        request_time_local=datetime.now(timezone.utc),
+        address_id=address_id,
+        action_email_status=0
+    )
+    db.add(db_request)
+    db.commit()
+    db.refresh(db_request)
+    return db_request
+if __name__=="__main__":
+    import uvicorn
+    uvicorn.run(app,port=8001)
 
 
 
