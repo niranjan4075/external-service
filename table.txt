@@ -127,6 +127,12 @@ VALUES (
 );
 
 
+INSERT INTO ADDRESSES (
+    address_label, address_label_2, city, state, postal_code, address_type
+) 
+VALUES (
+    '123 Main St', 'Apt 4B', 'New York', 'NY', '10001', 'Residential'
+);
 
 
 
