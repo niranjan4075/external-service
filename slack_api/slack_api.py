@@ -14,66 +14,85 @@ class SlackMessage:
             "channel": self.channel_name,  # Replace with your channel ID
             "text": "Please approve or reject the request:",  # Text fallback
             "blocks": [
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": "You have a new request:\n*<fakeLink.toEmployeeProfile.com|Fred Enriquez - New device request>*"
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "mrkdwn",
+                            "text": "*New Device Request*"
+                        }
+                    },
+                    {
+                        "type": "section",
+                        "fields": [
+                            {
+                                "type": "mrkdwn",
+                                "text": f"*First Name:*\n{data.first_name}"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": f"*Last Name:*\n{data.last_name}"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": f"*User Email:*\n{data.user_email}"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": f"*Job Title:*\n{data.job_title}"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Associate ID:*\n[User fills in Associate ID]"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Device Type:*\n[User fills in Device Type]"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Device Name:*\n[User fills in Device Name]"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Device Model:*\n[User fills in Device Model]"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Device Serial Number:*\n[User fills in Device Serial Number]"
+                            },
+                            {
+                                "type": "mrkdwn",
+                                "text": "*Device EOL Date:*\n[User fills in Device EOL Date]"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "actions",
+                        "elements": [
+                            {
+                                "type": "button",
+                                "text": {
+                                    "type": "plain_text",
+                                    "emoji": True,
+                                    "text": "Approve"
+                                },
+                                "style": "primary",
+                                "value": "approve_device_request"
+                            },
+                            {
+                                "type": "button",
+                                "text": {
+                                    "type": "plain_text",
+                                    "emoji": True,
+                                    "text": "Deny"
+                                },
+                                "style": "danger",
+                                "value": "deny_device_request"
+                            }
+                        ]
                     }
-                },
-                {
-                    "type": "section",
-                    "fields": [
-                        {
-                            "type": "mrkdwn",
-                            "text": "*Type:*\nComputer (laptop)"
-                        },
-                        {
-                            "type": "mrkdwn",
-                            "text": "*When:*\nSubmitted Aut 10"
-                        },
-                        {
-                            "type": "mrkdwn",
-                            "text": "*Last Update:*\nMar 10, 2015 (3 years, 5 months)"
-                        },
-                        {
-                            "type": "mrkdwn",
-                            "text": "*Reason:*\nAll vowel keys aren't working."
-                        },
-                        {
-                            "type": "mrkdwn",
-                            "text": "*Specs:*\n\"Cheetah Pro 15\" - Fast, really fast\""
-                        }
-                    ]
-                },
-                {
-                    "type": "actions",
-                    "elements": [
-                        {
-                            "type": "button",
-                            "text": {
-                                "type": "plain_text",
-                                "emoji": True,
-                                "text": "Approve"
-                            },
-                            "style": "primary",
-                            "value": "click_me_123"
-                        },
-                        {
-                            "type": "button",
-                            "text": {
-                                "type": "plain_text",
-                                "emoji": True,
-                                "text": "Deny"
-                            },
-                            "style": "danger",
-                            "value": "click_me_123"
-                        }
-                    ]
-                }
-            ]
-        }
-
+                ]
+            }
         # Set the headers including the Authorization with the Bearer Token
         headers = {
             "Authorization": f"Bearer {self.slack_token}",
