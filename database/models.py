@@ -1,36 +1,37 @@
-
-from sqlalchemy import create_engine, Column, Integer, String, Enum,TIMESTAMP,LargeBinary,ForeignKey,JSON,Boolean
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, JSON, TIMESTAMP, Boolean, LargeBinary
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-
+from sqlalchemy.orm import sessionmaker, relationship
 from contextlib import contextmanager
 
 from config import DbCred
 
-
-
 engine = create_engine(DbCred.db_url, pool_pre_ping=True)
-
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 
 @contextmanager
-def get_db_nodes():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
+
+
+class Address(Base):
+    __tablename__ = 'addresses'
+
+    address_id = Column(Integer, primary_key=True, autoincrement=True)
+    address_label = Column(String(255), nullable=False)
+    address_label_2 = Column(String(255), nullable=True)
+    city = Column(String(100), nullable=False)
+    state = Column(String(100), nullable=False)
+    postal_code = Column(String(20), nullable=False)
+    address_type = Column(String(50), nullable=False)
+
+    # Relationship with Request table (One Address can have many Requests)
+    requests = relationship("Request", back_populates="address")
 
 
 class Request(Base):
@@ -44,11 +45,21 @@ class Request(Base):
     phone_number = Column(String, nullable=True)
     device_quantities = Column(JSON, nullable=False)
     request_time_local = Column(TIMESTAMP(timezone=True), nullable=False)
+
+    # Foreign Key for Address table
     address_id = Column(Integer, ForeignKey("addresses.address_id"), nullable=False)
+
     action_email_status = Column(Integer, nullable=False)
     confirmation_email_status = Column(Integer, default=0, nullable=False)
+
+    # Foreign Key for Inventory table (when a request replaces an item)
     replaced_item_id = Column(Integer, ForeignKey("inventory.item_id"), nullable=True)
     replaced_item_code = Column(String, nullable=True)
+
+    # Relationships
+    address = relationship("Address", back_populates="requests")  # One request belongs to one address
+    replaced_item = relationship("Inventory", back_populates="requests")  # One request can reference an inventory item
+
 
 class Device(Base):
     __tablename__ = "devices"
@@ -72,10 +83,11 @@ class Device(Base):
     description = Column(String)
     device_image = Column(LargeBinary)
 
+
 class Inventory(Base):
     __tablename__ = "inventory"
 
-    item_id = Column(String, primary_key=True)
+    item_id = Column(Integer, primary_key=True)  # Changed from String to Integer to match Request FK
     device_name = Column(String, index=True)
     device_serialnumber = Column(String)
     device_type = Column(String)
@@ -86,7 +98,7 @@ class Inventory(Base):
     device_leaseend = Column(String)
     user_firstname = Column(String)
     user_lastname = Column(String)
-    user_associateid = Column(String)
+    user_associatedid = Column(String)
     user_executive = Column(Boolean)
     user_shortdept = Column(String)
     device_shortmfg = Column(String)
@@ -99,3 +111,6 @@ class Inventory(Base):
     device_age = Column(String)
     device_yearreceived = Column(String)
     device_yearrefresh = Column(String)
+
+    # Relationship with Request (One inventory item can be replaced in multiple requests)
+    requests = relationship("Request", back_populates="replaced_item")
