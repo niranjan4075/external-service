@@ -61,9 +61,33 @@ async def listen_for_new_requests(db: AsyncSession):
 
             if new_requests_list:
                 for request in new_requests_list:
-                    print(f"New request found: {request.request_reference}")
-                    print(f"First Name: {request.first_name}")
-                    print(f"Request Time: {request.request_time_local}")
+                    query = (
+                select(
+                    Request.first_name,
+                    Request.last_name,
+                    Request.recipient_email,
+                    Request.requester_email,
+                    Request.phone_number,
+                    Device.device_name,
+                    Device.device_type,
+                    Device.device_id,
+                    Inventory.user_associateid,
+                    Inventory.device_type,
+                    Inventory.device_model,
+                    Inventory.device_name
+                )
+                .join(Device,
+                      cast(func.regexp_replace(func.split_part(Request.device_quantities.cast(String), ':', 1),
+                                               '[^0-9]', '', 'g'), Integer) == Device.device_id)
+                .join(Inventory, Request.replaced_item_id == Inventory.item_id)
+            )
+
+            result = await db.execute(query)
+            data = result.fetchall()
+            for i in data:
+                print("ssj",i)
+                slack_obj.send_message(i)
+
 
                 last_request_time = new_requests_list[-1].request_time_local
 
