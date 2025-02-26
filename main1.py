@@ -54,8 +54,34 @@ async def listen_for_new_requests(db: AsyncSession):
 
         try:
             new_requests = await db.execute(
-                select(Request).where(Request.request_time_local > last_request_time)
-            )
+    select(
+        Request.first_name,
+        Request.last_name,
+        Request.recipient_email,
+        Request.requester_email,
+        Request.phone_number,
+        Device.device_name,
+        Device.device_type,
+        Device.device_id,
+        Inventory.user_associatedid,
+        Inventory.device_type,
+        Inventory.device_model,
+        Inventory.device_name
+    )
+    .join(
+        Device,
+        cast(
+            func.regexp_replace(
+                func.split_part(Request.device_quantities.cast(pg.TEXT), ":", 1),
+                "[^0-9]", "",
+                "g"
+            ),
+            Integer
+        ) == Device.device_id
+    )
+    .join(Inventory, Request.replaced_item_id == Inventory.item_id)
+    .where(Request.request_time_local > last_request_time)
+)
 
             new_requests_list = new_requests.scalars().all()
 
