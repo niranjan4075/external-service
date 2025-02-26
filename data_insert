@@ -1,0 +1,138 @@
+from fastapi import FastAPI, Depends
+from sqlalchemy.orm import Session
+from database.models import Base, Request, Device, Inventory, Address, engine, SessionLocal
+from pydantic import BaseModel
+from typing import Optional
+
+# Create the database tables (Run only once)
+Base.metadata.create_all(bind=engine)
+
+# Initialize FastAPI
+app = FastAPI()
+
+# Dependency to get DB session
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+# ==============================
+# 🚀 Pydantic Schemas (Request Models)
+# ==============================
+class AddressCreate(BaseModel):
+    address_label: str
+    address_label_2: Optional[str] = None
+    city: str
+    state: str
+    postal_code: str
+    address_type: str
+
+class RequestCreate(BaseModel):
+    first_name: str
+    last_name: str
+    recipient_email: str
+    requester_email: str
+    phone_number: Optional[str] = None
+    device_quantities: dict  # JSON format
+    request_time_local: str  # Format: "YYYY-MM-DD HH:MM:SS"
+    address_id: int
+    action_email_status: int
+    confirmation_email_status: Optional[int] = 0
+    replaced_item_id: Optional[int] = None
+    replaced_item_code: Optional[str] = None
+
+class DeviceCreate(BaseModel):
+    device_name: str
+    device_model: str
+    device_type: str
+    device_os: Optional[str] = None
+    weight: Optional[str] = None
+    battery: Optional[str] = None
+    cpu: Optional[str] = None
+    memory: Optional[str] = None
+    memory_type: Optional[str] = None
+    screen_size: Optional[str] = None
+    storage: Optional[str] = None
+    network: Optional[str] = None
+    wireless: Optional[str] = None
+    graphics: Optional[str] = None
+    power: Optional[str] = None
+    description: Optional[str] = None
+    device_image: Optional[bytes] = None
+
+class InventoryCreate(BaseModel):
+    device_name: str
+    device_serialnumber: str
+    device_type: str
+    device_model: str
+    user_jobtitle: str
+    user_email: str
+    device_eoldate: Optional[str] = None
+    device_leaseend: Optional[str] = None
+    user_firstname: str
+    user_lastname: str
+    user_associatedid: str
+    user_executive: bool
+    user_shortdept: str
+    device_shortmfg: str
+    device_laptoptype: str
+    user_branch: str
+    user_branchoffice: str
+    user_city: str
+    user_state: str
+    device_receiveddate: Optional[str] = None
+    device_age: Optional[str] = None
+    device_yearreceived: Optional[str] = None
+    device_yearrefresh: Optional[str] = None
+
+# ==============================
+# 🏠 Address Endpoints
+# ==============================
+@app.post("/addresses/")
+def create_address(address: AddressCreate, db: Session = Depends(get_db)):
+    new_address = Address(**address.dict())
+    db.add(new_address)
+    db.commit()
+    db.refresh(new_address)
+    return {"message": "Address added successfully", "data": new_address}
+
+# ==============================
+# 📦 Request Endpoints
+# ==============================
+@app.post("/requests/")
+def create_request(request: RequestCreate, db: Session = Depends(get_db)):
+    new_request = Request(**request.dict())
+    db.add(new_request)
+    db.commit()
+    db.refresh(new_request)
+    return {"message": "Request added successfully", "data": new_request}
+
+# ==============================
+# 📱 Device Endpoints
+# ==============================
+@app.post("/devices/")
+def create_device(device: DeviceCreate, db: Session = Depends(get_db)):
+    new_device = Device(**device.dict())
+    db.add(new_device)
+    db.commit()
+    db.refresh(new_device)
+    return {"message": "Device added successfully", "data": new_device}
+
+# ==============================
+# 🏬 Inventory Endpoints
+# ==============================
+@app.post("/inventory/")
+def create_inventory(inventory: InventoryCreate, db: Session = Depends(get_db)):
+    new_inventory = Inventory(**inventory.dict())
+    db.add(new_inventory)
+    db.commit()
+    db.refresh(new_inventory)
+    return {"message": "Inventory item added successfully", "data": new_inventory}
+
+# Run the server using:
+# uvicorn filename:app --reload
+if __name__=="__main__":
+    import uvicorn
+    uvicorn.run(app)
