@@ -143,6 +143,23 @@ VALUES (
     '{"laptops": 1, "monitors": 2}', '2025-02-26 15:45:00+00', 3, 0
 );
 
+INSERT INTO INVENTORY (
+    device_name, device_serialnumber, device_type, device_model, 
+    user_jobtitle, user_email, device_dolted, device_leasend, 
+    user_firstname, user_lastname, user_associatedid, user_executive, 
+    user_shortpkg, device_laptotype, user_branch, user_branchoffice, 
+    user_city, user_state, device_receiveddate, device_age, 
+    device_yearrefresh
+) VALUES (
+    'Laptop A', 'SN123456', 'Laptop', 'Dell XPS 15', 
+    'Software Engineer', 'john.doe@example.com', '2024-05-01', '2026-05-01', 
+    'John', 'Doe', 'U123456', TRUE, 
+    'Standard', 'Business', 'New York', 'Head Office', 
+    'New York', 'NY', '2023-05-01', '2 Years', 
+    '2025'
+);
+
+
 
 
 
