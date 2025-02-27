@@ -73,7 +73,11 @@ def fetch_new_requests():
         if request_list:
             for req in request_list:
                 print(req)
-                slack_obj.send_message(req)
+                slack_obj.send_message(req,channel)
+                ### get user by email 
+                ### lookup by email 
+                ###  get user id 
+                slack_obj.send_message(req,user_channel)
 
 
     finally:
