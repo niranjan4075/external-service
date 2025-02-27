@@ -13,7 +13,7 @@ class SlackMessage:
         payload = {
     "channel": self.channel_name,  # Replace with your channel ID
     "text": "Please approve or reject the request:",  # Text fallback
-    "blocks":"blocks": [
+    "blocks": [
 		{
 			"type": "section",
 			"text": {
@@ -69,7 +69,7 @@ class SlackMessage:
 					"type": "button",
 					"text": {
 						"type": "plain_text",
-						"emoji": true,
+						"emoji": True,
 						"text": "Approve"
 					},
 					"style": "primary",
@@ -79,7 +79,7 @@ class SlackMessage:
 					"type": "button",
 					"text": {
 						"type": "plain_text",
-						"emoji": true,
+						"emoji": True,
 						"text": "Deny"
 					},
 					"style": "danger",
@@ -106,5 +106,3 @@ class SlackMessage:
                 logging.error(f"Error sending message: {data.get('error')}")
         else:
             logging.error(f"Failed to send message. HTTP status code: {response.status_code}")
-
-
