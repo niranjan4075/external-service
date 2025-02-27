@@ -13,89 +13,81 @@ class SlackMessage:
         payload = {
     "channel": self.channel_name,  # Replace with your channel ID
     "text": "Please approve or reject the request:",  # Text fallback
-    "blocks": [
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": "*New Device Request*"
-            }
-        },
-        {
-            "type": "section",
-            "fields": [
-                {
-                    "type": "mrkdwn",
-                    "text": f"*First Name:*\n{request['first_name']}"
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": f"*Last Name:*\n{request['last_name']}"
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": f"*Requester Email:*\n{request['requester_email']}"
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": f"*Recipient Email:*\n{request['recipient_email']}"
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": f"*Phone Number:*\n{request['phone_number']}"
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": f"*Associate ID:*\n{request['inventory']['user_associatedid']}"
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": f"*Device Type:*\n{request['inventory']['device_type']}"
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": f"*Device Name:*\n{request['inventory']['device_name']}"
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": f"*Device Model:*\n{request['inventory']['device_model']}"
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": "*Device Serial Number:*\n[User fills in Device Serial Number]"
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": "*Device EOL Date:*\n[User fills in Device EOL Date]"
-                }
-            ]
-        },
-        {
-            "type": "actions",
-            "elements": [
-                {
-                    "type": "button",
-                    "text": {
-                        "type": "plain_text",
-                        "emoji": True,
-                        "text": "Approve"
-                    },
-                    "style": "primary",
-                    "value": "approve_device_request"
-                },
-                {
-                    "type": "button",
-                    "text": {
-                        "type": "plain_text",
-                        "emoji": True,
-                        "text": "Deny"
-                    },
-                    "style": "danger",
-                    "value": "deny_device_request"
-                }
-            ]
-        }
-    ]
+    "blocks":"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*New Device Request*"
+			}
+		},
+		{
+			"type": "section",
+			"fields": [
+				{
+					"type": "mrkdwn",
+					"text": "*First Name:*\n sbdjb"
+				},
+				{
+					"type": "mrkdwn",
+					"text": "*Last Name:*\nsbdkjbk"
+				},
+				{
+					"type": "mrkdwn",
+					"text": "*Requester Email:*\ns"
+				},
+				{
+					"type": "mrkdwn",
+					"text": "*Recipient Email:*\nsn"
+				},
+				{
+					"type": "mrkdwn",
+					"text": "*Phone Number:*\n mn"
+				},
+				{
+					"type": "mrkdwn",
+					"text": "*Associate ID:*\nxnm"
+				},
+				{
+					"type": "mrkdwn",
+					"text": "*Device Type:*\n nb"
+				},
+				{
+					"type": "mrkdwn",
+					"text": "*Device Serial Number:*\n[User fills in Device Serial Number]"
+				},
+				{
+					"type": "mrkdwn",
+					"text": "*Device EOL Date:*\n[User fills in Device EOL Date]"
+				}
+			]
+		},
+		{
+			"type": "actions",
+			"elements": [
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"emoji": true,
+						"text": "Approve"
+					},
+					"style": "primary",
+					"value": "approve_device_request"
+				},
+				{
+					"type": "button",
+					"text": {
+						"type": "plain_text",
+						"emoji": true,
+						"text": "Deny"
+					},
+					"style": "danger",
+					"value": "deny_device_request"
+				}
+			]
+		}
+	]
 }
 
         # Set the headers including the Authorization with the Bearer Token
