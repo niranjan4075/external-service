@@ -9,7 +9,7 @@ class SlackMessage:
         self.url=f"{SlackCred.slack_url}/api/chat.postMessage"
         self.channel_name=SlackCred.channel_name
 
-    def send_message(self,request):
+    def send_message(self,request,channel_name):
         payload = {
     "channel": self.channel_name,  # Replace with your channel ID
     "text": "Please approve or reject the request:",  # Text fallback
