@@ -1,0 +1,64 @@
+### **User Story 1: Storefront - Slack Integration**  
+**Title:** Storefront to Slack Integration for Device Request Workflow  
+
+**Description:**  
+As a user, I want my device request on the storefront to trigger an automated workflow so that approvals can be managed efficiently via Slack.  
+
+**Acceptance Criteria:**  
+- As a user, I want my device request on the storefront website to be stored in the PostgreSQL database so that my request is recorded for further processing.  
+- As a user, I want my email address from the device request to be used to fetch my details and my manager’s email address from Microsoft Entra via Graph API so that the approval process can be initiated correctly.  
+- As a user, I want the system to push my request details to Slack based on my manager’s email ID so that my request reaches the appropriate approver.  
+- As a user, I want my manager to receive a Slack notification via a Slack bot, ensuring that they can take action on my device request.  
+- As a user, I want error handling mechanisms in place so that if any step (Graph API call failure, Slack API failure, etc.) fails, proper logs and alerts are generated.  
+
+**Technical Notes:**  
+- Use **FastAPI** for API development.  
+- Implement **Microsoft Graph API** integration for fetching user and manager details.  
+- Use **Slack Bolt SDK** to send messages to Slack.  
+- Ensure **PostgreSQL** stores request details for tracking.  
+
+---
+
+### **User Story 2: Slack Workflow Development**  
+**Title:** Slack-Based Approval Workflow for Device Requests  
+
+**Description:**  
+As a user, I want an interactive Slack workflow that allows my manager to approve or reject device requests so that the approval process is seamless and efficient.  
+
+**Acceptance Criteria:**  
+- As a user, I want my manager to receive a Slack notification with an interactive message containing "Approve" and "Reject" buttons so that they can take action on my request.  
+- As a user, I want the Slack bot to retrieve the manager’s details based on the email address provided by the storefront so that the notification reaches the correct approver.  
+- As a user, I want the system to capture the response (Approve or Reject) and store it in the database along with a timestamp so that audit tracking is maintained.  
+- As a user, I want to ensure that once the manager acts on my request, a response is sent back confirming the action taken so that I am aware of my request status.  
+- As a user, I want the system to retry Slack message delivery if the initial message fails so that notifications are not lost due to transient errors.  
+
+**Technical Notes:**  
+- Use **Slack Bolt for Python** to handle interactive message buttons.  
+- Implement a **Slack listener** to capture user responses.  
+- Store the approval/rejection response and timestamp in **PostgreSQL**.  
+- Use **FastAPI** to expose APIs for Slack event handling.  
+
+---
+
+### **User Story 3: Remedy Integration**  
+**Title:** Integration with Remedy for Request Processing  
+
+**Description:**  
+As a user, I want my approved or rejected request details to be sent to Remedy so that further processing and tracking can be handled externally.  
+
+**Acceptance Criteria:**  
+- As a user, I want my request approval/rejection status to be sent to the Remedy external API so that my request is processed accordingly.  
+- As a user, I want the system to transform and format the data before sending it to Remedy to ensure the API receives it in the correct format.  
+- As a user, I want proper authentication and authorization mechanisms when calling the Remedy API so that secure communication is maintained.  
+- As a user, I want error-handling mechanisms that log failures and retry the API call if needed so that failures do not block the request flow.  
+- As a user, I want to receive a confirmation once my request has been successfully processed by Remedy so that I am aware of the final status of my request.  
+
+**Technical Notes:**  
+- Use **FastAPI** to call the Remedy external API.  
+- Ensure **OAuth or API Key authentication** for secure API calls.  
+- Implement logging and retry mechanisms for robust error handling.  
+- Store API responses in **PostgreSQL** for reference and debugging.  
+
+---
+
+These stories break the workflow into structured, manageable components while ensuring all key functionalities are covered. Let me know if you need any refinements! 🚀
