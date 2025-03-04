@@ -2,6 +2,7 @@ from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, JSON,
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from contextlib import contextmanager
+from sqlalchemy.dialects.postgresql import JSONB
 
 from config import DbCred
 
@@ -43,7 +44,7 @@ class Request(Base):
     recipient_email = Column(String, nullable=False)
     requester_email = Column(String, nullable=False)
     phone_number = Column(String, nullable=True)
-    device_quantities = Column(JSON, nullable=False)
+    device_quantities = Column(JSONB, nullable=False)
     request_time_local = Column(TIMESTAMP(timezone=True), nullable=False)
 
     # Foreign Key for Address table
@@ -115,3 +116,11 @@ class Inventory(Base):
 
     # Relationship with Request (One inventory item can be replaced in multiple requests)
     requests = relationship("Request", back_populates="replaced_item")
+
+class NewSlack(Base):
+    __tablename__="slack_responses"
+    id=Column(Integer, primary_key=True, index=True)
+    notification_sent_time=Column(TIMESTAMP(timezone=True), nullable=False)
+    status=Column(String,nullable=True)
+    user_clicked_time=Column(TIMESTAMP(timezone=True), nullable=True)
+    managers_email=Column(String)
