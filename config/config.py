@@ -16,3 +16,9 @@ class SlackCred:
     slack_url=os.getenv("slack_url")
     channel_name=os.getenv("channel_name")
     slack_app_token=os.getenv("slack_app_token")
+
+class ExternalAPiConfig:
+    login_url=os.getenv("login_url")
+    order_url=os.getenv("order_url")
+    username=os.getenv("api_username")
+    password=os.getenv("api_password")
