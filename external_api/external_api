@@ -1,0 +1,86 @@
+import requests
+import urllib.parse
+from config import ExternalAPiConfig
+
+def get_jwt_token():
+    """Retrieves a JWT token from the Geico authentication API."""
+    url = ExternalAPiConfig.login_url
+    headers = {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": "insomnia/10.1.1"
+    }
+    username= ExternalAPiConfig.username
+    password=ExternalAPiConfig.password
+    data = urllib.parse.urlencode({
+        "username": username,
+        "password": password
+    })
+
+    try:
+        response = requests.post(url, headers=headers, data=data)
+        response.raise_for_status()
+        cookies = response.cookies
+        jwt_cookie = cookies.get('AR-JWT')
+        if jwt_cookie:
+            return jwt_cookie
+        else:
+            print("JWT token not found in cookies.")
+            return None
+    except requests.exceptions.RequestException as e:
+        print(f"Authentication failed: {e}")
+        return None
+
+def create_work_order(jwt_token, detailed_description, customer_first_name, customer_last_name, short_description, summary, company, location_company):
+    """Creates a work order using the Geico REST API."""
+    url = ExternalAPiConfig.order_url
+    headers = {
+        "Authorization": f"AR-{jwt_token}",
+        "Content-Type": "application/json",
+        "Cookie": "onbmc_pool=!yR3964Yhu%2FaKx8o801KelKV)vylKg6SJq011VCREqNCUbw@vWAjdGw7Ni4pXVpBEZFn3129HADNfZkK3D; cacheId=1091730"
+    }
+    data = {
+        "values": {
+            "Detailed Description": detailed_description,
+            "Customer First Name": customer_first_name,
+            "Customer Last Name": customer_last_name,
+            "Short Description": short_description,
+            "Summary": summary,
+            "Company": company,
+            "Location Company": location_company
+        }
+    }
+
+    try:
+        response = requests.post(url, headers=headers, json=data)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error creating work order: {e}")
+        return None
+
+# Main execution
+
+def api_call(first_name,last_name):
+    jwt_token = get_jwt_token()
+
+    if jwt_token:
+        print("JWT Token retrieved successfully.")
+
+        # Example work order data
+        detailed_description = "MacBook Pro M4 Replacement - Niran Pro 15"
+        customer_first_name = first_name
+        customer_last_name = last_name
+        short_description = "REST API TEST Virtual Storefront Service Request"
+        summary = "This is a test of the API creation process - demo for Mobility Scrum"
+        company = "GEICO"
+        location_company = "GEICO"
+
+        result = create_work_order(jwt_token, detailed_description, customer_first_name, customer_last_name, short_description, summary, company, location_company)
+
+        if result:
+            print("Work order created successfully:")
+            print(result)
+        else:
+            print("Failed to create work order.")
+    else:
+        print("Failed to retrieve JWT token. Work order creation aborted.")
