@@ -49,7 +49,8 @@ class Templates:
 							"text": "Approve"
 						},
 						"style": "primary",
-						"action_id": "approve_button"
+						"action_id": "approve_button",
+						"value": str(req["request_reference"])
 					},
 					{
 						"type": "button",
@@ -59,12 +60,14 @@ class Templates:
 							"text": "Deny"
 						},
 						"style": "danger",
-						"action_id": "reject_button"
+						"action_id": "reject_button",
+						"value":str(req["request_reference"])
 					}
 				]
 			}
 		]
 		return manager_temp
+
 	def channel_template(self,req):
 		channel_template=[
 			{
@@ -79,19 +82,19 @@ class Templates:
 				"fields": [
 					{
 						"type": "mrkdwn",
-						"text": "*First Name:*\n sbdjb"
+						"text": "*First Name:*\n" + req["first_name"]
 					},
 					{
 						"type": "mrkdwn",
-						"text": "*Last Name:*\nsbdkjbk"
+						"text": "*Last Name:*\n"+req["last_name"]
 					},
 					{
 						"type": "mrkdwn",
-						"text": "*Requester Email:*\ns"
+						"text": "*Requester Email:*\n" + req["recipient_email"]
 					},
 					{
 						"type": "mrkdwn",
-						"text": "*Recipient Email:*\nsn"
+						"text": "*Recipient Email:*\nsn" + req["recipient_email"]
 					},
 					{
 						"type": "mrkdwn",
@@ -112,31 +115,6 @@ class Templates:
 					{
 						"type": "mrkdwn",
 						"text": "*Device EOL Date:*\n[User fills in Device EOL Date]"
-					}
-				]
-			},
-			{
-				"type": "actions",
-				"elements": [
-					{
-						"type": "button",
-						"text": {
-							"type": "plain_text",
-							"emoji": True,
-							"text": "Approve"
-						},
-						"style": "primary",
-						"value": "approve_device_request"
-					},
-					{
-						"type": "button",
-						"text": {
-							"type": "plain_text",
-							"emoji": True,
-							"text": "Deny"
-						},
-						"style": "danger",
-						"value": "deny_device_request"
 					}
 				]
 			}
