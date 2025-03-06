@@ -3,7 +3,7 @@ from datetime import datetime
 from slack_api.slack_api import send_channel_message_with_buttons, look_up_by_email
 from database.models import Request, Inventory, Device, engine, NewSlack
 from config import SlackCred
-from sqlalchemy import func, cast, Integer, String
+from sqlalchemy import func, cast, Integer, String,update
 from sqlalchemy.orm import sessionmaker
 
 
@@ -28,6 +28,27 @@ def insert_slack_response(notification_sent_time, status=None, user_clicked_time
         print("Error inserting Slack response:", e)
     finally:
         session.close()
+
+def update_slack_response(request_reference: int, new_status: str, user_clicked_time: datetime.datetime = None):
+    """
+    Updates the status and user_clicked_time of a slack response based on the request reference.
+
+    Args:
+        request_reference: The request reference to identify the record.
+        new_status: The new status to set.
+        user_clicked_time: The time the user clicked (optional).
+    """
+    db = SessionLocal()
+    try:
+        stmt = update(NewSlack).where(NewSlack.request_reference == request_reference).values(status=new_status, user_clicked_time=user_clicked_time)
+        result = db.execute(stmt)
+        db.commit()
+        print(f"Updated {result.rowcount} record(s) with request_reference: {request_reference}")
+    except Exception as e:
+        db.rollback()
+        print(f"Error updating slack response: {e}")
+    finally:
+        db.close()
 
 def get_last_request_id():
     session = SessionLocal()

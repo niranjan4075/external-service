@@ -120,6 +120,7 @@ class Inventory(Base):
 class NewSlack(Base):
     __tablename__="slack_responses"
     id=Column(Integer, primary_key=True, index=True)
+    request_reference=Column(Integer,nullable=False)
     notification_sent_time=Column(TIMESTAMP(timezone=True), nullable=False)
     status=Column(String,nullable=True)
     user_clicked_time=Column(TIMESTAMP(timezone=True), nullable=True)
