@@ -11,10 +11,11 @@ from sqlalchemy.orm import sessionmaker
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 processed_requests = set()
 
-def insert_slack_response(notification_sent_time, status=None, user_clicked_time=None, managers_email=""):
+def insert_slack_response(request_reference,notification_sent_time, status=None, user_clicked_time=None, managers_email=""):
     try:
         session = SessionLocal()
         new_slack_response = NewSlack(
+            request_reference=request_reference
             notification_sent_time=notification_sent_time,
             status=status,
             user_clicked_time=user_clicked_time,
