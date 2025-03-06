@@ -134,7 +134,7 @@ def fetch_new_requests():
 
                 manager_id = look_up_by_email(req["managers_email"])["id"]
                 if manager_id:
-                    insert_slack_response(datetime.now(), status="notification_send", managers_email=req["managers_email"])
+                    insert_slack_response(req["request_reference"],datetime.now(), status="notification_send", managers_email=req["managers_email"])
                     send_channel_message_with_buttons(manager_id, "test msg2", manager_template)
     except Exception as e:
         print("Error fetching new requests:", e)
