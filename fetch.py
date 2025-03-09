@@ -1,31 +1,27 @@
 # src/db/fetch_requests.py
 
 import time
+import threading
 from sqlalchemy import func, cast, Integer, String
 from src.db.database import Session
 from src.db.models import Device, Request
 
+
 # Track processed requests and last checked ID globally
 processed_requests = set()
-last_checked_id = 0  # You can persist this in DB or file if needed
+last_checked_id = 0  # You can persist this if needed
 
 
 def fetch_new_requests():
     """
-    Fetches new device requests and prints them if found.
+    Fetch new device requests and print them if found.
     """
     global last_checked_id
     session = Session()
     try:
-        # Extract device_id from device_quantities (first number in the string, like SQL query)
-        device_quantities_part = func.split_part(
-            func.cast(Request.device_quantities, String), ',', 1
-        )
-        device_id_extracted = func.regexp_replace(
-            device_quantities_part, '[^0-9]', '', 'g'
-        )
+        device_quantities_part = func.split_part(func.cast(Request.device_quantities, String), ',', 1)
+        device_id_extracted = func.regexp_replace(device_quantities_part, '[^0-9]', '', 'g')
 
-        # Fetch new requests joined with Device
         new_requests = (
             session.query(
                 Request.request_reference,
@@ -45,7 +41,6 @@ def fetch_new_requests():
             .all()
         )
 
-        # Print newly fetched requests
         if new_requests:
             print("\n==== New Device Requests Found ====")
             for request in new_requests:
@@ -61,7 +56,6 @@ def fetch_new_requests():
                     print(f"Device ID       : {request.device_id}")
                     print("=" * 40)
 
-                    # Add to processed and update last_checked_id
                     processed_requests.add(request.request_reference)
                     last_checked_id = max(last_checked_id, request.request_reference)
         else:
@@ -76,9 +70,40 @@ def fetch_new_requests():
 def start_polling(interval_seconds=5):
     """
     Starts an infinite polling loop to fetch new device requests periodically.
-    :param interval_seconds: Interval time in seconds between each polling.
+    :param interval_seconds: Time between each polling iteration.
     """
-    print(f"Starting polling for new device requests every {interval_seconds} seconds...")
-    while True:
-        fetch_new_requests()
-        time.sleep(interval_seconds)
+    def poll():
+        while True:
+            fetch_new_requests()
+            time.sleep(interval_seconds)
+
+    # Run polling in background thread so FastAPI main thread is free
+    polling_thread = threading.Thread(target=poll, daemon=True)
+    polling_thread.start()
+
+
+from fastapi import FastAPI
+from src.routes.route_search import router
+from src.db.database import engine, models
+from src.db.fetch_requests import start_polling  # Import polling function
+
+app = FastAPI(debug=True)
+
+# Register routers
+app.include_router(router, prefix="/search", tags=["Search"])
+
+# DB tables creation
+models.Base.metadata.create_all(bind=engine)
+
+# Start polling on startup
+@app.on_event("startup")
+async def startup_event():
+    start_polling(5)  # Poll every 5 seconds, adjustable interval
+
+# Uvicorn run
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main1:app", host="0.0.0.0", port=8008, reload=True)
+
+uvicorn main1:app --reload --host 0.0.0.0 --port 8008
+
