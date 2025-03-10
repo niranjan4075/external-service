@@ -1,92 +1,70 @@
-import pytz
-from datetime import datetime
-from slack_sdk.errors import SlackApiError
-from slack_sdk import WebClient
-from src.slack.slack_api import slack_app  # Import the Slack Bolt App instance
-from src.db.fetch_requests import update_slack_response
+import os
+import logging
 from config.config import SlackCred
+from slack_sdk.errors import SlackApiError
+from slack_bolt import App
+from slack_bolt.adapter.socket_mode import SocketModeHandler
+from slack_sdk import WebClient
 
-# Initialize WebClient (used for chat updates)
-client = WebClient(token=SlackCred.slack_token)
+# Setup logging
+logging.basicConfig(level=logging.DEBUG)
 
+# Initialize WebClient & Bolt App with bot token
+slack_token = SlackCred.slack_token
+slack_app_token = SlackCred.slack_app_token
 
-# Function to get user email by Slack user ID
-def get_user_email(user_id: str) -> str:
+client = WebClient(token=slack_token)
+app = App(token=slack_token)
+
+# Function to send Slack message to user_channel with buttons (for manager notifications)
+def send_channel_message_with_buttons(channel_id, message, block):
+    """
+    Sends a message to a Slack channel with Approve/Reject buttons.
+    """
     try:
-        response = client.users_info(user=user_id)
-        return response['user']['profile']['email']
+        response = app.client.chat_postMessage(
+            channel=channel_id,
+            text=message,  # Plain fallback text
+            blocks=block  # Rich message with buttons
+        )
+        print(f"Sent message to channel {channel_id}: {response['ts']}")
     except SlackApiError as e:
-        print(f"Error fetching user info: {e.response['error']}")
-        return ""
+        print(f"Error sending message to channel {channel_id}: {e.response['error']}")
 
 
-# Handle approve button click
-@slack_app.action("approve_button")
-def handle_approve_button(ack, body, client):
-    ack()  # Acknowledge action
-
-    user_id = body['user']['id']
-    request_reference = int(body['actions'][0]['value'])
-    channel_id = body['channel']['id']
-    message_ts = body['message']['ts']
-
-    # Get user email
-    email = get_user_email(user_id)
-
-    # Update database status
-    update_slack_response(
-        request_reference=request_reference,
-        new_status="approved",
-        user_clicked_time=datetime.now(pytz.timezone('US/Eastern'))
-    )
-
-    # Update Slack message
-    client.chat_update(
-        channel=channel_id,
-        ts=message_ts,
-        text="You have approved the request.",
-        blocks=[
-            {
-                "type": "section",
-                "text": {"type": "mrkdwn", "text": "*You have approved the request.*"}
-            }
-        ]
-    )
-
-    print(f"User {email} approved the request.")
+# Function to send Slack message to channel without buttons (for public notifications)
+def send_channel_message_without_buttons(channel_id, message, block):
+    """
+    Sends a message to a Slack channel without interactive buttons (but can have other blocks).
+    """
+    try:
+        response = app.client.chat_postMessage(
+            channel=channel_id,
+            text=message,  # Plain fallback text
+            blocks=block  # Message blocks without buttons (structured format)
+        )
+        print(f"Sent message to channel {channel_id}: {response['ts']}")
+    except SlackApiError as e:
+        print(f"Error sending message to channel {channel_id}: {e.response['error']}")
 
 
-# Handle reject button click
-@slack_app.action("reject_button")
-def handle_reject_button(ack, body, client):
-    ack()  # Acknowledge action
+# Function to lookup user by email to get Slack User ID (used for DM)
+def look_up_by_email(email):
+    """
+    Find Slack user by email address.
+    """
+    try:
+        response = app.client.users_lookupByEmail(email=email)
+        return response['user']
+    except SlackApiError as e:
+        print(f"Error looking up user by email {email}: {e.response['error']}")
+        return None
 
-    user_id = body['user']['id']
-    request_reference = int(body['actions'][0]['value'])
-    channel_id = body['channel']['id']
-    message_ts = body['message']['ts']
 
-    # Get user email
-    email = get_user_email(user_id)
-
-    # Update database status
-    update_slack_response(
-        request_reference=request_reference,
-        new_status="rejected",
-        user_clicked_time=datetime.now(pytz.timezone('US/Eastern'))
-    )
-
-    # Update Slack message
-    client.chat_update(
-        channel=channel_id,
-        ts=message_ts,
-        text="You have rejected the request.",
-        blocks=[
-            {
-                "type": "section",
-                "text": {"type": "mrkdwn", "text": "*You have rejected the request.*"}
-            }
-        ]
-    )
-
-    print(f"User {email} rejected the request.")
+# Function to start Slack Socket Mode (For button interactions)
+def start_socket_mode():
+    """
+    Starts Slack Socket Mode for interactive messages.
+    """
+    handler = SocketModeHandler(app, slack_app_token)
+    handler.start()
