@@ -1,13 +1,11 @@
-# src/routes/route_fetch_requests.py
-
 from fastapi import APIRouter, Depends
-from sqlalchemy import func, cast, Integer, String
 from sqlalchemy.orm import Session
+from sqlalchemy import func, cast, Integer, String
 from src.db.database import get_db
 from src.db.models import Request, Device, ProcessedRequest
+from datetime import datetime
 
 router = APIRouter()
-
 
 @router.get("/fetch-new-requests/", tags=["Requests"])
 def fetch_new_requests(db: Session = Depends(get_db)):
@@ -19,7 +17,7 @@ def fetch_new_requests(db: Session = Depends(get_db)):
         # Subquery to get already processed request references
         processed_subquery = db.query(ProcessedRequest.request_reference)
 
-        # Main query using your working join and extracting device_id
+        # Main query to get requests that are NOT processed yet
         new_requests = (
             db.query(
                 Request.request_reference,
@@ -28,30 +26,15 @@ def fetch_new_requests(db: Session = Depends(get_db)):
                 Request.recipient_email,
                 Request.requester_email,
                 Request.phone_number,
-                Device.device_name,
-                Device.device_model,
-                Device.device_type,
-                Device.device_id
             )
-            .join(
-                Device,
-                cast(
-                    func.regexp_replace(
-                        func.split_part(cast(Request.device_quantities, String), ':', 1),
-                        '[^0-9]',
-                        '',
-                        'g'
-                    ),
-                    Integer
-                ) == Device.device_id
-            )
-            .filter(~Request.request_reference.in_(processed_subquery))  # ✅ Exclude already processed
+            .filter(~Request.request_reference.in_(processed_subquery))
             .order_by(Request.request_reference.asc())
             .all()
         )
 
         output = []
 
+        # If new requests found, process and save in ProcessedRequest
         if new_requests:
             for request in new_requests:
                 req_data = {
@@ -60,20 +43,21 @@ def fetch_new_requests(db: Session = Depends(get_db)):
                     "last_name": request.last_name,
                     "recipient_email": request.recipient_email,
                     "requester_email": request.requester_email,
-                    "phone_number": request.phone_number,
-                    "device_name": request.device_name,
-                    "device_model": request.device_model,
-                    "device_type": request.device_type,
-                    "device_id": request.device_id,
+                    "phone_number": request.phone_number
                 }
+
                 output.append(req_data)
 
-                # ✅ Add to processed_requests table
-                processed_entry = ProcessedRequest(request_reference=request.request_reference)
+                # Add to processed requests
+                processed_entry = ProcessedRequest(
+                    request_reference=request.request_reference,
+                    processed_time=datetime.utcnow(),
+                    status='completed'
+                )
                 db.add(processed_entry)
 
-            db.commit()  # ✅ Save all processed entries
-
+            # Commit after processing all
+            db.commit()
         else:
             return {"message": "No new device requests found."}
 
@@ -84,9 +68,23 @@ def fetch_new_requests(db: Session = Depends(get_db)):
         return {"error": str(e)}
 
 
+
+from sqlalchemy import Column, Integer, ForeignKey, TIMESTAMP, String
+from src.db.database import Base
+
 class ProcessedRequest(Base):
     __tablename__ = "processed_requests"
 
     id = Column(Integer, primary_key=True, index=True)
     request_reference = Column(Integer, ForeignKey("requests.request_reference"), nullable=False, unique=True)
-    processed_time = Column(TIMESTAMP(timezone=True), server_default=func.now(), nullable=False)
+    processed_time = Column(TIMESTAMP(timezone=True), nullable=False)
+    status = Column(String, nullable=False)  # Example values: 'completed', 'failed'
+
+
+CREATE TABLE processed_requests (
+    id SERIAL PRIMARY KEY,
+    request_reference INTEGER NOT NULL UNIQUE,
+    processed_time TIMESTAMP WITH TIME ZONE NOT NULL,
+    status VARCHAR NOT NULL,
+    CONSTRAINT fk_request_reference FOREIGN KEY (request_reference) REFERENCES requests(request_reference)
+);
