@@ -78,3 +78,13 @@ def fetch_and_notify_requests(db: Session = Depends(get_db)):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error occurred: {str(e)}")
+
+CREATE TABLE slack_response (
+    id SERIAL PRIMARY KEY,
+    request_reference INTEGER NOT NULL UNIQUE,
+    notification_sent_time TIMESTAMPTZ NOT NULL,
+    status VARCHAR,
+    user_clicked_time TIMESTAMPTZ,
+    managers_email VARCHAR
+);
+
