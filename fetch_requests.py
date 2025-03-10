@@ -3,7 +3,6 @@ from sqlalchemy import update
 from datetime import datetime
 from src.db.models import NewSlack
 
-
 def insert_slack_response(
     db: Session,  # Session injected via Depends
     request_reference: int,
@@ -29,6 +28,7 @@ def insert_slack_response(
     except Exception as e:
         db.rollback()
         print("Error inserting Slack response:", e)
+        return {"error": str(e)}  # Optional return for API response safety
 
 
 def update_slack_response(
@@ -48,7 +48,13 @@ def update_slack_response(
         )
         result = db.execute(stmt)
         db.commit()
+
+        # Additional safety check: if no row was updated, warn in log
+        if result.rowcount == 0:
+            print(f"Warning: No record found to update for request_reference: {request_reference}")
+
         print(f"Updated {result.rowcount} record(s) with request_reference: {request_reference}")
     except Exception as e:
         db.rollback()
         print(f"Error updating Slack response: {e}")
+        return {"error": str(e)}  # Optional return for API response safety
