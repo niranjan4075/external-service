@@ -24,3 +24,12 @@ results = (
         )
         .all()
     )
+
+
+SELECT
+    device_os,
+    REPLACE(device_name, ' ', '') AS device_name,
+    REPLACE(device_model, ' ', '') AS device_model
+FROM
+    devices;
+
