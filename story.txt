@@ -133,3 +133,73 @@ As a user, I want an end-to-end integrated workflow between Slack and Remedy so 
 ---
 
 Let me know if you want to visualize this flow as a diagram as well! 🚀
+
+
+
+
+
+
+
+
+Here’s a detailed **User Story** written in "As a user" format, covering the **conversion of existing cron-job-based email scripts into FastAPI** with support for multiple APIs and cron schedulers:
+
+---
+
+### **User Story: Storefront Email Service Refactor to FastAPI with Multiple APIs and Schedulers**
+
+---
+
+#### **Title:**
+As a user, I want the existing cron-job-based email service to be converted into a FastAPI application so that I can manage multiple email workflows and schedulers efficiently.
+
+---
+
+#### **Description:**
+
+As a user,  
+I want to convert the current email scripts, which are triggered using a single cron job, into a modular FastAPI application,  
+So that I can easily manage multiple APIs for different email flows, schedule them independently, and maintain/scale them in a standardized way.  
+
+Currently, there are two Python scripts that handle different types of email communications, but they are tied to one deployment file (a cron job), limiting flexibility.  
+By migrating to FastAPI, I should be able to add, update, and manage multiple email APIs and their respective cron schedules without changing the core deployment mechanism.
+
+---
+
+#### **Acceptance Criteria:**
+
+1. **As a user, I want to access each email workflow via a separate API endpoint**, so that different email flows can be invoked programmatically and monitored easily.  
+   - Example: `/send-order-confirmation`, `/send-marketing-emails`.
+
+2. **As a user, I want to manage and configure cron jobs as part of the FastAPI service**, so that each email workflow can run on its own schedule, independent of others.  
+   - Cron scheduling should be done using a robust scheduler like `APScheduler` or `Celery Beat` (or equivalent).
+
+3. **As a user, I want the system to log each email activity and execution status** (success/failure), so that I can audit and debug issues easily.
+
+4. **As a user, I want to configure new email flows in the future without modifying existing ones**, so that the system is easily extendable and modular.
+
+5. **As a user, I want to deploy the FastAPI application as a service**, so that I can trigger email workflows both via API calls and automatically via schedulers, supporting real-time and batch operations.
+
+6. **As a user, I want error handling and retry mechanisms in place**, so that failed email sending attempts can be reprocessed based on defined policies.
+
+7. **As a user, I want clear API documentation (Swagger/OpenAPI) auto-generated**, so that developers and other systems can integrate with email APIs easily.
+
+8. **As a user, I want environment-based configurations (dev/prod)**, so that I can test email flows without affecting production.
+
+---
+
+#### **Out of Scope (Optional for Clarity):**
+- Rewriting the email content itself (the focus is on service orchestration, not content).
+- Handling third-party email service provider integration (unless part of refactor).
+
+---
+
+#### **Benefits:**
+- **Scalability**: Adding new email workflows becomes seamless.
+- **Maintainability**: Isolated APIs and scheduled jobs reduce code coupling.
+- **Monitoring & Logging**: Better observability and error tracking.
+- **Deployment Efficiency**: Managed as a microservice rather than rigid cron jobs.
+- **Flexibility**: Support for both scheduled and on-demand email operations.
+
+---
+
+If you want, I can write this in **Agile story template format (EPIC > Story > Tasks)** as well. Let me know!
