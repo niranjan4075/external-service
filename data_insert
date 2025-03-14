@@ -136,3 +136,15 @@ def create_inventory(inventory: InventoryCreate, db: Session = Depends(get_db)):
 if __name__=="__main__":
     import uvicorn
     uvicorn.run(app)
+
+
+
+SELECT 
+    response, 
+    TO_CHAR(response_time AT TIME ZONE 'UTC' AT TIME ZONE 'US/Eastern', 'YYYY-MM-DD HH24:MI') || ' (EST)' AS response_time_est,
+    TO_CHAR(request_time AT TIME ZONE 'UTC' AT TIME ZONE 'US/Eastern', 'YYYY-MM-DD HH24:MI') || ' (EST)' AS request_time_est,
+    response_status, 
+    created_by, 
+    updated_by
+FROM 
+    slack_response;
