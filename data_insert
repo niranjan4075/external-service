@@ -148,3 +148,16 @@ SELECT
     updated_by
 FROM 
     slack_response;
+
+
+
+ SELECT
+    id,
+    request_reference,
+    TO_CHAR(notification_sent_time AT TIME ZONE 'UTC' AT TIME ZONE 'US/Eastern', 'YYYY-MM-DD HH12:MI:SS AM') || ' (EST)' AS notification_sent_time_est,
+    status,
+    TO_CHAR(user_clicked_time AT TIME ZONE 'UTC' AT TIME ZONE 'US/Eastern', 'YYYY-MM-DD HH12:MI:SS AM') || ' (EST)' AS user_clicked_time_est,
+    managers_email
+FROM 
+    slack_response;
+
