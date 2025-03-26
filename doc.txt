@@ -104,3 +104,38 @@ User can check/uncheck any combination of peripherals.
 ---
 
 Let me know if the next step after submission should be documented too!
+
+
+
+Great! Here’s the next test case based on the **“Please Review Your Request”** screen that appears after submitting peripherals:
+
+---
+
+### **Test Case 9: Review Request Summary Before Final Submission**
+
+**Precondition:**  
+User has selected a device, provided replacement info, and optionally selected peripherals.
+
+**Step:**  
+After clicking **Submit** on the peripherals selection modal, a **review summary modal** appears titled **"Please Review Your Request"**.
+
+**Expected Result:**  
+The modal displays a summary of the user's selections:
+- **Device Information**: Selected device (e.g., MacBook Pro M4)
+- **Device Being Replaced**: Selected/entered device ID or serial number
+- **Peripherals**: List of optional items selected (if any)
+- **Recipient Name** and **Recipient Email**
+
+**Action:**  
+- User can review all selections for accuracy.
+- Click **Submit** to finalize and send the request.
+- Click **Cancel** to return to the previous screen (optional clarification: does it go back to peripherals or home?).
+
+**Validation Point:**  
+- All previously entered data should be displayed accurately.
+- Final confirmation gives the user a chance to verify before submission.
+- No editable fields; this step is for **review only**.
+
+---
+
+Let me know what the final action does (after this submit)—does it show a confirmation message, redirect, or submit to a backend? I can help document that next.
