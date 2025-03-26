@@ -44,13 +44,26 @@ An additional field appears labeled **"Device ID or Serial Number"**.
 
 ---
 
-### **Test Case 7: Validate Mandatory Field for "Other" Option**
+Got it! Here's the revised **Test Case 7** based on your input, reflecting that the serial number field can be **optional or mandatory depending on the flow**:
+
+---
+
+### **Test Case 7: Select "Other" – Conditional Field Behavior**
 **Step:**  
-User tries to click **Submit** without filling in the **Device ID or Serial Number** when "Other" is selected.
+User selects **"Other"** from the replacement dropdown.
 
 **Expected Result:**  
-An error message should appear prompting the user to fill in the required field. Submit should be disabled until valid input is provided.
+A new input field labeled **"Device ID or Serial Number"** appears.
 
+- If providing the serial number is **optional**, the user can leave it blank and still proceed by clicking **Submit**.
+- If providing the serial number is **mandatory**, the field must be filled; otherwise, an error message is shown, and the user cannot proceed.
+
+**Validation Point:**  
+System behavior should adapt based on the configuration — either enforcing or allowing the field to remain optional.
+
+---
+
+Let me know if you'd like to include expected error message text or UI validation notes too.
 ---
 
 ### **Test Case 8: Submit with Valid Serial/Device ID**
