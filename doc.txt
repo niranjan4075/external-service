@@ -139,3 +139,31 @@ The modal displays a summary of the user's selections:
 ---
 
 Let me know what the final action does (after this submit)—does it show a confirmation message, redirect, or submit to a backend? I can help document that next.
+
+
+Thanks! Here's the final test case in the flow based on your confirmation screen:
+
+---
+
+### **Test Case 10: Request Submission Confirmation**
+
+**Precondition:**  
+User has reviewed the request and clicked **Submit** on the review modal.
+
+**Step:**  
+System processes the request submission.
+
+**Expected Result:**  
+A confirmation screen appears with the following information:
+- Message: **"Your request has been submitted."**
+- **Reference number** (e.g., *Your request’s reference number is 32*)
+- **Confirmation email notice** sent to the recipient's email (e.g., *niranjanreddybala@geico.com*)
+
+**Validation Point:**  
+- The reference number should be unique and auto-generated.
+- The confirmation message confirms successful completion of the workflow.
+- User should see the recipient email address to ensure the right person is notified.
+
+---
+
+Let me know if you want to bundle all these test cases into a table or doc format!
