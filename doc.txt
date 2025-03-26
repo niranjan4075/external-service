@@ -167,3 +167,35 @@ A confirmation screen appears with the following information:
 ---
 
 Let me know if you want to bundle all these test cases into a table or doc format!
+
+
+
+Perfect, here's the final test case to cover the confirmation email:
+
+---
+
+### **Test Case 11: Confirmation Email Notification**
+
+**Precondition:**  
+User has submitted the device request and seen the on-screen confirmation with the reference number.
+
+**Step:**  
+System sends a confirmation email to the recipient's registered email address.
+
+**Expected Result:**  
+An email is received from **Mobility Ops** with the following content:
+- Greeting and acknowledgment of the request
+- List of requested items (e.g., MacBook Pro M4, monitor, headset, magic trackpad)
+- Confirmation that the request has been received
+- Notification that the user will be informed when the device is shipped or if not approved
+- **Reference number** matching the one shown on the confirmation page (e.g., *32*)
+- Sender signature (Storefront Team)
+
+**Validation Point:**  
+- Email is received within a reasonable time
+- All request details match the user’s selection
+- Email is sent to the correct recipient
+
+---
+
+Let me know if you'd like all test cases compiled into a document or Excel format for easy sharing or import!
