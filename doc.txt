@@ -76,3 +76,31 @@ The request proceeds successfully, and the modal closes or advances to the next 
 ---
 
 Let me know if you want these formatted in a test case table format or for import into a test management tool.
+
+Thanks! Here's the updated version of **Test Case 8** with the **"Cancel" behavior** clearly defined:
+
+---
+
+### **Test Case 9: Add Peripherals to Request (Optional Step)**
+
+**Precondition:**  
+User has selected the device to replace and submitted the previous modal.
+
+**Step:**  
+A modal titled **"Add Peripherals to your Request"** appears, listing optional items: Monitor, Keyboard, Headset, Mouse, AirPods, Magic Trackpad.
+
+**Action:**  
+User can check/uncheck any combination of peripherals.
+
+**Expected Result:**  
+- Peripheral selection is optional; the user can proceed without selecting any items.
+- Clicking **Submit** saves the selection (if any) and moves the user to the next step or confirmation page.
+- Clicking **Cancel** immediately redirects the user **back to the home page**, discarding peripheral selection.
+
+**Validation Point:**  
+- No error messages should appear if no peripherals are selected.
+- Cancel action should be clearly understood as **exit to home**, not just dismiss modal.
+
+---
+
+Let me know if the next step after submission should be documented too!
