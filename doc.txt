@@ -1,0 +1,65 @@
+Here’s how you can break this down into clear test cases based on your flow and the screenshots:
+
+---
+
+### **Test Case 3: Device Selection**
+**Step:**  
+User selects a device from the available options.
+
+**Action:**  
+Click on the **MacBook Pro** under "Performance Mac."
+
+**Expected Result:**  
+The selected device is visually highlighted with a border or marker indicating selection.
+
+---
+
+### **Test Case 4: Add to Cart & Replacement Modal Appears**
+**Precondition:**  
+Device (e.g., MacBook Pro) is selected.
+
+**Step:**  
+Click on the **"Add To Cart"** button.
+
+**Expected Result:**  
+A modal popup appears titled **"Please Select Which Device You Are Replacing"**, containing a dropdown to choose the device to be replaced.
+
+---
+
+### **Test Case 5: Select Existing Device from Dropdown**
+**Step:**  
+User selects a listed device from the dropdown (e.g., *GEIMACD6D3FY3Q05 - Apple MacBook Pro (14-inch, Nov 2023)*).
+
+**Expected Result:**  
+The dropdown selection is registered. User can now click on **Submit** to proceed.
+
+---
+
+### **Test Case 6: Select "Other" and Provide Serial/Device ID**
+**Step:**  
+User selects **"Other"** from the dropdown.
+
+**Expected Result:**  
+An additional field appears labeled **"Device ID or Serial Number"**.
+
+---
+
+### **Test Case 7: Validate Mandatory Field for "Other" Option**
+**Step:**  
+User tries to click **Submit** without filling in the **Device ID or Serial Number** when "Other" is selected.
+
+**Expected Result:**  
+An error message should appear prompting the user to fill in the required field. Submit should be disabled until valid input is provided.
+
+---
+
+### **Test Case 8: Submit with Valid Serial/Device ID**
+**Step:**  
+User enters a valid Device ID or Serial Number and clicks **Submit**.
+
+**Expected Result:**  
+The request proceeds successfully, and the modal closes or advances to the next step.
+
+---
+
+Let me know if you want these formatted in a test case table format or for import into a test management tool.
