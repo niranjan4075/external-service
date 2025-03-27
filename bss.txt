@@ -15,3 +15,9 @@ This application increases efficiency, accountability, and transparency in devic
 ---
 
 Let me know if you'd like it tailored for a specific audience—like IT leadership, business stakeholders, or compliance teams.
+
+
+
+Yes, this integration is primarily designed to provide real-time notifications and event triggers to streamline the approval process and minimize context switching. When a user places a device request via the storefront application, the system automatically sends a Slack notification to the user’s manager. This helps ensure prompt approvals or rejections without requiring the manager to log into a separate system.
+
+By keeping managers engaged through Slack, where they are already active, we reduce turnaround time and enhance the user experience. Once the manager responds, the status is updated, and the final decision is submitted to Remedy for tracking and auditing. This integration ultimately improves operational efficiency, speeds up device provisioning, and enables a seamless experience for Geico associates.
