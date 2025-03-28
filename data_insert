@@ -17,3 +17,35 @@ LEFT JOIN
     slack_response s ON r.request_reference = s.request_reference
 LEFT JOIN 
     eventstore e ON r.request_reference = e.request_reference;
+
+
+
+SELECT 
+    r.request_reference,
+    r.first_name,
+    r.last_name,
+    r.recipient_email,
+    r.requester_email,
+    r.phone_number,
+    r.request_time_local,
+    r.action_email_status,
+    r.confirmation_email_status,
+    r.replaced_item_id,
+    r.replaced_item_code,
+    r.managers_email,
+    d.device_name,
+    d.device_model,
+    d.device_type,
+    d.device_os,
+    s.notification_sent_time,
+    s.status,
+    s.user_clicked_time,
+    e.response
+FROM 
+    requests r
+LEFT JOIN 
+    devices d ON r.device_id = d.device_id
+LEFT JOIN 
+    slack_response s ON r.request_reference = s.request_reference
+LEFT JOIN 
+    eventstore e ON r.request_reference = e.request_reference;
