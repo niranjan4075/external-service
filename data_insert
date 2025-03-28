@@ -2,28 +2,6 @@ SELECT
     r.request_reference,
     r.first_name,
     r.last_name,
-    r.device_id,
-    d.device_name,
-    d.device_model,
-    s.notification_sent_time,
-    e.event_type,
-    e.source_system,
-    e.response_status
-FROM 
-    requests r
-LEFT JOIN 
-    devices d ON r.device_id = d.device_id
-LEFT JOIN 
-    slack_response s ON r.request_reference = s.request_reference
-LEFT JOIN 
-    eventstore e ON r.request_reference = e.request_reference;
-
-
-
-SELECT 
-    r.request_reference,
-    r.first_name,
-    r.last_name,
     r.recipient_email,
     r.requester_email,
     r.phone_number,
@@ -33,6 +11,7 @@ SELECT
     r.replaced_item_id,
     r.replaced_item_code,
     r.managers_email,
+    r.request_type,
     d.device_name,
     d.device_model,
     d.device_type,
@@ -40,7 +19,7 @@ SELECT
     s.notification_sent_time,
     s.status,
     s.user_clicked_time,
-    e.response
+    e.response_status
 FROM 
     requests r
 LEFT JOIN 
