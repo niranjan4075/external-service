@@ -160,6 +160,16 @@ INSERT INTO INVENTORY (
 );
 
 
+CREATE TABLE email_audit (
+    id SERIAL PRIMARY KEY,
+    recipient_emails VARCHAR(255) NOT NULL,
+    subject VARCHAR(255),
+    email_payload JSONB,
+    status VARCHAR(50),
+    sent_at TIMESTAMP DEFAULT NOW(),
+    error_msg TEXT
+);
+
 
 
 
