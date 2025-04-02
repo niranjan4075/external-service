@@ -62,3 +62,12 @@ As a user, I want my approved or rejected request details to be sent to Remedy s
 ---
 
 These stories break the workflow into structured, manageable components while ensuring all key functionalities are covered. Let me know if you need any refinements! 🚀
+
+
+Story Points and Cross-Team Dependencies
+
+In this sprint, we had an infrastructure-related story initially estimated at 5 story points. While the actual development work on our end was minimal, a significant portion of our time and effort was spent coordinating with other teams. For example, we had to wait on tasks like namespace setup in Vault, new cluster creation, and related configurations.
+
+The challenge here is that although the developer’s hands-on work was limited, the overall time spent in follow-ups, dependency tracking, and communication wasn't reflected in the original story point estimate. This made our contribution seem smaller than the effort actually put in.
+
+Going forward, it might help if we adjust our estimation approach for stories with heavy external dependencies to better reflect the coordination and waiting time involved.
