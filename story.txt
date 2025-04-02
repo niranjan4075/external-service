@@ -84,3 +84,16 @@ Definitely! Here’s the improved version with a thoughtful suggestion on how to
 ---
 
 Let me know if you want to tailor this more toward your team’s style or practices!
+
+
+
+Absolutely — here’s a revised version that includes both points: improving estimation and handling leftover work even after justifying the original story points:
+
+---
+
+In this sprint, we had an infra-related story estimated at 5 story points. While dev work was minimal, most of the time was spent coordinating with other teams for tasks like Vault namespace setup and cluster creation. That effort wasn’t reflected well in the estimate.  
+We need to work on improving our estimation for such stories by accounting for coordination time and dependency risks. And if we’ve justified the 5 story points but work is still pending, we should consider splitting it or creating a follow-up ticket to capture the remaining effort.
+
+---
+
+Let me know if you'd like this adapted for a slide, doc, or to sound more casual for a team chat.
