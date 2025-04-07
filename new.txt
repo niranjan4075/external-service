@@ -24,3 +24,35 @@ This story covers the implementation of the "Select Device to Replace" page in t
 ---
 
 Let me know if you need a breakdown into subtasks or a specific format for a sprint board!
+
+
+
+
+
+
+Here’s a complete **User Story** for the **Peripherals Selection Page** based on your image:
+
+---
+
+### **Story Title:**  
+**Select Peripherals – Hardware Storefront Flow**
+
+---
+
+### **Story Description:**  
+This story focuses on the implementation of the “Select Peripherals” page in the Hardware Storefront flow. After selecting the main device to replace, users are shown a set of optional peripheral accessories (e.g., headsets, keyboards, mouse) that they can add to the replacement request. The user can select one or more peripherals by clicking an “+ Add” button under each item. The layout is card-based, visually presenting each peripheral with an image, brand name, and short description. The UI must adhere to the Figma design guidelines and support multi-selection.
+
+---
+
+### **Acceptance Criteria:**
+
+1. The page must display the main and replacement device info at the top (e.g., “Device: XYZ Model 123” and “Replace: XYZ Model 123”).
+2. Peripherals should be listed in a grid of cards with image, brand name, model, and a short description.
+3. Each card must include an **“+ Add”** button that allows users to select that peripheral.
+4. Once selected, the button should toggle to **“Added”** or visually indicate that it’s selected.
+5. Users can select multiple peripherals, and the state must be retained as they navigate.
+6. “Go Back” should return to the previous page, and “Continue” should take the user to the next step while storing selections.
+
+---
+
+Let me know if you'd like this broken into subtasks or exported into Jira-friendly format!
