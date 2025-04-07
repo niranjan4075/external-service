@@ -56,3 +56,84 @@ This story focuses on the implementation of the “Select Peripherals” page in
 ---
 
 Let me know if you'd like this broken into subtasks or exported into Jira-friendly format!
+
+
+
+Absolutely! Here's a detailed version of the user story that includes everything — title, full context, technical detail, description, and clearly defined acceptance criteria. This is suitable for documentation or Jira:
+
+---
+
+### **User Story: Extract and Store Work Order ID from API Response Header**
+
+---
+
+**Story ID:** `API-WO-001`  
+**Title:** Extract and Persist WorkOrder_ID from API Response Header
+
+**Story Points:** 5  
+**Priority:** High  
+**Type:** Backend/API Integration
+
+---
+
+### **Description:**
+
+When a new hardware request is submitted via the **POST** request to the `WorkOrderInterface_Create` endpoint, the system responds with a `201 Created` status. The response includes a `Location` header which contains a URL referencing the created work order. This URL includes a **WorkOrder_ID** (e.g., `W000002506766`) that uniquely identifies the transaction.
+
+This user story aims to:
+- Automatically extract the **WorkOrder_ID** from the `Location` header
+- Store the **WorkOrder_ID** for logging, tracking, or UI display
+- Handle edge cases like missing headers or malformed URLs gracefully
+
+This is a crucial part of the order creation process and ensures that all work orders are traceable end-to-end.
+
+---
+
+### **Technical Context:**
+
+- **API Endpoint:** `POST /api/arsys/v1/entry/Wot/WorkOrderInterface_Create`
+- **Expected Response Code:** `201 Created`
+- **Response Header:** `Location: https://{domain}/.../WorkOrderInterface_Create/W000002506766`
+- **Data to Extract:** Last segment of the Location URL → `WorkOrder_ID`
+
+---
+
+### **Acceptance Criteria:**
+
+1. **Successful Response Handling:**
+   - After sending the POST request to `WorkOrderInterface_Create`, the backend must confirm a `201 Created` response before proceeding.
+
+2. **Location Header Parsing:**
+   - The application must extract the `Location` header from the response.
+   - The `WorkOrder_ID` should be parsed from the final segment of the URL.
+
+3. **Storage of WorkOrder_ID:**
+   - The extracted `WorkOrder_ID` must be stored in the system:
+     - In memory/state if needed for the current session.
+     - In a persistent database/log for tracking, reporting, or auditing.
+
+4. **UI/UX Integration:**
+   - The captured `WorkOrder_ID` should be optionally passed to the frontend for display or navigation to a summary page (if applicable).
+
+5. **Error Handling:**
+   - If the `Location` header is missing or malformed:
+     - The system must log the error with a timestamp and correlation ID.
+     - A meaningful error should be returned or displayed to the user.
+
+6. **Audit Logging:**
+   - Every successful extraction and storage of a `WorkOrder_ID` should be logged with:
+     - Timestamp
+     - Requestor info (user/session ID)
+     - Full Location URL
+     - Extracted WorkOrder_ID
+
+---
+
+### **Dependencies:**
+- Backend integration with the Remedy or Work Order system.
+- API contract that consistently returns the WorkOrder_ID in the `Location` header.
+- Logging system or database to persist the ID.
+
+---
+
+Let me know if you’d like to break this into subtasks for frontend/backend teams or connect it with a follow-up story for order confirmation display.
