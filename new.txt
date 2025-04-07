@@ -1,0 +1,26 @@
+Sure! Here's the full **User Story** with **Title**, **Description**, and exactly **6 Acceptance Criteria** — ready for Jira or documentation:
+
+---
+
+### **Story Title:**  
+**Select Device to Replace – Hardware Storefront Flow**
+
+---
+
+### **Story Description:**  
+This story covers the implementation of the "Select Device to Replace" page in the Hardware Storefront flow. Users will see their current device and the device it will be replaced with. A dropdown will allow users to select the device from their existing inventory. Once selected, the device appears as a removable tag, and users can proceed by clicking “Continue.” The UI must follow the provided Figma design, and behavior should be intuitive and responsive across devices.
+
+---
+
+### **Acceptance Criteria:**
+
+1. The page must display both the current device and the replacement device information (e.g., "Device: XYZ Model 123" and "Replace: XYZ Model 123").
+2. A dropdown should be available for users to select a device from their existing inventory.
+3. When a device is selected, it should appear as a tag with a close (X) icon to remove the selection.
+4. The "Continue" button must be disabled by default and only enabled once a device is selected.
+5. The "Go Back" button must return the user to the previous screen without saving selections.
+6. The layout, styles, spacing, and elements must exactly match the Figma design specifications.
+
+---
+
+Let me know if you need a breakdown into subtasks or a specific format for a sprint board!
