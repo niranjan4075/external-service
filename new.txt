@@ -137,3 +137,14 @@ This is a crucial part of the order creation process and ensures that all work o
 ---
 
 Let me know if you’d like to break this into subtasks for frontend/backend teams or connect it with a follow-up story for order confirmation display.
+
+
+Got it! Here’s a simple, user-friendly tooltip message you can use:
+
+**Tooltip Text:**
+
+*“To find your device's serial number:  
+- On Windows: Open Command Prompt and type `wmic bios get serialnumber`  
+- On Mac: Open Terminal and type `system_profiler SPHardwareDataType | grep Serial`”*
+
+Let me know if you want it shorter or tailored for UI constraints!
