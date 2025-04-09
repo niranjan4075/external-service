@@ -148,3 +148,7 @@ Got it! Here’s a simple, user-friendly tooltip message you can use:
 - On Mac: Open Terminal and type `system_profiler SPHardwareDataType | grep Serial`”*
 
 Let me know if you want it shorter or tailored for UI constraints!
+
+
+Windows: Go to Settings > System > About to find your serial number.
+Mac: Click Apple menu > About This Mac.
