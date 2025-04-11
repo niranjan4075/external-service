@@ -152,3 +152,34 @@ Let me know if you want it shorter or tailored for UI constraints!
 
 Windows: Go to Settings > System > About to find your serial number.
 Mac: Click Apple menu > About This Mac.
+
+
+
+
+
+Here's a suggested update for the **Description** and **Acceptance Criteria** based on your input:
+
+---
+
+**Description**  
+Update the existing Peripherals API to fetch additional details beyond just the peripheral type. The extended details should include relevant metadata such as model, brand, and image information.  
+Develop an update script that performs the following:
+- Converts peripheral images into byte format.
+- Inserts the image byte data into the appropriate column of the `peripherals` table in the database.
+
+Additionally, create a new API endpoint that allows retrieval of image data from the `peripherals` table.
+
+---
+
+**Acceptance Criteria**  
+- [ ] Existing Peripherals API is updated to return extended peripheral information (e.g., model, brand, and image).
+- [ ] A database update script is created to:
+  - Convert existing peripheral images to byte format.
+  - Insert image byte data into the peripherals table.
+- [ ] A new API endpoint is developed to fetch peripheral images from the database.
+- [ ] The new and updated APIs are tested and verified to return correct and complete data.
+- [ ] All changes are documented and version-controlled.
+
+---
+
+Let me know if you want to add field names, table structure, or response format details too.
