@@ -37,3 +37,29 @@ SET
     WHEN 45 THEN 'Wireless Mouse + Keyboard'
   END
 WHERE peripheral_id IN (33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48);
+
+
+
+
+INSERT INTO peripherals (
+    peripheral_id,
+    peripheral_type,
+    peripheral_name,
+    type_assignements,
+    for_mac,
+    is_current_standard,
+    peripheral_image,
+    brand,
+    description
+) VALUES (
+    49, -- choose next available ID
+    'Mouse',
+    'Apple Magic Mouse Black',
+    'Performance,Executive',
+    true,
+    true,
+    NULL, -- or actual bytea image if available
+    'Apple',
+    'Wireless Mouse'
+);
+
