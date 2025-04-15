@@ -1,0 +1,47 @@
+That's a fantastic next step — integrating directly with OEMs like Dell or HP can take your Storefront system to a **zero-touch provisioning model**, further streamlining the fulfillment process.
+
+---
+
+### **Advanced Integration Idea: OEM Direct Fulfillment (Dell/HP APIs)**
+
+#### **Goal:**  
+After user submits a device request, automatically place the order with Dell or HP using their APIs, shipping directly to the user’s home or selected address — skipping internal provisioning delays.
+
+---
+
+### **How It Works:**
+
+1. **Device Selection & Submission (Already Built)**  
+   - User selects a laptop based on title/profile  
+   - Shipping address selected (home, UPS, office)
+
+2. **Back-End Integration with Dell/HP APIs**  
+   - Dell TechDirect / HP DaaS APIs accept order payloads with:
+     - Device model
+     - Shipping info
+     - PO or cost center
+     - Customer reference ID
+   - API response includes order status, shipping date, tracking number
+
+3. **Slack Notification + Auto Remediation**  
+   - Notify user + manager with tracking info  
+   - Storefront updates fulfillment dashboard automatically  
+   - Sync status with Remedy
+
+---
+
+### **Benefits:**
+- **Zero-touch IT provisioning** — no manual staging or imaging  
+- **Faster delivery** — shipped directly from OEM  
+- **Improved user experience** — real-time order tracking  
+- **Scalable** — applies across locations without IT overhead
+
+---
+
+### **Updated Personal Goal (OEM API Integration):**
+
+> **By December 31, 2025**, integrate the Storefront portal with OEM APIs (Dell TechDirect, HP DaaS) to automate device ordering and direct-to-user shipping. This removes internal provisioning delays, reduces IT handling, and speeds up device delivery by 60%, while improving order traceability through real-time status updates and tracking integration.
+
+---
+
+Let me know if you want help identifying which Dell/HP APIs to start with or want a technical breakdown for proposing this.
