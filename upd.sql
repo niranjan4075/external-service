@@ -62,4 +62,49 @@ INSERT INTO peripherals (
     'Apple',
     'Wireless Mouse'
 );
+-- Insert Apple Magic Keyboard White
+INSERT INTO peripherals (
+    peripheral_id,
+    peripheral_type,
+    peripheral_name,
+    type_assignements,
+    for_mac,
+    is_current_standard,
+    peripheral_image,
+    brand,
+    description
+) VALUES (
+    50,
+    'Keyboard',
+    'Apple Magic Keyboard White',
+    'Performance,Executive',
+    true,
+    true,
+    NULL,
+    'Apple',
+    'Wireless Keyboard'
+);
+
+-- Insert Apple Magic Trackpad White
+INSERT INTO peripherals (
+    peripheral_id,
+    peripheral_type,
+    peripheral_name,
+    type_assignements,
+    for_mac,
+    is_current_standard,
+    peripheral_image,
+    brand,
+    description
+) VALUES (
+    51,
+    'Magic Trackpad',
+    'Apple Magic Trackpad White',
+    'Performance,Executive',
+    true,
+    true,
+    NULL,
+    'Apple',
+    'Wireless Trackpad'
+);
 
