@@ -1,0 +1,50 @@
+Great idea! Integrating **Workday** into your **Storefront project** can significantly enhance the accuracy, personalization, and automation of your provisioning workflow. Here's how to explain it clearly, followed by a **goal snippet** you can use for planning or performance tracking.
+
+---
+
+## 🔗 Integration with Workday for Real-Time User Data
+
+### 🧠 **What It Does:**
+By integrating Workday, the Storefront can **access accurate, real-time employee information** such as:
+- Job title, department, hire date
+- Employment status (active, terminated, on leave)
+- Manager hierarchy
+- Work location and region
+- New hire vs. backfill identification
+
+This eliminates the need for manual syncs or static HR exports.
+
+---
+
+### 🛠️ **Why It Matters:**
+1. **Better Device Matching:**
+   - Ensure role-appropriate devices and peripherals are offered using up-to-date job roles.
+
+2. **New Hire Automation:**
+   - Automatically trigger device recommendations or pre-approvals for new hires on Day 1.
+
+3. **Approval Routing Accuracy:**
+   - Always route requests to the correct manager using live Workday hierarchy.
+
+4. **Access Control:**
+   - Prevent device requests from inactive or offboarded employees.
+
+5. **Region-Based Catalog Display:**
+   - Tailor offerings (SKUs, peripherals, vendors) by location or region fetched from Workday.
+
+---
+
+## 🎯 Goal Snippet for Workday Integration
+
+> **Goal:**  
+By **Q4 2025**, integrate the Storefront system with **Workday’s employee data APIs** to enable real-time access to user role, department, location, and manager information. This will enable dynamic device recommendations, accurate approval routing, and enhanced automation for new hire provisioning.
+
+> **Success Metrics:**
+- 100% of device requests use **live manager routing** from Workday.
+- Automatically detect and tag **new hires** for prioritized provisioning.
+- Reduce provisioning errors due to outdated or mismatched user data by **90%**.
+- Improve request processing SLAs by **20%**, especially during onboarding periods.
+
+---
+
+Would you like a technical architecture suggestion for how to securely sync or cache Workday data with Storefront backend (e.g., via webhook or polling service)?
