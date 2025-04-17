@@ -80,3 +80,12 @@ This system will:
 ---
 
 Would you like a roadmap slide or diagram that visually breaks this down for stakeholder presentation?
+
+
+curl -X POST https://login.microsoftonline.com/<TENANT_ID>/oauth2/v2.0/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "client_id=<CLIENT_ID>" \
+  -d "scope=https://graph.microsoft.com/.default" \
+  -d "client_secret=<CLIENT_SECRET>" \
+  -d "grant_type=client_credentials"
+
