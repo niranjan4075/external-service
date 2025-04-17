@@ -20,6 +20,11 @@ This feature will aim to reduce physical device requests by 15% for short-term o
 
 Smart triage helps reduce unnecessary hardware provisioning, cuts costs, and supports sustainable IT operations. It adds a layer of intelligence that aligns provisioning with actual user needs. This feature will be developed and fully delivered by the end of Q4 2025, with impact monitoring continuing into early Q1 2026.
 
+SMART Goal 1: Complete Machine Learning Training Focused on Workflow Automation (Q2)
+The goal is to complete a structured training program in machine learning with a focus on real-world applications in workflow automation. This training will cover key concepts such as supervised learning, classification models, decision trees, and model evaluation — with an emphasis on applying these techniques to internal approval systems like Storefront. The training will also explore how to prepare datasets, define relevant features, and measure the accuracy and fairness of predictive models.
+
+The objective is to build a foundational understanding of how ML can be responsibly used to automate business logic, reduce manual intervention, and improve decision-making. This training will be completed by the end of Q2 2025, and a summary of key takeaways will be documented and shared with the team. This will ensure readiness to lead the next phase of implementation with confidence and technical clarity.
+
 ---
 
 Let me know if you want a concise version for Workday or an extended version for a project tracker or status report!
