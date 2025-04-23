@@ -186,3 +186,9 @@ The system is currently undergoing the **Production Readiness Review (PRR)** pro
 ---
 
 Let me know when you're ready for Question 19 or want to summarize everything in a doc.
+
+
+Question 18 – List where access keys or certificate-based authentication are used:
+Slack API access tokens (bot token and app-level token) are securely stored and retrieved from GEICO’s GSP Secret Vault. These tokens are used to authenticate and authorize all Slack-related API calls (e.g., sending messages, reading user profiles).
+
+No certificate-based authentication is currently used in this integration.
