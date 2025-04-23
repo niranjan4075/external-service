@@ -192,3 +192,22 @@ Question 18 – List where access keys or certificate-based authentication are u
 Slack API access tokens (bot token and app-level token) are securely stored and retrieved from GEICO’s GSP Secret Vault. These tokens are used to authenticate and authorize all Slack-related API calls (e.g., sending messages, reading user profiles).
 
 No certificate-based authentication is currently used in this integration.
+
+
+For **Question 23 – "Can you provide information for the Design Review?"**, since your project has already submitted the required design documents and the PRR process is underway, your response should reflect that clearly.
+
+Here’s a well-phrased response you can use:
+
+---
+
+### **Question 23 – Can you provide information for the Design Review?**
+
+Yes. The design documentation has been submitted as part of the Production Readiness Review (PRR) process. It includes architecture diagrams, Slack integration flow, service dependencies, data protection measures, and OAuth scope justification. The design is aligned with GEICO’s security and architectural standards, and the Cyber Design Review is in progress for elevated Slack scopes.
+
+You can access the submitted document at:  
+[Design Document Link]  
+*(Replace with the actual SharePoint link if needed.)*
+
+---
+
+Let me know if you’d like help reviewing or summarizing the design doc for a Cyber intake meeting too.
