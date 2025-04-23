@@ -50,6 +50,23 @@ This integration creates a seamless, real-time approval workflow across Slack an
 
 ---
 
+
+Absolutely — here’s a strong and concise **Business Justification** tailored for **Question 6**, focused on the value of Slack integration and real-time updates:
+
+---
+
+### **Question 6 – Business Justification:**
+
+The Slack integration enables a real-time, interactive approval process that significantly reduces manual overhead and accelerates device fulfillment. By notifying managers instantly via Slack and capturing their response with a single click, the approval cycle is shortened from days to minutes.
+
+This integration also improves transparency and accountability by logging every action taken. Combined with WebSocket-based real-time updates on the storefront UI, it provides users with immediate visibility into the status of their request.
+
+Automating the approval flow and linking it directly to Remedy for work order generation eliminates the need for manual follow-ups, minimizes processing delays, and ensures data consistency across systems. Overall, this streamlines the provisioning process, enhances user satisfaction, and supports scalable, audit-friendly IT operations.
+
+---
+
+Let me know if you want a version that emphasizes cost savings or compliance impact more strongly.
+
 Let me know if you'd like a shorter version for a summary field or a version that’s more technical.
 
 ---
