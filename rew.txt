@@ -7,3 +7,14 @@ Here’s your message refined into 3 clear and concise points:
 3. **Need for Better Estimation Process:** It would help to have a dedicated work session to align on full-scope feature estimation upfront—covering both frontend and backend work more accurately.
 
 Let me know if you’d like to mention any next steps or suggestions.
+
+
+Got it — here’s your reply broken down into 3 clear points:
+
+1. **Environment Setup Delays:** Setting up the UT environment involved multiple steps like namespace creation, pipeline setup, and path capacity issues. These were restricted initially and caused delays.
+
+2. **UI Work vs Backend Gaps:** During estimation, we focused mainly on UI, but backend gaps (like missing images in the peripherals API) were only discovered later, adding unplanned work.
+
+3. **Shifted Focus to UAT:** After the UI demo last week, I prioritized UAT. I resolved blockers like image handling, environment differences, and port issues to get it ready for the next phase.
+
+Let me know if you want to reword or adjust the tone.
