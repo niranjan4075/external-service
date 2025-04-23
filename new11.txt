@@ -138,3 +138,30 @@ Yes. The following data protection requirements are addressed:
 ---
 
 Let me know if you'd like to add a specific mention of your database (e.g., PostgreSQL) or if you want this framed from a security review perspective.
+
+
+Here are professional and accurate responses for **Questions 15 and 16**, with **Question 15 focused only on Slack** as requested:
+
+---
+
+### **Question 15 – Are there any integrations/dependencies?**
+
+Yes. This application integrates with **Slack** as its primary communication platform for approval workflows. It depends on Slack's APIs to send interactive messages to managers and receive their responses via buttons (e.g., Approve/Reject). The integration requires specific OAuth scopes such as `chat:write`, `im:write`, and `users:read.email` to enable real-time communication and identity resolution.
+
+Slack serves as a critical dependency to facilitate real-time, secure, and auditable decision-making within the approval flow.
+
+---
+
+### **Question 16 – What service accounts does your application require, and what level of access do they need?**
+
+The application uses a **Slack bot service account** registered under the GEICO Slack workspace. This bot requires the following access levels:
+
+- **Send messages** to users and channels (`chat:write`, `chat:write.public`)
+- **Initiate and manage direct messages** (`im:write`)
+- **Read user and team information** to map identities and route notifications (`users:read`, `users:read.email`, `team:read`)
+
+No elevated permissions outside the defined OAuth scopes are required. The bot operates with least-privilege principles, only using the scopes necessary to fulfill the interactive approval workflow.
+
+---
+
+Let me know if you need to mention any internal vaults or backend environments these services run from.
