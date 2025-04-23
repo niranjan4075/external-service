@@ -71,3 +71,25 @@ Let me know if you'd like a shorter version for a summary field or a version tha
 
 ---
 
+Yes — based on the Slack message and elevated permission scopes listed in your screenshot, **Question 10** is asking if there are **any security or compliance regulations** that apply to your integration — and the answer should clearly **acknowledge the Cyber review process and the elevated scopes**.
+
+Here’s how you should answer **Question 10** clearly and thoroughly:
+
+---
+
+### **Question 10 – Are there any security or compliance regulations that must be followed?**
+
+Yes. The Slack integration includes elevated permission scopes such as `im:write`, `chat:write.public`, and `im:read`, which require approval from GEICO Cybersecurity due to their ability to send and read messages on behalf of users. These scopes are classified as **elevated**, and as such, a **Cyber Intake Process** and **Design Review** are mandatory prior to production deployment.
+
+The application must also adhere to internal security practices, including:
+- Ensuring least-privilege access to Slack API scopes
+- Documenting scope justification in the Slack Integration Template
+- Submitting for formal Cyber approval before enabling elevated scopes
+- Aligning with GEICO’s data classification and compliance policies (Company Internal)
+- Following Slack App Approval Automation process as outlined in internal documentation
+
+We are currently in the process of completing the Cyber review and have submitted the Slack-Integration Template as required.
+
+---
+
+Let me know if you need help writing a response for **Question 12** (vault storage) next.
