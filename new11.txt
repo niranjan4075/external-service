@@ -115,4 +115,26 @@ This integration enhances operational efficiency by providing a secure, real-tim
 
 ---
 
-Let me know if you'd like this tailored for submission to Cyber or included in a deck or documentation.
+
+Here are appropriate and clear responses for **Questions 13 and 14**, based on GEICO standards and your Slack integration use case:
+
+---
+
+### **Question 13 – How is sensitive data protected in transit and at rest?**
+
+All sensitive data transmitted between the frontend, backend, and Slack APIs is protected using HTTPS with TLS encryption, ensuring data confidentiality and integrity in transit. At rest, any stored request metadata and Slack interaction records are encrypted using GEICO-approved storage solutions with encryption-at-rest enabled by default. Access to this data is restricted to authorized services and users only.
+
+---
+
+### **Question 14 – Are there any specific data protection requirements (e.g., encryption, access controls) that need to be addressed?**
+
+Yes. The following data protection requirements are addressed:
+- **Encryption in transit:** All communication with Slack APIs and internal services occurs over HTTPS/TLS.
+- **Encryption at rest:** Application and audit data is stored in secure, encrypted databases.
+- **Access controls:** Only authenticated services with proper role-based access can interact with sensitive endpoints or retrieve request metadata.
+- **Secrets management:** All Slack tokens, API keys, and environment secrets are stored in a GEICO-supported vault.
+- **Least privilege:** OAuth scopes and permissions are limited to only those necessary for Slack interaction.
+
+---
+
+Let me know if you'd like to add a specific mention of your database (e.g., PostgreSQL) or if you want this framed from a security review perspective.
