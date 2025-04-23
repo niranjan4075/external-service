@@ -1,1 +1,9 @@
+Here’s your message refined into 3 clear and concise points:
 
+1. **Incomplete Feature Estimation:** When redesigning the UI for the peripherals page, we initially estimated story points only for UI work. At the time, the backend was only returning names based on roles, and we didn’t account for missing images or APIs.
+
+2. **Unexpected Backend Gaps:** There was no existing API or image data in the database, so we had to handle backend integration and data population within the same sprint, which led to overload for the developer.
+
+3. **Need for Better Estimation Process:** It would help to have a dedicated work session to align on full-scope feature estimation upfront—covering both frontend and backend work more accurately.
+
+Let me know if you’d like to mention any next steps or suggestions.
