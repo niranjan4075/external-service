@@ -93,3 +93,26 @@ We are currently in the process of completing the Cyber review and have submitte
 ---
 
 Let me know if you need help writing a response for **Question 12** (vault storage) next.
+
+Got it — here’s the revised version of **Question 9 – Use Case and Functionality** with all **Remedy references removed**, while keeping the focus on the Slack integration and real-time updates:
+
+---
+
+### **Question 9 – Describe the use case and functionality. Include references to any existing documentation that supports it:**
+
+The Slack integration is part of the Virtual Storefront application designed to automate the device request and approval workflow within GEICO. When a user submits a request for a device, the system sends an interactive Slack notification to the user’s manager. This message includes **Approve** and **Reject** buttons, allowing the manager to respond directly within Slack.
+
+Once a decision is made, it is securely captured by the backend and reflected in real time on the user's storefront interface using **WebSocket** connections, eliminating the need for page refreshes or manual status checks.
+
+The integration leverages Slack OAuth scopes such as `chat:write`, `users:read`, and elevated permissions including `im:write`, `chat:write.public`, and `im:read`, which enable the system to communicate directly with users and managers. These permissions ensure timely notifications, smooth user interactions, and a seamless approval experience.
+
+**Supporting Documentation:**
+- Slack Integration Template – *Slack-Integration Template (Questionnaire for Requestor)*
+- Cyber Design Review Requirements – *GEICO Central Cyber Intake Process*
+- Internal Slack Channel – *Slack App Approval Automation thread*
+
+This integration enhances operational efficiency by providing a secure, real-time communication channel for approvals, reducing delays and manual coordination while maintaining full audit visibility.
+
+---
+
+Let me know if you'd like this tailored for submission to Cyber or included in a deck or documentation.
