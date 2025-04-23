@@ -19,5 +19,38 @@ The Slack app is configured with the following OAuth scopes to support its funct
 
 This integration ensures timely manager decision-making, minimizes delays, and provides traceability. All manager responses (Approve/Reject) are securely logged and forwarded to the Remedy platform for ticket generation and downstream fulfillment. This Slack-based workflow is being reviewed for its functionality, data flow, scope usage, and compliance with enterprise security standards.
 
+
+
+Got it — here’s the revised **Question 5 – Description** with **TLS** and **ARC group** details removed, and keeping the focus on Slack integration and WebSocket usage:
+
+---
+
+### **Question 5 – Description (Final Version with WebSocket):**
+
+The Slack integration is a key component of our device provisioning storefront, designed to automate and simplify the manager approval workflow.
+
+When a user submits a device request, the system sends an interactive Slack bot message to the user’s manager, which includes the request details along with **Approve** and **Reject** buttons. Once the manager responds, the action is logged, and if approved, a corresponding work order is automatically created in **Remedy**, GEICO’s internal IT service management platform.
+
+The application also uses **WebSocket connections** to provide real-time updates to the user interface. As soon as the manager takes action in Slack, the requester sees the updated status reflected instantly in the storefront without needing to refresh the page.
+
+The Slack app is configured with the following OAuth scopes to support these features:
+
+- `app_mentions:read` – Detects mentions of the app to trigger contextual actions or responses.
+- `channels:read` – Provides access to public channel metadata for routing and visibility.
+- `chat:write` – Sends interactive messages, status updates, and confirmations.
+- `chat:write.public` – Enables posting to public channels where the app isn’t a member.
+- `commands` – Supports slash commands for testing or admin-initiated workflows.
+- `im:read` – Allows reading metadata about direct messages with users.
+- `im:write` – Enables sending direct messages to managers or users.
+- `team:read` – Accesses basic workspace metadata for internal use.
+- `users:read` – Retrieves user profiles to identify and match users and approvers.
+- `users:read.email` – Maps Slack users to corporate identities via email address.
+
+This integration creates a seamless, real-time approval workflow across Slack and Remedy, reducing manual steps and increasing efficiency for both requestors and managers.
+
+---
+
+Let me know if you'd like a shorter version for a summary field or a version that’s more technical.
+
 ---
 
