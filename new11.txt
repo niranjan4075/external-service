@@ -165,3 +165,24 @@ No elevated permissions outside the defined OAuth scopes are required. The bot o
 ---
 
 Let me know if you need to mention any internal vaults or backend environments these services run from.
+
+
+
+Thanks for clarifying! Since the **WebSocket** is only used internally to capture Slack interaction responses and store them in the DB (rather than for UI updates or push notifications), we can simplify and reframe that part accordingly.
+
+Here’s the **refined answer** for **Question 17**:
+
+---
+
+### **Question 17 – List each major component involved in your application/system (provide its service name):**
+
+- `storefront-external-service` – Main backend service that manages device request submissions and coordinates Slack interactions  
+- `slack-approval-bot` – Sends interactive Slack messages to managers and handles approval/rejection actions  
+- `websocket-listener` – Captures interactive responses from Slack and persists them in the database for tracking and auditing  
+- `gsp-secret-vault` – Stores Slack tokens and application secrets securely, retrieved at runtime for API authentication
+
+The system is currently undergoing the **Production Readiness Review (PRR)** process in accordance with GEICO’s production deployment standards.
+
+---
+
+Let me know when you're ready for Question 19 or want to summarize everything in a doc.
