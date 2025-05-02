@@ -1,0 +1,12 @@
+Sure, here are all the responses combined for easy copying:
+
+---
+
+**Storefront External Service:**
+Storefront External Service is a backend microservice that facilitates device request processing and workflow integration across enterprise systems. It acts as a bridge between internal tools like Slack, Remedy, and Microsoft APIs, enabling seamless communication, approval tracking, and request management. Designed with FastAPI and PostgreSQL, it ensures secure, scalable, and efficient handling of device provisioning logic. This service plays a key role in automating user interactions and streamlining operational processes.
+
+**Storefront Admin:**
+Storefront Admin is primarily used for querying and managing device and peripheral data within the Storefront system. It provides a user-friendly UI to search requests, view inventory, and update database records directly, such as adding new devices or peripherals. This tool simplifies administrative tasks and enhances visibility into the request workflow. It plays a crucial role in keeping the system data accurate and up to date.
+
+**Storefront Email Service:**
+Storefront Email Service is designed to send automated email notifications to both the inventory management team and end users. It alerts the inventory team about the number of devices set to expire in the upcoming days, helping them take timely action. Additionally, it notifies users about their expiring devices to ensure proactive replacements. This service ensures smooth communication and reduces delays in the device lifecycle.
