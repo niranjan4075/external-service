@@ -1,0 +1,107 @@
+Here's a refined and more structured version of your Git branching and merging guide with improved clarity, formatting, and added real-world scenarios:
+
+---
+
+### **Git Branching Strategy and Environment Flow**
+
+#### **Branching Overview:**
+
+* Each **user story/feature/bug fix** starts with a **feature branch** from the `dev` branch.
+* Environments:
+
+  * `dev` – Developer testing environment.
+  * `uat` – UAT/Staging/Pre-prod testing.
+  * `main` or `prod` – Production.
+
+#### **Standard Merge Flow:**
+
+`feature/branch` → `dev` → `uat` → `main` (prod)
+
+This ensures controlled, stable, and traceable deployments. Avoids multiple uncontrolled branches and minimizes deployment conflicts.
+
+---
+
+### **Production Merge Guidelines:**
+
+1. **Standard Merge:**
+
+   * Once UAT testing is complete and signed off, merge `uat` into `main` as a standard deployment process.
+
+2. **Hotfix Scenario:**
+
+   * If a hotfix is made during or post-prod deployment:
+
+     * Apply the fix directly on `main`.
+     * Back-merge the hotfix into `uat` and `dev` to maintain consistency across all environments.
+     * Example: `main` → `uat` → `dev`
+
+---
+
+### **UAT Guidelines:**
+
+1. Merge from `dev` → `uat` only after dev testing is complete and pod is stable.
+2. Developers must **verify at least once in UAT** post-deployment:
+
+   * Ensure the pod is healthy.
+   * Check logs (e.g., Titan) for errors or issues.
+   * Perform a basic sanity test.
+3. Notify QA/team that the feature is ready for UAT validation.
+4. If issues are found:
+
+   * Developer must be informed immediately to fix or roll back.
+   * Avoid re-deploying until the issue is addressed.
+5. **Never merge partially completed features** to `uat`.
+6. Multiple features can be batched for UAT testing, but all should be complete and stable.
+
+---
+
+### **DEV Guidelines:**
+
+1. All feature branches must be created from `dev`.
+2. Developers must **communicate branch creation and testing** to the team to prevent conflicts.
+3. Since it's a small team (3 devs), coordination should be manageable:
+
+   * Inform others before merging.
+   * Use PR reviews to track and approve changes.
+
+---
+
+### **Additional Git Handling Scenarios:**
+
+#### **Scenario 1: Feature Rollback in UAT**
+
+* If one feature causes issues in UAT:
+
+  * Revert that feature branch in `dev` and re-merge only the stable ones.
+  * Redeploy a clean UAT build.
+
+#### **Scenario 2: Partial Release**
+
+* Some features are UAT-approved while others are still in development:
+
+  * Create a **release branch** from UAT with only the approved commits.
+  * Merge this release branch into `main`.
+
+#### **Scenario 3: Conflict During Merge**
+
+* Resolve conflicts **in the lower environment first** (dev or uat).
+* Never allow unresolved conflicts to reach production.
+
+#### **Scenario 4: Emergency Hotfix in Prod**
+
+* Fix directly in `main`.
+* Immediately back-merge to `uat` and `dev`.
+
+---
+
+### **Best Practices:**
+
+* Always use PRs with reviewers for merge into `dev`, `uat`, and `main`.
+* Tag production releases with version numbers.
+* Keep commit messages meaningful.
+* Clean up merged branches to avoid clutter.
+* Use Git hooks or CI tools to enforce policies (e.g., prevent direct push to `main`).
+
+---
+
+Let me know if you'd like a flowchart or diagram to visually represent this branching strategy.
