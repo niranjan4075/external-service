@@ -50,3 +50,30 @@ Begin the Titan onboarding process by authorizing the API token, reviewing gener
 ---
 
 Would you like a follow-up story for steps 4 to 7 (application registration and telemetry capture)?
+
+
+Here’s a user story for **working with dashboards in Titan** based on the information in the image:
+
+---
+
+### **User Story Title:**
+
+Configure and Manage Dashboards in Titan
+
+### **Description:**
+
+To visualize metrics, logs, and traces effectively, onboarded teams must configure dashboards in Titan. Dashboards are located under each team's folder and provide read-only access by default. To gain edit access, team members must belong to an onboarded AD group. Dashboards support variables, composite views, and multi-datasource configurations targeting both production and non-production environments.
+
+### **Acceptance Criteria:**
+
+1. Team dashboards are accessible via the team folder in Titan (`https://titan.geicodd.net`).
+2. Dashboard edit access is granted only to members of onboarded AD groups.
+3. Users can create dashboards with variables and composite views for metrics, logs, and traces.
+4. Drilldowns and multi-datasource dashboards are configured for both prod and non-prod data.
+5. Dashboard best practices are followed using Titan’s reference and walkthrough guides.
+6. Alerts and URL variables are configurable as per Grafana standards.
+
+---
+
+Would you like a separate story just for setting up alert rules from dashboards?
+
