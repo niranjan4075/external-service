@@ -17,4 +17,14 @@ To streamline the device request process for high-priority personnel, the Slack 
 
 ---
 
-Would you like me to help write test cases for this story as well?
+Here’s a short and clear **description** for the user story titled **"Observing with Metrics Telemetry"**:
+
+---
+
+### **Description**
+
+Enable metrics telemetry collection by onboarding AKS clusters to Titan for health monitoring, application insights, and telemetry tracking. This allows visibility into workload performance using Titan dashboards and supports OTEL, Azure HTTP metrics, and blackbox exporters.
+
+---
+
+Would you like help summarizing the onboarding steps for AKS clusters or other sources too?
