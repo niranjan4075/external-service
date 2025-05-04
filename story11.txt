@@ -27,4 +27,26 @@ Enable metrics telemetry collection by onboarding AKS clusters to Titan for heal
 
 ---
 
-Would you like help summarizing the onboarding steps for AKS clusters or other sources too?
+Here’s a user story focused on completing **steps 1 to 3** of the Titan onboarding process:
+
+---
+
+### **User Story Title:**
+
+Initial Titan API Onboarding – Token Authorization and Team Registration
+
+### **Description:**
+
+Begin the Titan onboarding process by authorizing the API token, reviewing general API capabilities, and registering the application team and its corresponding AD group using the Titan API. This foundational setup enables the application to securely interact with Titan for telemetry onboarding.
+
+### **Acceptance Criteria:**
+
+1. Successfully authorize the API token using Titan's authentication flow.
+2. Review and validate general API calls for usability and connectivity.
+3. Register the application’s team and associated AD group using the `/api/teams` endpoint.
+4. Confirm team and AD group registration is reflected in Titan’s Swagger UI or dashboard.
+5. Errors or exceptions during token authorization or team registration are logged and handled appropriately.
+
+---
+
+Would you like a follow-up story for steps 4 to 7 (application registration and telemetry capture)?
