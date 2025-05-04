@@ -1,0 +1,20 @@
+
+---
+
+### **Description**
+
+To streamline the device request process for high-priority personnel, the Slack approval workflow will be bypassed for users identified as Executives or Executive Assistants. Instead, once a request is submitted, a work order will be created directly in Remedy without requiring manager approval through Slack.
+
+---
+
+### **Acceptance Criteria**
+
+1. If the requester is an Executive or Executive Assistant, the Slack approval workflow is skipped.
+2. A Remedy work order is created automatically after the request submission.
+3. Non-executive users continue to follow the existing Slack approval workflow.
+4. User role identification is based on a predefined list or directory group.
+5. Proper logging is maintained indicating the workflow path taken (skipped or standard).
+
+---
+
+Would you like me to help write test cases for this story as well?
