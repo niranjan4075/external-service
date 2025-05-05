@@ -1,0 +1,102 @@
+Absolutely — here are **advanced and in-depth Loki log queries** (LogQL) tailored to your `storefront-api-dv.*` pods over the **last 12 hours** in the `storefront-dv` namespace. These will help you monitor application health, debug errors, analyze traffic, and identify performance issues.
+
+---
+
+## 🔍 **LOGQL (Loki) Advanced Queries**
+
+### ✅ 1. **Top Error Messages (by frequency)**
+
+Group and count the most frequent error lines:
+
+```logql
+{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-dv", pod=~"storefront-api-dv.*"} |= "error"
+| json
+| line_format "{{ .msg }}"
+| unwrap msg
+| count_over_time({cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-dv", pod=~"storefront-api-dv.*"} |= "error"[12h])
+```
+
+---
+
+### 🚨 2. **HTTP 5xx Error Count by Pod**
+
+If your logs contain status codes, use regex to extract and filter:
+
+```logql
+{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-dv", pod=~"storefront-api-dv.*"} |~ "status[\":=] ?5\\d\\d"
+| count_over_time({namespace="storefront-dv", pod=~"storefront-api-dv.*"}[12h])
+```
+
+---
+
+### 📊 3. **Spike Detection: High Log Volume**
+
+Helps catch unexpected surges in log activity:
+
+```logql
+sum by (pod) (
+  rate({cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-dv", pod=~"storefront-api-dv.*"}[5m])
+)
+```
+
+> Combine with alerting to flag abnormal increases.
+
+---
+
+### 🧠 4. **Slow API Detection (Logs containing `response_time`)**
+
+Assuming your logs include `response_time` or `latency` fields:
+
+```logql
+{namespace="storefront-dv", pod=~"storefront-api-dv.*"} |~ "response_time[\":=]?[ ]?[5-9][0-9]{2,}" 
+```
+
+> This filters logs where response time is 500ms or more.
+
+---
+
+### 🧪 5. **Regex Pattern Matching: Login Failures**
+
+Example for authentication failure detection:
+
+```logql
+{namespace="storefront-dv", pod=~"storefront-api-dv.*"} |~ "login failed|authentication error|unauthorized"
+```
+
+---
+
+### 🔄 6. **Track Deployments / Restarts**
+
+Filter logs with known patterns like “Starting app”, “Server started”, etc.:
+
+```logql
+{namespace="storefront-dv", pod=~"storefront-api-dv.*"} |= "Starting" or |= "Restarting"
+```
+
+---
+
+### 🕵️‍♂️ 7. **Trace Requests by Request ID (for debugging)**
+
+Assuming your logs include a `request_id` field:
+
+```logql
+{namespace="storefront-dv", pod=~"storefront-api-dv.*"} |= "request_id=abc123"
+```
+
+You can use this to trace a full journey of a specific request.
+
+---
+
+## 📈 Visualization Tips (Grafana):
+
+* Use **`count_over_time(...)`** with **`group by (pod)`** to see which pods are noisier.
+* Use **heatmaps** or **time series graphs** for log volume and rate-based queries.
+* Create **alerts** when:
+
+  * error count crosses threshold
+  * log rate spikes suddenly
+  * slow response logs increase
+
+---
+
+Would you like help converting your actual log format (if it's JSON or structured) into parsed fields for better filtering and alerting?
