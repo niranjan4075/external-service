@@ -1,0 +1,53 @@
+Absolutely. If you're using **Promtail + Loki (Grafana Loki)** for logs, you can write **LogQL** queries to analyze logs from your `storefront-api-dv.*` pods over the **last 12 hours**.
+
+---
+
+### **1. Basic Log Stream (last 12 hours):**
+
+```logql
+{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-dv", pod=~"storefront-api-dv.*"}
+```
+
+Then set **Time Range** in Grafana to “Last 12 hours”.
+
+---
+
+### **2. Filter Logs Containing a Keyword (e.g., "error"):**
+
+```logql
+{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-dv", pod=~"storefront-api-dv.*"} |= "error"
+```
+
+---
+
+### **3. Count Number of Error Logs Over Time:**
+
+```logql
+count_over_time(
+  {cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-dv", pod=~"storefront-api-dv.*"} |= "error"[12h]
+)
+```
+
+---
+
+### **4. Rate of Log Lines (per minute):**
+
+```logql
+rate(
+  {cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-dv", pod=~"storefront-api-dv.*"}[12h]
+)
+```
+
+---
+
+### **5. Group Logs by Pod with Count:**
+
+```logql
+sum by (pod) (
+  count_over_time({cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-dv", pod=~"storefront-api-dv.*"}[12h])
+)
+```
+
+---
+
+Would you like to **filter by log level** (like `INFO`, `WARN`, `ERROR`) or extract fields from JSON-structured logs as well?
