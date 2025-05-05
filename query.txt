@@ -1,0 +1,9 @@
+sum by (pod) (
+  rate(container_cpu_usage_seconds_total{
+    cluster_name="azure-eastus-st-085-np-aks-001",
+    namespace="storefront-dv",
+    pod=~"storefront-api-dv.*",
+    container!="POD",
+    container!=""
+  }[5m])
+)
