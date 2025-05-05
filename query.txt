@@ -1,9 +1,106 @@
+Great — here's an **optimized set of PromQL queries** for key resource and performance metrics for your `storefront-api-dv.*` pods under the `storefront-dv` namespace and cluster `azure-eastus-st-085-np-aks-001`.
+
+---
+
+### **1. CPU Usage (cores per pod – smoothed 5m rate):**
+
+```promql
 sum by (pod) (
   rate(container_cpu_usage_seconds_total{
     cluster_name="azure-eastus-st-085-np-aks-001",
     namespace="storefront-dv",
     pod=~"storefront-api-dv.*",
-    container!="POD",
-    container!=""
+    container!="",
+    container!="POD"
   }[5m])
 )
+```
+
+---
+
+### **2. Memory Usage (current usage in MiB per pod):**
+
+```promql
+sum by (pod) (
+  container_memory_usage_bytes{
+    cluster_name="azure-eastus-st-085-np-aks-001",
+    namespace="storefront-dv",
+    pod=~"storefront-api-dv.*",
+    container!="",
+    container!="POD"
+  }
+) / 1024 / 1024
+```
+
+---
+
+### **3. Memory Requests vs Usage (%):**
+
+```promql
+sum by (pod) (
+  container_memory_usage_bytes{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-dv", pod=~"storefront-api-dv.*", container!="", container!="POD"}
+) 
+/
+sum by (pod) (
+  kube_pod_container_resource_requests_memory_bytes{cluster="azure-eastus-st-085-np-aks-001", namespace="storefront-dv", pod=~"storefront-api-dv.*", container!="", container!="POD"}
+)
+```
+
+---
+
+### **4. CPU Throttling (check for throttled time):**
+
+```promql
+rate(container_cpu_cfs_throttled_seconds_total{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-dv",
+  pod=~"storefront-api-dv.*",
+  container!="",
+  container!="POD"
+}[5m])
+```
+
+---
+
+### **5. Pod Restarts:**
+
+```promql
+sum by (pod) (
+  kube_pod_container_status_restarts_total{
+    cluster="azure-eastus-st-085-np-aks-001",
+    namespace="storefront-dv",
+    pod=~"storefront-api-dv.*"
+  }
+)
+```
+
+---
+
+### **6. HTTP Request Rate (if using Prometheus client in app):**
+
+```promql
+sum by (pod) (
+  rate(http_requests_total{
+    namespace="storefront-dv",
+    pod=~"storefront-api-dv.*"
+  }[5m])
+)
+```
+
+---
+
+### **7. HTTP Error Rate (e.g., 5xx):**
+
+```promql
+sum by (pod) (
+  rate(http_requests_total{
+    namespace="storefront-dv",
+    pod=~"storefront-api-dv.*",
+    status=~"5.."
+  }[5m])
+)
+```
+
+---
+
+Would you like these formatted as a Grafana dashboard JSON too?
