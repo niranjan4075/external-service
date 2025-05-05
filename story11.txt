@@ -73,7 +73,34 @@ To visualize metrics, logs, and traces effectively, onboarded teams must configu
 5. Dashboard best practices are followed using Titan’s reference and walkthrough guides.
 6. Alerts and URL variables are configurable as per Grafana standards.
 
+
+
+
 ---
 
-Would you like a separate story just for setting up alert rules from dashboards?
+Here’s a polished and complete version of the **User Story** based on your requirement:
+
+---
+
+### **User Story Title:**
+
+Log User Email for All UI-Initiated API Calls
+
+### **Description:**
+
+As part of the PRR process and for better traceability, we need to enhance all user interaction APIs to log the email address of the user making the API call. This will help in auditing actions triggered from the UI and improve observability of user behavior across the system.
+
+### **Acceptance Criteria:**
+
+1. All user interaction APIs that are triggered from the UI include logging of the user’s email address.
+2. The logger should print the user email in a structured and consistent format for each API call.
+3. Logging includes both successful and failed interactions for traceability.
+4. Logs are reviewed to ensure they do not expose any sensitive data other than user email.
+5. Email is captured from the authenticated user context/session/token.
+6. Log format aligns with system-wide logging standards for downstream processing and dashboards.
+
+---
+
+Let me know if you'd like to include a log example or specific format like JSON lines.
+
 
