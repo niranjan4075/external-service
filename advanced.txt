@@ -100,3 +100,62 @@ You can use this to trace a full journey of a specific request.
 ---
 
 Would you like help converting your actual log format (if it's JSON or structured) into parsed fields for better filtering and alerting?
+
+
+
+Thanks! From the image, the **error message** shows:
+
+> **Error parsing `namespace`: The query appears to be incorrect and could fail to be executed.**
+
+Here’s what’s likely wrong and how to **fix it**:
+
+---
+
+### **Problem in Your Query**
+
+You're using:
+
+```logql
+count_over_time({namespace="storefront-dv", pod=~"storefront-api-dv.*"}[12h])
+```
+
+But **you’re missing the required `cluster_name`** and probably the label `log` stream identifier like `container`, `job`, etc., used in your setup.
+
+---
+
+### ✅ **Corrected Version**
+
+```logql
+count_over_time(
+  {cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-dv", pod=~"storefront-api-dv.*"} |= "error" [12h]
+)
+```
+
+> Make sure the **labels (`cluster_name`, `namespace`, etc.) exactly match** those in your log lines. You can copy label names from the log line preview at the bottom of the page.
+
+---
+
+### Additional Useful Variants:
+
+#### 1. **Group by Pod (to see which pod is most error-prone)**
+
+```logql
+sum by (pod) (
+  count_over_time(
+    {cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-dv", pod=~"storefront-api-dv.*"} |= "error" [12h]
+  )
+)
+```
+
+#### 2. **Filter Specific Error Level (if labeled as `detected_level`)**
+
+```logql
+count_over_time(
+  {cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-dv", pod=~"storefront-api-dv.*", detected_level="error"} [12h]
+)
+```
+
+---
+
+Let me know if your logs are in JSON format — I can also help you extract fields like `request_id`, `status_code`, or `response_time`.
+
