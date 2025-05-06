@@ -1,0 +1,76 @@
+Thanks! Based on your corrections, here's the **revised and accurate documentation** for your Slack workflow:
+
+---
+
+### **Slack Workflow Integration – Documentation**
+
+#### **Overview**
+
+This Slack workflow streamlines device request notifications and approval tracking. It sends formatted messages to designated Slack channels for visibility and sends actionable approval prompts directly to managers. All interactions are recorded for audit and traceability.
+
+---
+
+#### **1. Channel Notification Workflow**
+
+**Trigger:**
+
+* A new device request is submitted from the Storefront UI.
+
+**Flow:**
+
+1. Check if the requester is **not** an Executive or Executive Assistant.
+2. If eligible, post a message to the relevant **Slack channel** with:
+
+   * Requester’s name
+   * Device and request details
+   * Submission timestamp
+3. No action buttons are included in the channel post—this is for visibility only.
+4. Slack messages to the channel are **not tracked** for interaction.
+
+---
+
+#### **2. Manager Approval Workflow**
+
+**Trigger:**
+
+* Triggered on device request creation after fetching the requester's manager via Microsoft Graph API.
+
+**Flow:**
+
+1. Identify the **reporting manager**.
+2. Send a **Slack message** to the manager with **Approve** and **Reject** buttons.
+3. Upon interaction:
+
+   * The selected action is recorded in the `slack_response` table.
+   * We also capture the **timestamp** of user interaction.
+   * The request’s status is updated accordingly in the backend.
+4. Duplicate Slack notifications are prevented by checking for existing entries in `slack_response`.
+
+---
+
+#### **3. Traceability**
+
+* **Slack Response Table** stores:
+
+  * Slack Message Timestamp
+  * User Email
+  * Request ID
+  * Action Taken (Approve/Reject)
+  * Time of User Interaction
+
+This ensures accurate tracking of every request’s decision and response latency.
+
+---
+
+#### **4. Skipping Slack Workflow**
+
+Slack approval is **skipped** for:
+
+* Executives
+* Executive Assistants
+
+These requests proceed without Slack-based manager approval.
+
+---
+
+Would you like me to generate a Markdown `.md` version of this for your repo or add a diagram to visualize the flow?
