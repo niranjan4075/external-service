@@ -1,0 +1,80 @@
+Yes — here are **in-depth Prometheus queries** using a `[6h]` range, giving richer insights beyond basic CPU/memory metrics, tailored to your `storefront-api-ut` pods in Azure:
+
+---
+
+### 1. **Total CPU Usage per Pod over 6 Hours**
+
+```promql
+sum by (pod) (
+  rate(container_cpu_usage_seconds_total{
+    cluster_name="azure-eastus-st-085-np-aks-001",
+    namespace="storefront-storefront-ut",
+    pod=~"storefront-api-ut-.*",
+    container!="", container!="POD"
+  }[6h])
+)
+```
+
+**Insight:** Shows which pod consumed the most CPU overall during the last 6 hours.
+
+---
+
+### 2. **CPU Throttling Percentage**
+
+```promql
+sum by (pod) (
+  rate(container_cpu_cfs_throttled_seconds_total{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*"}[6h])
+)
+/
+sum by (pod) (
+  rate(container_cpu_usage_seconds_total{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*"}[6h])
+)
+```
+
+**Insight:** Detects CPU throttling over time — useful for tuning resource limits.
+
+---
+
+### 3. **Memory Usage % of Limit**
+
+```promql
+(container_memory_usage_bytes{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*", container!="", container!="POD"})
+/
+(kube_pod_container_resource_limits_memory_bytes{namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*"})
+```
+
+**Insight:** Helps identify pods nearing their memory limits.
+
+---
+
+### 4. **Container Restarts in Last 6 Hours**
+
+```promql
+increase(kube_pod_container_status_restarts_total{namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*"}[6h])
+```
+
+**Insight:** Flags unstable pods with frequent restarts.
+
+---
+
+### 5. **HTTP Request Rate (if metrics exposed like `http_requests_total`)**
+
+```promql
+rate(http_requests_total{namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*"}[6h])
+```
+
+**Insight:** See if there’s consistent request traffic or spikes/failures.
+
+---
+
+### 6. **OOM Kills**
+
+```promql
+increase(container_oom_events_total{namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*"}[6h])
+```
+
+**Insight:** Identifies pods killed due to out-of-memory events.
+
+---
+
+Would you like these tied to alerts or visualized in a Grafana dashboard?
