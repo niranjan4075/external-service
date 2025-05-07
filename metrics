@@ -1,0 +1,61 @@
+Got it! Here's a clean list of **Prometheus queries** (not terminal commands), so you can copy-paste them directly into your Grafana query editor:
+
+---
+
+### 1. **CPU Usage (rate over 5 minutes)**
+
+```promql
+rate(container_cpu_usage_seconds_total{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*", container!="", container!="POD"}[5m])
+```
+
+---
+
+### 2. **Memory Usage (bytes)**
+
+```promql
+container_memory_usage_bytes{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*", container!="", container!="POD"}
+```
+
+---
+
+### 3. **Memory Working Set**
+
+```promql
+container_memory_working_set_bytes{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*", container!="", container!="POD"}
+```
+
+---
+
+### 4. **Network Received (Bytes/sec)**
+
+```promql
+rate(container_network_receive_bytes_total{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*"}[5m])
+```
+
+---
+
+### 5. **Network Transmitted (Bytes/sec)**
+
+```promql
+rate(container_network_transmit_bytes_total{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*"}[5m])
+```
+
+---
+
+### 6. **Disk Read Bytes/sec**
+
+```promql
+rate(container_fs_reads_bytes_total{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*"}[5m])
+```
+
+---
+
+### 7. **Disk Write Bytes/sec**
+
+```promql
+rate(container_fs_writes_bytes_total{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*"}[5m])
+```
+
+---
+
+Let me know if you want additional queries like pod restarts, replica counts, or custom alerts.
