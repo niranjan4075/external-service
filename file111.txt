@@ -1,0 +1,9 @@
+ContainerLog
+| where TimeGenerated > ago(24h)
+| where cluster_name == "azure-eastus-st-085-np-aks-001"
+| where namespace == "storefront-dv"
+| where pod startswith "storefront-api-dv"
+| where LogEntry has_any ("GET", "POST", "PUT", "DELETE") and LogEntry has "HTTP"
+| extend ApiCall = extract(@"(GET|POST|PUT|DELETE)\s+(\S+)", 2, LogEntry)
+| summarize APICount = count() by bin(TimeGenerated, 1h), ApiCall
+| order by TimeGenerated desc
