@@ -1,103 +1,65 @@
-Perfect — let's lock in a clean, accurate **CrashLoopBackOff detection alert** for your `storefront-api` pods.
+Yes — absolutely. You **can and sometimes *should*** use a different metric that directly identifies **CrashLoopBackOff** state **without relying on restart rates**.
 
 ---
 
-## 🔥 SCENARIO 3: Detect CrashLoopBackOff for Pods
+## ✅ Alternative 1: Use `kube_pod_container_status_waiting_reason`
 
-### ✅ What are we detecting?
+### 📌 This tells you *why* a container is in a `waiting` state, like:
 
-When a pod **keeps restarting repeatedly**, it's likely in **CrashLoopBackOff**. You detect this by watching for **a non-zero rate of restarts over time**.
+* `CrashLoopBackOff`
+* `ImagePullBackOff`
+* `ErrImagePull`
 
 ---
 
-## ✅ PROMETHEUS ALERT QUERY
+### ✅ Final Prometheus Query for CrashLoopBackOff:
 
 ```prometheus
-rate(kube_pod_container_status_restarts_total{
-  cluster_name="azure-eastus-st-085-np-aks-001",
-  namespace="storefront-storefront-ut",
-  pod=~"storefront-api-ut-.*"
-}[10m]) > 0.001
+max by(pod) (
+  kube_pod_container_status_waiting_reason{
+    reason="CrashLoopBackOff",
+    cluster_name="azure-eastus-st-085-np-aks-001",
+    namespace="storefront-storefront-ut",
+    pod=~"storefront-api-ut-.*"
+  }
+)
 ```
 
-> This means:
-> **“At least 1 restart every \~10 minutes”**
-> You can tune the `> 0.001` threshold for stricter sensitivity (e.g., use `> 0.003` for \~2 restarts in 10 minutes).
+---
+
+### 🔔 Grafana Alert Setup:
+
+* **Query D:** Use the query above
+* **Reduce Block (B):**
+
+  * Input: D
+  * Function: `Max`
+* **Condition Block (C):**
+
+  * Input: B
+  * Condition: `IS ABOVE 0`
 
 ---
 
-## 🧭 STEP-BY-STEP SETUP IN GRAFANA
+### ✅ Why This Is Better Than `rate(restarts)`:
+
+| Metric                                                | CrashLoop specific?                 | Real-time? | Requires tuning? |
+| ----------------------------------------------------- | ----------------------------------- | ---------- | ---------------- |
+| `kube_pod_container_status_waiting_reason`            | ✅ Yes (`reason="CrashLoopBackOff"`) | ✅ Yes      | ❌ No             |
+| `rate(kube_pod_container_status_restarts_total[10m])` | ❌ Indirect                          | ✅ Yes      | ✅ Yes            |
 
 ---
 
-### **1. Create New Alert Rule**
+### ✅ Summary
 
-* Rule name: `CrashLoopBackOff Detection - Storefront API`
-
----
-
-### **2. Query D**
+If your cluster exposes:
 
 ```prometheus
-rate(kube_pod_container_status_restarts_total{
-  cluster_name="azure-eastus-st-085-np-aks-001",
-  namespace="storefront-storefront-ut",
-  pod=~"storefront-api-ut-.*"
-}[10m])
+kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff"}
 ```
 
----
-
-### **3. Expression B (Reduce)**
-
-* **Input:** D
-* **Function:** `Max`
-* **Mode:** `Strict`
-
-> Gets the highest restart rate among the pods.
+👉 **Use that. It’s cleaner, faster, and made for this exact case.**
 
 ---
 
-### **4. Alert Condition (Block C)**
-
-* **Input:** B
-* **IS ABOVE:** `0.001`
-* (Adjust this if needed — `0.003` is \~2 restarts per 10m)
-
----
-
-### **5. Evaluation Behavior**
-
-* **Interval:** 3 minutes
-* **Pending period:** 3 minutes
-
-> So it only triggers if CrashLoop pattern is sustained.
-
----
-
-### **6. Labels and Annotations**
-
-```yaml
-labels:
-  alert_type: crash_loop
-  severity: warning
-  environment: ut
-
-annotations:
-  summary: "CrashLoopBackOff in storefront-api"
-  description: "Pod {{ $labels.pod }} in UT is restarting repeatedly. Likely CrashLoopBackOff."
-```
-
----
-
-### ✅ DONE — Now Save Alert Rule
-
-This will notify you **only when restart rate exceeds threshold**, helping you detect actual crash-looping pods, not just occasional restarts.
-
----
-
-Let me know if you want to follow up with:
-
-* **Pod Not Ready**
-* **Pod Pending too long**
-* **OOMKilled (memory limit exceeded) detection**
+Would you like me to walk through the full alert rule again using this improved version?
