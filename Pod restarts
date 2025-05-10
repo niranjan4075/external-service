@@ -1,0 +1,84 @@
+Perfect — let’s move on to monitoring **service restarts or downtime** for the `storefront-api` pods.
+
+There are **two effective ways** to detect this in Grafana + Prometheus:
+
+---
+
+## **Option 1: Pod Restarts Detection**
+
+### **Metric:**
+
+```prometheus
+kube_pod_container_status_restarts_total
+```
+
+### **Alert Query:**
+
+```prometheus
+increase(kube_pod_container_status_restarts_total{
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
+}[5m])
+```
+
+### **What It Does:**
+
+* Triggers if a container restarts **within the last 5 minutes**.
+* Very effective to catch crash loops or single restarts.
+
+---
+
+## **Option 2: Service Downtime Detection (No Metrics Received)**
+
+If a service **stops reporting** entirely (i.e., no metrics scraped), then:
+
+### **Metric:**
+
+Use `up{job=..., namespace=..., pod=...}`
+(*If you use Blackbox or kubelet scrape targets*)
+
+### **Alert Query (for missing pods):**
+
+```prometheus
+absent(container_cpu_usage_seconds_total{
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
+})
+```
+
+### **What It Does:**
+
+* Triggers if **no data is being received** — indicating the pod is **down** or **unscrapable**.
+
+---
+
+## **Recommended Alert Rule for Restart Detection**
+
+### **Prometheus Query:**
+
+```prometheus
+increase(kube_pod_container_status_restarts_total{
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
+}[5m]) > 0
+```
+
+### **Threshold Condition:**
+
+* **Input:** A
+* **Reduce:** `Max`
+* **Threshold:** `IS ABOVE 0`
+
+### **Evaluation:**
+
+* Every `3 minutes`
+* Pending: `1m`
+
+---
+
+## **Would You Like Both?**
+
+* One for **restart alerts**
+* One for **no metrics (service down)**
+
+Let me know — I can build both alert rules and provide documentation next.
