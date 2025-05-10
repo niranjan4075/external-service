@@ -1,0 +1,97 @@
+Great — let’s now set up an alert to detect when a **pod is not in a Ready state**, which is a critical health signal.
+
+---
+
+## 🔥 SCENARIO 4: **Pod Not Ready** Detection
+
+This alert triggers when a pod reports **`Ready = false`**, which could indicate:
+
+* Startup failure
+* Liveness/readiness probe failing
+* Container crash or freeze
+* Node pressure (OOM, DiskPressure)
+
+---
+
+## ✅ METRIC TO USE
+
+```prometheus
+kube_pod_status_ready{
+  condition="true",
+  namespace="storefront-storefront-ut",
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  pod=~"storefront-api-ut-.*"
+}
+```
+
+This metric is:
+
+* `1` if pod is **Ready**
+* `0` if **Not Ready**
+
+---
+
+## ✅ FINAL ALERT QUERY
+
+```prometheus
+max by(pod) (
+  kube_pod_status_ready{
+    condition="true",
+    cluster_name="azure-eastus-st-085-np-aks-001",
+    namespace="storefront-storefront-ut",
+    pod=~"storefront-api-ut-.*"
+  }
+) == 0
+```
+
+---
+
+## 🧭 GRAFANA ALERT SETUP (Step-by-Step)
+
+### **1. Query D:**
+
+Paste the query above.
+
+---
+
+### **2. No Reduce Needed**
+
+* The query already returns 0 or 1
+* You do not need a `Reduce` expression
+
+---
+
+### **3. Alert Condition (Block C):**
+
+* Input: D
+* Condition: `IS EQUAL TO 0`
+
+---
+
+### **4. Evaluation Behavior**
+
+* **Interval:** 3 minutes
+* **Pending period:** 2 minutes
+
+---
+
+### **5. Labels and Annotations**
+
+```yaml
+labels:
+  alert_type: not_ready
+  severity: warning
+  environment: ut
+
+annotations:
+  summary: "Pod not ready: {{ $labels.pod }}"
+  description: "Pod {{ $labels.pod }} in storefront-storefront-ut is not in Ready state. Investigate readiness/liveness probes or container crash."
+```
+
+---
+
+### ✅ Result:
+
+You’ll be alerted as soon as any `storefront-api` pod is not ready for 2+ minutes.
+
+Let me know if you'd like to configure this for **Pending** or **Terminating** pods next.
