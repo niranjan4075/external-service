@@ -1,10 +1,110 @@
-histogram_quantile(0.95,
-  sum by(pod, le) (
-    rate(http_request_duration_seconds_bucket{
-      cluster_name="azure-eastus-st-085-np-aks-001",
-      namespace="storefront-storefront-ut",
-      pod=~"storefront-api-ut-.*",
-      job="storefront-api"
-    }[5m])
-  )
+Perfect — here’s a full breakdown with **real metrics + complete Prometheus alert queries + Grafana setup** for detecting **unusual load per pod/service**.
+
+---
+
+## 🔥 Use Case: Detect Pods Handling Unusual Load (Too High or Too Low)
+
+---
+
+### ✅ Option 1: **API Request Load Imbalance**
+
+#### 🔍 Metric:
+
+```prometheus
+rate(http_requests_total{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
+}[5m])
+```
+
+---
+
+#### 🚨 ALERT #1: POD Getting **Too Much Load** (Hot Pod)
+
+```prometheus
+(
+  rate(http_requests_total{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*"}[5m])
 )
+>
+(
+  avg by(namespace) (
+    rate(http_requests_total{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*"}[5m])
+  )
+) * 2
+```
+
+> 📌 This triggers if **any pod gets more than 2× the average traffic**
+
+---
+
+#### 🚨 ALERT #2: POD Getting **Too Little Load** (Stale Pod)
+
+```prometheus
+(
+  rate(http_requests_total{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*"}[5m])
+)
+<
+(
+  avg by(namespace) (
+    rate(http_requests_total{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*"}[5m])
+  )
+) * 0.5
+```
+
+> 📌 Triggers if a pod is handling less than 50% of the average traffic — useful to catch idle or broken pods.
+
+---
+
+## ✅ Option 2: **CPU Load Imbalance (Compute Hotspots)**
+
+#### 🔍 Metric:
+
+```prometheus
+rate(container_cpu_usage_seconds_total{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
+}[5m])
+```
+
+#### 🚨 Same alert patterns apply:
+
+* Use same structure as above
+* Just substitute in `container_cpu_usage_seconds_total` in place of `http_requests_total`
+
+---
+
+## 🧭 GRAFANA ALERT SETUP (for either metric)
+
+### Step-by-Step:
+
+1. **Create a Time Series Panel or Alert Rule**
+2. **Add Query D:** Paste full alert query above
+3. **Expression B (Reduce):**
+
+   * Input: D
+   * Function: `Last` or `Max`
+4. **Threshold (Condition C):**
+
+   * **Hot pod alert:** `IS ABOVE 2× avg`
+   * **Cold pod alert:** `IS BELOW 0.5× avg`
+5. **Evaluate Every:** 3m
+   **Pending Period:** 2m
+6. **Labels (optional):**
+
+```yaml
+alert_type: load_imbalance
+severity: warning
+```
+
+7. **Annotations (optional):**
+
+```yaml
+summary: "Unusual load on pod {{ $labels.pod }}"
+description: "Pod {{ $labels.pod }} is receiving abnormal load compared to its peers."
+```
+
+---
+
+Let me know if you want to apply this to **Kafka lag**, **Redis usage**, or **Ingress traffic** next.
