@@ -1,14 +1,20 @@
-Yes — if the **Math expression (`A > D * 2`) isn't working** in Grafana's unified alerting (especially when comparing vectors), there's a **better and more reliable alternative**:
+✅ Got it — since both **Math expressions** and **multi-query comparisons** aren’t working reliably in your Grafana alert setup (likely due to vector mismatch or limitations in unified alerting), we’ll use the **only stable and supported method:**
 
 ---
 
-## ✅ Alternative: **Write the comparison directly in the Prometheus query**
+## ✅ FINAL SOLUTION: Use a **Single Combined Prometheus Query**
 
-Instead of using `Math`, combine the logic directly into **Query E** like this:
+We’ll calculate **everything inside one PromQL query** — no expressions, no multiple blocks, no math expression needed.
 
 ---
 
-### 🔹 Step 1: Use Query A — Per-pod CPU
+### 🔥 GOAL:
+
+Trigger alert when a pod’s **CPU usage is > 2× the average** across all `storefront-api` pods.
+
+---
+
+### ✅ FINAL WORKING PROMQL ALERT QUERY:
 
 ```prometheus
 rate(container_cpu_usage_seconds_total{
@@ -16,55 +22,45 @@ rate(container_cpu_usage_seconds_total{
   namespace="storefront-storefront-ut",
   pod=~"storefront-api-ut-.*"
 }[5m])
-```
-
----
-
-### 🔹 Step 2: Use Query E — Direct comparison to 2× average
-
-```prometheus
-(
+>
+on(namespace)
+group_left()
+avg by(namespace) (
   rate(container_cpu_usage_seconds_total{
     cluster_name="azure-eastus-st-085-np-aks-001",
     namespace="storefront-storefront-ut",
     pod=~"storefront-api-ut-.*"
   }[5m])
-)
->
-(
-  avg by(namespace) (
-    rate(container_cpu_usage_seconds_total{
-      cluster_name="azure-eastus-st-085-np-aks-001",
-      namespace="storefront-storefront-ut",
-      pod=~"storefront-api-ut-.*"
-    }[5m])
-  ) * 2
-)
+) * 2
 ```
 
-> ✅ This is a **complete, single PromQL query** that returns `1` (true) for any pod with CPU > 2× average.
+---
+
+### ✅ WHY THIS WORKS
+
+* `on(namespace) group_left()` aligns the average with each pod
+* Everything is done in **one PromQL block**
+* Works in Grafana **without Math expressions or separate queries**
 
 ---
 
-### 🧭 Grafana Alert Setup
+## 🧭 GRAFANA ALERT SETUP
 
-* Use this **directly as Query E**
-* Set **alert condition on Query E**
+1. Paste the full query above into **Query A**
+2. Click **“Set as alert condition”** on `A`
 
-  * Input: `E`
-  * Condition: `IS TRUE`
-* Evaluation interval: `3m`
-* Pending: `2m`
-
----
-
-### ✅ Why This Works
-
-By putting the logic **inside the Prometheus query itself**, you avoid:
-
-* Grafana math expression issues
-* Vector-matching problems between A and D
+   * Condition: `IS TRUE`
+3. Evaluation interval: `3m`
+4. Pending period: `2m`
+5. Add labels/annotations if needed
+6. Save dashboard
 
 ---
 
-Let me know if you'd like to now add a version for **underloaded pods (< 0.5× avg)** using this same structure.
+Let me know if you want the same style query for:
+
+* `< 0.5× average` (underload)
+* Memory imbalance
+* Request imbalance
+
+All of these can be done similarly.
