@@ -1,41 +1,14 @@
-Thanks — let’s fix that cleanly. If **Expression B** (your math: `A > D * 2`) isn’t working, it’s usually due to one of the following:
+Yes — if the **Math expression (`A > D * 2`) isn't working** in Grafana's unified alerting (especially when comparing vectors), there's a **better and more reliable alternative**:
 
 ---
 
-## 🔍 Common Causes & Fixes for “Expression B not working”
+## ✅ Alternative: **Write the comparison directly in the Prometheus query**
 
-### ❌ **Problem 1: Mismatched vector dimensions**
-
-You’re comparing:
-
-* `A`: multiple time series (per pod)
-* `D`: one value (avg across namespace)
-
-This can cause a **vector mismatch** if `A` has pod labels and `D` doesn't — Prometheus can't compare `pod` to `namespace`.
+Instead of using `Math`, combine the logic directly into **Query E** like this:
 
 ---
 
-### ✅ **Solution: Match Labels in Query D**
-
-Modify **Query D** to include the same labels as A (`by(pod)`), so Prometheus can align them:
-
-```prometheus
-avg by(pod) (
-  rate(container_cpu_usage_seconds_total{
-    cluster_name="azure-eastus-st-085-np-aks-001",
-    namespace="storefront-storefront-ut",
-    pod=~"storefront-api-ut-.*"
-  }[5m])
-)
-```
-
-> ✅ This ensures **both A and D return results with the `pod` label**, making the math expression valid.
-
----
-
-### ✅ Recap for Final Working Setup
-
-#### Query A: Per-pod CPU
+### 🔹 Step 1: Use Query A — Per-pod CPU
 
 ```prometheus
 rate(container_cpu_usage_seconds_total{
@@ -45,33 +18,53 @@ rate(container_cpu_usage_seconds_total{
 }[5m])
 ```
 
-#### Query D: Average per pod (not just per namespace!)
+---
+
+### 🔹 Step 2: Use Query E — Direct comparison to 2× average
 
 ```prometheus
-avg by(pod) (
+(
   rate(container_cpu_usage_seconds_total{
     cluster_name="azure-eastus-st-085-np-aks-001",
     namespace="storefront-storefront-ut",
     pod=~"storefront-api-ut-.*"
   }[5m])
 )
+>
+(
+  avg by(namespace) (
+    rate(container_cpu_usage_seconds_total{
+      cluster_name="azure-eastus-st-085-np-aks-001",
+      namespace="storefront-storefront-ut",
+      pod=~"storefront-api-ut-.*"
+    }[5m])
+  ) * 2
+)
 ```
 
-> This tricks the math into working by forcing both A and D to align on the `pod` label.
+> ✅ This is a **complete, single PromQL query** that returns `1` (true) for any pod with CPU > 2× average.
 
 ---
 
-#### Expression B (Math):
+### 🧭 Grafana Alert Setup
 
-```text
-A > D * 2
-```
+* Use this **directly as Query E**
+* Set **alert condition on Query E**
 
-Then:
-
-* Click “Set as alert condition” on **Expression B**
-* Select `IS TRUE`
+  * Input: `E`
+  * Condition: `IS TRUE`
+* Evaluation interval: `3m`
+* Pending: `2m`
 
 ---
 
-Let me know if you still get an error — I’ll help debug it step-by-step if needed.
+### ✅ Why This Works
+
+By putting the logic **inside the Prometheus query itself**, you avoid:
+
+* Grafana math expression issues
+* Vector-matching problems between A and D
+
+---
+
+Let me know if you'd like to now add a version for **underloaded pods (< 0.5× avg)** using this same structure.
