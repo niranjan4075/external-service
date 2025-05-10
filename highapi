@@ -1,0 +1,10 @@
+histogram_quantile(0.95,
+  sum by(pod, le) (
+    rate(http_request_duration_seconds_bucket{
+      cluster_name="azure-eastus-st-085-np-aks-001",
+      namespace="storefront-storefront-ut",
+      pod=~"storefront-api-ut-.*",
+      job="storefront-api"
+    }[5m])
+  )
+)
