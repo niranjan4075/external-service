@@ -1,34 +1,81 @@
-Perfect — to evaluate the alert **every 3 minutes**, here's what you need to update:
+Here’s a clean and complete documentation you can use to describe your **Grafana Pod CPU Alert Setup** — suitable for Confluence, README, or internal wikis.
 
 ---
 
-### **Update Evaluation Behavior**
+## **Grafana Alert: Storefront API Pod CPU Usage (UT Environment)**
 
-#### 1. **Go to Alert Panel > Step 3: Set evaluation behavior**
+### **Overview**
 
-* **Evaluation interval:**
-  Set to `3m`
-
-#### 2. **Pending period (Recommended):**
-
-* Keep it at `5m` — this means the alert will only fire if CPU stays high **across two 3-minute evaluations**.
-
-#### 3. **Save the Dashboard**
-
-* After setting the new evaluation interval, click **“Save dashboard”** to apply changes.
+This alert monitors CPU usage of all `storefront-api` pods in the `storefront-storefront-ut` namespace within the AKS cluster `azure-eastus-st-085-np-aks-001`. It triggers when CPU usage exceeds 90% for more than 5 minutes, and clears once usage drops below 70%.
 
 ---
 
-### **Updated Doc Snippet**
+### **Query Configuration**
 
-You can update your documentation to reflect this:
+**Prometheus Query (Query D):**
 
-> **Evaluation Behavior**
->
-> * **Interval:** 3 minutes
-> * **Pending period:** 5 minutes
-> * Alert triggers if CPU usage stays above threshold for two consecutive evaluations.
+```prometheus
+avg by(pod) (
+  rate(container_cpu_usage_seconds_total{
+    cluster_name="azure-eastus-st-085-np-aks-001",
+    namespace="storefront-storefront-ut",
+    pod=~"storefront-api-ut-.*"
+  }[5m])
+)
+```
+
+* **Metric:** `container_cpu_usage_seconds_total`
+* **Range:** 5 minutes
+* **Group By:** `pod`
 
 ---
 
-Let me know if you'd like this applied to a bulk alert setup or exported as a JSON alert rule.
+### **Alert Expression Setup**
+
+#### **Expression (Reduce Block):**
+
+* **Input:** D
+* **Function:** `Last`
+* **Mode:** `Strict`
+* **Purpose:** Gets the most recent CPU usage per pod.
+
+#### **Threshold Condition:**
+
+* **Input:** B (output from Reduce block)
+* **Trigger:** `IS ABOVE 0.9`
+* **Recovery Threshold:** `IS BELOW 0.7` (optional but enabled)
+
+---
+
+### **Evaluation Behavior**
+
+* **Interval:** 1 minute
+* **Pending period:** 5 minutes
+* **Folder:** `MOBILITY_OPERATIONS_STOREFRONT-nonProd`
+* **Evaluation Group:** *(custom or shared depending on team setup)*
+
+---
+
+### **Purpose**
+
+* Detect performance spikes in storefront pods before they lead to service degradation.
+* Ensure proactive investigation and mitigation of high CPU scenarios.
+
+---
+
+### **Next Steps (Optional)**
+
+* Integrate this alert with:
+
+  * **Slack** (via Grafana’s alert contact points)
+  * **PagerDuty / OpsGenie**
+  * **Email group**
+* Clone this setup for:
+
+  * Memory usage (`container_memory_usage_bytes`)
+  * Container restarts (`container_restart_count`)
+  * Disk or network metrics
+
+---
+
+Would you like a version of this as a Markdown file or a Confluence-style export?
