@@ -2,4 +2,12 @@ Option 1 (Exact match - if the log line always contains this exact string):
 count_over_time({cluster_name="azure-eastus-st-005-np-aks-001", namespace="storefront-dev", pod=~"storefront-api-dv.*"} |= "POST /api/generate/ref" [$__range])
 
 Option 2 (Regex match on the entire log line):
-count_over_time({cluster_name="azure-eastus-st-005-np-aks-001", namespace="storefront-dev", pod="storefront-api-dv."} | "POST.\/api\/generate\/ref" [$__range])
+count_over_time({cluster_name="azure-eastus-st-005-np-aks-001", namespace="storefront-dev", pod="storefront-api-dv."} | "POST.\/api\/generate\/ref" [$__
+
+ContainerLog {
+where LogEntry has_any (" 4", " 5", "403", "404", "500", "502", "503")
+ extend httpStatusCode like  extract(@"(\d{3})", 1, LogEntry) 
+}
+
+
+
