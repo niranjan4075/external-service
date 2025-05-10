@@ -1,6 +1,11 @@
 
-avg_over_time(
-  rate(container_cpu_usage_seconds_total{cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-storefront-ut", pod=~"storefront-api-ut-.*"}[1m])
-)[5m:] by (pod)
+avg by(pod) (
+  rate(container_cpu_usage_seconds_total{
+    cluster_name="azure-eastus-st-085-np-aks-001",
+    namespace="storefront-storefront-ut",
+    pod=~"storefront-api-ut-.*"
+  }[5m])
+)
+
 
 WHEN last() OF Query B IS ABOVE 0.9
