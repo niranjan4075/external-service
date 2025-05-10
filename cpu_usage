@@ -1,0 +1,34 @@
+Perfect — to evaluate the alert **every 3 minutes**, here's what you need to update:
+
+---
+
+### **Update Evaluation Behavior**
+
+#### 1. **Go to Alert Panel > Step 3: Set evaluation behavior**
+
+* **Evaluation interval:**
+  Set to `3m`
+
+#### 2. **Pending period (Recommended):**
+
+* Keep it at `5m` — this means the alert will only fire if CPU stays high **across two 3-minute evaluations**.
+
+#### 3. **Save the Dashboard**
+
+* After setting the new evaluation interval, click **“Save dashboard”** to apply changes.
+
+---
+
+### **Updated Doc Snippet**
+
+You can update your documentation to reflect this:
+
+> **Evaluation Behavior**
+>
+> * **Interval:** 3 minutes
+> * **Pending period:** 5 minutes
+> * Alert triggers if CPU usage stays above threshold for two consecutive evaluations.
+
+---
+
+Let me know if you'd like this applied to a bulk alert setup or exported as a JSON alert rule.
