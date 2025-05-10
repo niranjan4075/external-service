@@ -1,0 +1,29 @@
+max(
+  kube_pod_status_ready{
+    pod="storefront-api-ut-xyz123",
+    namespace="storefront-storefront-ut",
+    cluster_name="azure-eastus-st-085-np-aks-001",
+    condition="true"
+  }
+)
++ 
+on(pod) group_left()
+kube_pod_container_status_running{
+  pod="storefront-api-ut-xyz123",
+  namespace="storefront-storefront-ut",
+  cluster_name="azure-eastus-st-085-np-aks-001"
+}
++ 
+on(pod) group_left()
+kube_pod_container_status_restarts_total{
+  pod="storefront-api-ut-xyz123",
+  namespace="storefront-storefront-ut",
+  cluster_name="azure-eastus-st-085-np-aks-001"
+}
++ 
+on(pod) group_left()
+((time() - kube_pod_start_time{
+  pod="storefront-api-ut-xyz123",
+  namespace="storefront-storefront-ut",
+  cluster_name="azure-eastus-st-085-np-aks-001"
+}) / 60)
