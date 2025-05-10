@@ -1,40 +1,41 @@
-Got it — here’s your **complete working setup** for a **CPU Load Imbalance Alert** in Grafana using **Prometheus + Unified Alerting**, including both the queries and the exact steps to configure the alert.
+Thanks — let’s fix that cleanly. If **Expression B** (your math: `A > D * 2`) isn’t working, it’s usually due to one of the following:
 
 ---
 
-## ✅ GOAL:
+## 🔍 Common Causes & Fixes for “Expression B not working”
 
-Alert if any `storefront-api` pod in `storefront-storefront-ut` uses **> 2x the average CPU** of its peer pods in the same cluster.
+### ❌ **Problem 1: Mismatched vector dimensions**
+
+You’re comparing:
+
+* `A`: multiple time series (per pod)
+* `D`: one value (avg across namespace)
+
+This can cause a **vector mismatch** if `A` has pod labels and `D` doesn't — Prometheus can't compare `pod` to `namespace`.
 
 ---
 
-## 🔍 METRIC:
+### ✅ **Solution: Match Labels in Query D**
+
+Modify **Query D** to include the same labels as A (`by(pod)`), so Prometheus can align them:
 
 ```prometheus
-rate(container_cpu_usage_seconds_total{ 
-  cluster_name="azure-eastus-st-085-np-aks-001", 
-  namespace="storefront-storefront-ut", 
-  pod=~"storefront-api-ut-.*"
-}[5m])
+avg by(pod) (
+  rate(container_cpu_usage_seconds_total{
+    cluster_name="azure-eastus-st-085-np-aks-001",
+    namespace="storefront-storefront-ut",
+    pod=~"storefront-api-ut-.*"
+  }[5m])
+)
 ```
 
----
-
-## 🧭 STEP-BY-STEP GRAFANA ALERT CONFIGURATION
+> ✅ This ensures **both A and D return results with the `pod` label**, making the math expression valid.
 
 ---
 
-### 🔹 Step 1: Open your Grafana panel
+### ✅ Recap for Final Working Setup
 
-* Either create a new **Time series panel**, or go to an existing one.
-* Switch to the **“Alert”** tab.
-* Click **“Create alert rule”**
-
----
-
-### 🔹 Step 2: Add Queries
-
-#### ✅ Query A – Per-pod CPU usage
+#### Query A: Per-pod CPU
 
 ```prometheus
 rate(container_cpu_usage_seconds_total{
@@ -44,10 +45,10 @@ rate(container_cpu_usage_seconds_total{
 }[5m])
 ```
 
-#### ✅ Query B – Average CPU across pods
+#### Query D: Average per pod (not just per namespace!)
 
 ```prometheus
-avg by(namespace) (
+avg by(pod) (
   rate(container_cpu_usage_seconds_total{
     cluster_name="azure-eastus-st-085-np-aks-001",
     namespace="storefront-storefront-ut",
@@ -56,64 +57,21 @@ avg by(namespace) (
 )
 ```
 
+> This tricks the math into working by forcing both A and D to align on the `pod` label.
+
 ---
 
-### 🔹 Step 3: Add Math Expression
-
-#### ✅ Expression C:
-
-* Click **“Add expression”**
-* Type: `Math`
-* Formula:
+#### Expression B (Math):
 
 ```text
-A > B * 2
+A > D * 2
 ```
 
-> This compares each pod's usage to twice the average.
+Then:
+
+* Click “Set as alert condition” on **Expression B**
+* Select `IS TRUE`
 
 ---
 
-### 🔹 Step 4: Set Alert Condition
-
-* On Expression `C`, click **“Set as alert condition”**
-* Operator: `IS TRUE`
-
----
-
-### 🔹 Step 5: Set Evaluation Behavior
-
-* **Evaluation interval:** `3m`
-* **Pending period:** `2m`
-* Folder: `MOBILITY_OPERATIONS_STOREFRONT-nonProd` (or your target folder)
-* Evaluation group: `Storefront UT`
-
----
-
-### 🔹 Step 6: Add Labels (Optional)
-
-```yaml
-alert_type: cpu_load_imbalance
-severity: warning
-environment: ut
-```
-
----
-
-### 🔹 Step 7: Add Annotations (Optional)
-
-```yaml
-summary: "CPU load imbalance detected in storefront-api"
-description: "One or more pods are consuming significantly more CPU than peers in the UT environment."
-```
-
----
-
-### 🔹 Step 8: Save Alert
-
-* Click **“Save dashboard”**
-* This activates the alert and attaches it to your panel
-
----
-
-✅ Let me know if you want a similar alert for **low CPU usage pods** or combine both (too high + too low) in one dashboard.
+Let me know if you still get an error — I’ll help debug it step-by-step if needed.
