@@ -1,14 +1,40 @@
-Great — here's the **full setup** for detecting **CPU Load Imbalance (Compute Hotspots)** across your `storefront-api` pods.
+Got it — here’s your **complete working setup** for a **CPU Load Imbalance Alert** in Grafana using **Prometheus + Unified Alerting**, including both the queries and the exact steps to configure the alert.
 
 ---
 
-## 🔥 Use Case: **Detect Pod with Unusual CPU Load**
+## ✅ GOAL:
 
-> Goal: Alert when **one pod** is consuming **significantly more or less CPU** than others.
+Alert if any `storefront-api` pod in `storefront-storefront-ut` uses **> 2x the average CPU** of its peer pods in the same cluster.
 
 ---
 
-## ✅ METRIC:
+## 🔍 METRIC:
+
+```prometheus
+rate(container_cpu_usage_seconds_total{ 
+  cluster_name="azure-eastus-st-085-np-aks-001", 
+  namespace="storefront-storefront-ut", 
+  pod=~"storefront-api-ut-.*"
+}[5m])
+```
+
+---
+
+## 🧭 STEP-BY-STEP GRAFANA ALERT CONFIGURATION
+
+---
+
+### 🔹 Step 1: Open your Grafana panel
+
+* Either create a new **Time series panel**, or go to an existing one.
+* Switch to the **“Alert”** tab.
+* Click **“Create alert rule”**
+
+---
+
+### 🔹 Step 2: Add Queries
+
+#### ✅ Query A – Per-pod CPU usage
 
 ```prometheus
 rate(container_cpu_usage_seconds_total{
@@ -18,91 +44,76 @@ rate(container_cpu_usage_seconds_total{
 }[5m])
 ```
 
-This gives the **per-pod CPU usage rate** over the last 5 minutes.
-
----
-
-## 🚨 ALERT #1: **Pod With Too Much CPU Usage**
-
-> Triggers if a pod's CPU usage is **more than 2× the average**
+#### ✅ Query B – Average CPU across pods
 
 ```prometheus
-(
+avg by(namespace) (
   rate(container_cpu_usage_seconds_total{
     cluster_name="azure-eastus-st-085-np-aks-001",
     namespace="storefront-storefront-ut",
     pod=~"storefront-api-ut-.*"
   }[5m])
 )
->
-(
-  avg by(namespace) (
-    rate(container_cpu_usage_seconds_total{
-      cluster_name="azure-eastus-st-085-np-aks-001",
-      namespace="storefront-storefront-ut",
-      pod=~"storefront-api-ut-.*"
-    }[5m])
-  ) * 2
-)
 ```
 
 ---
 
-## 🚨 ALERT #2: **Pod With Too Little CPU Usage**
+### 🔹 Step 3: Add Math Expression
 
-> Triggers if a pod's CPU usage is **less than 50% of the average**
+#### ✅ Expression C:
 
-```prometheus
-(
-  rate(container_cpu_usage_seconds_total{
-    cluster_name="azure-eastus-st-085-np-aks-001",
-    namespace="storefront-storefront-ut",
-    pod=~"storefront-api-ut-.*"
-  }[5m])
-)
-<
-(
-  avg by(namespace) (
-    rate(container_cpu_usage_seconds_total{
-      cluster_name="azure-eastus-st-085-np-aks-001",
-      namespace="storefront-storefront-ut",
-      pod=~"storefront-api-ut-.*"
-    }[5m])
-  ) * 0.5
-)
+* Click **“Add expression”**
+* Type: `Math`
+* Formula:
+
+```text
+A > B * 2
 ```
+
+> This compares each pod's usage to twice the average.
 
 ---
 
-## 🧭 GRAFANA ALERT RULE SETUP
+### 🔹 Step 4: Set Alert Condition
 
-1. **Query D** → Paste one of the alert queries above.
-2. **Expression B (Reduce):**
+* On Expression `C`, click **“Set as alert condition”**
+* Operator: `IS TRUE`
 
-   * Input: `D`
-   * Function: `Last`
-3. **Condition C:**
+---
 
-   * Input: `B`
-   * Use: `IS ABOVE` (for high CPU), or `IS BELOW` (for low CPU)
-4. **Evaluation:**
+### 🔹 Step 5: Set Evaluation Behavior
 
-   * Interval: `3m`
-   * Pending: `2m`
-5. **Labels (optional):**
+* **Evaluation interval:** `3m`
+* **Pending period:** `2m`
+* Folder: `MOBILITY_OPERATIONS_STOREFRONT-nonProd` (or your target folder)
+* Evaluation group: `Storefront UT`
+
+---
+
+### 🔹 Step 6: Add Labels (Optional)
 
 ```yaml
 alert_type: cpu_load_imbalance
 severity: warning
-```
-
-6. **Annotations (optional):**
-
-```yaml
-summary: "CPU load imbalance on pod {{ $labels.pod }}"
-description: "Pod {{ $labels.pod }} is consuming unusual CPU compared to other storefront-api pods."
+environment: ut
 ```
 
 ---
 
-Let me know if you'd like to combine both into a **single alert rule** or create a dashboard visualization to track imbalance live.
+### 🔹 Step 7: Add Annotations (Optional)
+
+```yaml
+summary: "CPU load imbalance detected in storefront-api"
+description: "One or more pods are consuming significantly more CPU than peers in the UT environment."
+```
+
+---
+
+### 🔹 Step 8: Save Alert
+
+* Click **“Save dashboard”**
+* This activates the alert and attaches it to your panel
+
+---
+
+✅ Let me know if you want a similar alert for **low CPU usage pods** or combine both (too high + too low) in one dashboard.
