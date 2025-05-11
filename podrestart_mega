@@ -1,0 +1,55 @@
+Absolutely — here’s the **complete setup** for a **Pod Restart Detection** alert, including:
+
+1. ✅ Main query
+2. 🚨 Alert rule setup
+3. 📝 Full description
+
+---
+
+## 🔄 **Pod Restart Detection Alert**
+
+---
+
+### ✅ 1. Main Query (Prometheus)
+
+```prometheus
+increase(kube_pod_container_status_restarts_total{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut"
+}[5m])
+```
+
+> This checks for any pod restarts in the last 5 minutes in the given cluster and namespace.
+
+---
+
+### 🚨 2. Alert Rule Setup (Grafana Unified Alerting)
+
+| Setting            | Value                                                             |
+| ------------------ | ----------------------------------------------------------------- |
+| **Query A**        | Use the above main query                                          |
+| **Expression B**   | `Reduce` → Function: `Max`, Mode: `Strict`, Input: `A`            |
+| **Expression C**   | `Threshold` → Input: `B`, Condition: `IS ABOVE`, Value: `0`       |
+| **Evaluate every** | `3m`                                                              |
+| **For (pending)**  | `1m`                                                              |
+| **Folder**         | `MOBILITY_OPERATIONS_STOREFRONT-nonProd` or your custom folder    |
+| **Alert name**     | `Pod Restart Detection`                                           |
+| **Labels**         | `alert_type: pod_restart`, `environment: ut`, `severity: warning` |
+
+---
+
+### 📝 3. Description (for Alert)
+
+```yaml
+summary: "Pod restart detected in storefront-storefront-ut"
+description: |
+  One or more containers in namespace `storefront-storefront-ut` have restarted 
+  within the last 5 minutes in cluster `azure-eastus-st-085-np-aks-001`. 
+  Frequent restarts may indicate issues like CrashLoopBackOff, OOMKilled, 
+  failing dependencies, or startup probe failures.
+  Please check container logs and events for the affected pods.
+```
+
+---
+
+Would you like me to walk you through a **CrashLoopBackOff detection** alert in the same format next?
