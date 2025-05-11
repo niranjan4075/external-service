@@ -1,110 +1,67 @@
-Here’s a **complete set of log monitoring queries with alert rules and Grafana setup steps**, specifically tailored to your environment (`cluster_name="azure-eastus-st-085-np-aks-001"`, namespace: `storefront-storefront-ut`, pod: `mobility-ops-storefront-poc-ut-.*`).
+Perfect — glad to hear the query is now working! Here's how to **turn this working log query into an alert** in Grafana using Loki:
 
 ---
 
-## ✅ **1. Error Spike Alert**
-
-### 🔍 **Query:**
+### ✅ **Final Loki Log Query (Example)**
 
 ```logql
 count_over_time({
   cluster_name="azure-eastus-st-085-np-aks-001",
   namespace="storefront-storefront-ut",
   pod=~"mobility-ops-storefront-poc-ut-.*"
-} |= "ERROR" [5m])
+} |~ "(?i)error" [1h])
 ```
-
-### 🚨 **Alert condition:**
-
-* Use **Threshold Expression**
-* If **count > 5** in **5m window**
-
-### 🛠️ **Grafana Setup:**
-
-1. Add **Query A** above.
-2. Add **Expression B** – Threshold:
-
-   * **Input**: A
-   * **IS ABOVE**: `5`
-3. Set `Evaluation = every 1m`
-4. Configure Notification contact point
 
 ---
 
-## ✅ **2. Exception Alert**
+### 🚨 **How to Set Up an Alert in Grafana (Loki Logs)**
 
-### 🔍 **Query:**
+#### **Step-by-Step Alert Setup**
 
-```logql
-count_over_time({
-  cluster_name="azure-eastus-st-085-np-aks-001",
-  namespace="storefront-storefront-ut",
-  pod=~"mobility-ops-storefront-poc-ut-.*"
-} |= "Exception" [5m])
-```
+1. **Go to Alerting → Alert Rules → New Alert Rule**
 
-### 🚨 **Alert condition:**
+2. **Data Source:**
 
-* Fire if count > 0
+   * Set to `azure-logs-np` (your Loki data source).
 
-### 🛠️ **Grafana Setup:**
+3. **Query A:**
 
-Same as above, change threshold value to `0`.
+   * Paste the above **working log query** into the **Query A** field.
+   * Format: **Time series**
+   * Step: `auto`
+   * Type: `Range`
 
----
-
-## ✅ **3. Crash Loop Detected**
-
-### 🔍 **Query:**
-
-```logql
-count_over_time({
-  cluster_name="azure-eastus-st-085-np-aks-001",
-  namespace="storefront-storefront-ut",
-  pod=~"mobility-ops-storefront-poc-ut-.*"
-} |= "Back-off restarting failed container" [5m])
-```
-
-### 🚨 **Alert condition:**
-
-* Trigger if count > 0
-
----
-
-## ✅ **4. Pod Silence – No Logs Output**
-
-### 🔍 **Query:**
-
-```logql
-count_over_time({
-  cluster_name="azure-eastus-st-085-np-aks-001",
-  namespace="storefront-storefront-ut",
-  pod="mobility-ops-storefront-poc-ut"
-}[5m])
-```
-
-### 🚨 **Alert condition:**
-
-* Fire if result **== 0**
-
----
-
-## ✅ **Alert Rule Setup (Steps for Any of the Above)**
-
-1. Go to **Alerting > New Alert Rule**
-2. Choose **Data Source** → your **Loki source**
-3. Paste the query into **Query A**
-4. Click **Add expression** → choose `Threshold`
-5. Set:
+4. **Add Expression → Reduce (B):**
 
    * Input: A
-   * Condition: `IS ABOVE` or `IS EQUAL TO`
-   * Value: (based on your logic)
-6. Click **Set as alert condition**
-7. Set evaluation frequency (e.g. every 1m)
-8. Choose your **Contact Point (Slack, Email, etc.)**
-9. Save alert rule
+   * Function: `Last`
+   * Mode: `Strict`
+
+5. **Add Expression → Threshold (C):**
+
+   * Input: B
+   * Condition: `IS ABOVE`
+   * Value: `10` (e.g., more than 10 error logs per hour)
+
+6. **Set C as Alert Condition** ✅
 
 ---
 
-Would you like me to turn this into a Markdown or Word doc version for documentation use?
+### 🛎️ Example Alert Description
+
+**Alert Name:**
+`High Error Logs in mobility-ops-storefront-poc-ut`
+
+**Description:**
+Triggers when more than 10 logs containing the word `error` are seen in the past 1 hour from `mobility-ops-storefront-poc-ut-*` pods in the `storefront-storefront-ut` namespace.
+
+---
+
+### Optional
+
+* **Labels:** Add custom labels like `env=nonprod`, `team=storefront`
+* **Contact Point:** Set Slack/email/etc. to receive alerts.
+
+---
+
+Would you like me to also help create alerts for log patterns like `timeout`, `500`, or other keywords too?
