@@ -82,68 +82,37 @@ kube_pod_info{
 
 ---
 
-Would you like me to bundle these into a single Grafana dashboard or help create alerts based on them?
-
----
-
-## ✅ Here's What You Can Do Next
-
-### ✅ 1. Get exact pod name
-
-Run:
-
-```prometheus
-kube_pod_info{namespace="storefront-storefront-ut"}
-```
-
-Copy the **full pod name**, e.g.,
-`storefront-api-ut-00060-deployment-77488b567f-9s4pf`
-
----
-
-### ✅ 2. Use this pod name in targeted health queries
-
-Now try this for readiness:
-
-```prometheus
-kube_pod_container_status_ready{
-  pod="storefront-api-ut-00060-deployment-77488b567f-9s4pf",
-  namespace="storefront-storefront-ut"
+kube_pod_status_phase{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*",
+  phase="Running"
 }
-```
-
-And for restart count:
-
-```prometheus
++
+on(pod) group_left()
 kube_pod_container_status_restarts_total{
-  pod="storefront-api-ut-00060-deployment-77488b567f-9s4pf",
-  namespace="storefront-storefront-ut"
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
 }
-```
-
-And for start time:
-
-```prometheus
++
+on(pod) group_left()
 kube_pod_start_time{
-  pod="storefront-api-ut-00060-deployment-77488b567f-9s4pf",
-  namespace="storefront-storefront-ut"
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
 }
-```
-
----
-
-## ✅ Want a Full Health View for a Specific Pod?
-
-Here’s a minimal **dashboard-style query group** for one pod:
-
-```prometheus
-kube_pod_container_status_ready{pod="...", namespace="..."}              # 1 = ready
-kube_pod_container_status_restarts_total{pod="...", namespace="..."}     # total restarts
-(time() - kube_pod_start_time{pod="...", namespace="..."}) / 60          # age in minutes
-```
-
-Replace `...` with your exact pod name + namespace.
-
----
-
-Would you like me to help build a **Grafana panel or template variable** to auto-select pod names from `kube_pod_info`?
++
+on(pod) group_left()
+((time() - kube_pod_start_time{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
+}) / 60)
++
+on(pod) group_left()
+kube_pod_info{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
+}
