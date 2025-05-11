@@ -1,0 +1,60 @@
+Perfect — let’s now cover **Pod Uptime in Minutes**, fully structured with:
+
+* ✅ Main query
+* 🚨 Alert query and rule
+* 📝 Clear alert description
+
+---
+
+## ⏱ **Pod Uptime in Minutes Alert**
+
+---
+
+### ✅ 1. Main Query (Prometheus)
+
+This calculates how long each pod has been running in **minutes**, based on its start time:
+
+```prometheus
+(time() - kube_pod_start_time{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
+}) / 60
+```
+
+> This returns pod uptime in minutes. You’ll get a value like `127.3` meaning 127 minutes since the pod started.
+
+---
+
+### 🚨 2. Alert Query Setup (Detect very short uptimes)
+
+Use this when you want to know if **any pod was restarted or started recently** (e.g., uptime < 10 minutes).
+
+#### **Grafana Unified Alert Setup:**
+
+| Setting            | Value                                                         |
+| ------------------ | ------------------------------------------------------------- |
+| **Query A**        | Use the above main query                                      |
+| **Expression B**   | `Reduce` → Function: `Min` → Input: `A`                       |
+| **Expression C**   | `Threshold` → Input: `B`, Condition: `IS BELOW`, Value: `10`  |
+| **Evaluate every** | `3m`                                                          |
+| **For (pending)**  | `1m`                                                          |
+| **Alert name**     | `Pod Uptime Alert`                                            |
+| **Folder**         | `MOBILITY_OPERATIONS_STOREFRONT-nonProd`                      |
+| **Labels**         | `alert_type: pod_uptime`, `environment: ut`, `severity: info` |
+
+---
+
+### 📝 3. Description (for Alert)
+
+```yaml
+summary: "Pod started recently (low uptime)"
+description: |
+  One or more pods in namespace `storefront-storefront-ut` have uptime less than 10 minutes 
+  in cluster `azure-eastus-st-085-np-aks-001`. This may indicate a restart, rollout, 
+  or instability. Review recent deployment activity and logs for these pods.
+```
+
+---
+
+Would you like a version that detects pods running **too long** (e.g., not rolled for days)?
