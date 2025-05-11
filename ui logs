@@ -1,0 +1,110 @@
+Here’s a **complete set of log monitoring queries with alert rules and Grafana setup steps**, specifically tailored to your environment (`cluster_name="azure-eastus-st-085-np-aks-001"`, namespace: `storefront-storefront-ut`, pod: `mobility-ops-storefront-poc-ut-.*`).
+
+---
+
+## ✅ **1. Error Spike Alert**
+
+### 🔍 **Query:**
+
+```logql
+count_over_time({
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"mobility-ops-storefront-poc-ut-.*"
+} |= "ERROR" [5m])
+```
+
+### 🚨 **Alert condition:**
+
+* Use **Threshold Expression**
+* If **count > 5** in **5m window**
+
+### 🛠️ **Grafana Setup:**
+
+1. Add **Query A** above.
+2. Add **Expression B** – Threshold:
+
+   * **Input**: A
+   * **IS ABOVE**: `5`
+3. Set `Evaluation = every 1m`
+4. Configure Notification contact point
+
+---
+
+## ✅ **2. Exception Alert**
+
+### 🔍 **Query:**
+
+```logql
+count_over_time({
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"mobility-ops-storefront-poc-ut-.*"
+} |= "Exception" [5m])
+```
+
+### 🚨 **Alert condition:**
+
+* Fire if count > 0
+
+### 🛠️ **Grafana Setup:**
+
+Same as above, change threshold value to `0`.
+
+---
+
+## ✅ **3. Crash Loop Detected**
+
+### 🔍 **Query:**
+
+```logql
+count_over_time({
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"mobility-ops-storefront-poc-ut-.*"
+} |= "Back-off restarting failed container" [5m])
+```
+
+### 🚨 **Alert condition:**
+
+* Trigger if count > 0
+
+---
+
+## ✅ **4. Pod Silence – No Logs Output**
+
+### 🔍 **Query:**
+
+```logql
+count_over_time({
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod="mobility-ops-storefront-poc-ut"
+}[5m])
+```
+
+### 🚨 **Alert condition:**
+
+* Fire if result **== 0**
+
+---
+
+## ✅ **Alert Rule Setup (Steps for Any of the Above)**
+
+1. Go to **Alerting > New Alert Rule**
+2. Choose **Data Source** → your **Loki source**
+3. Paste the query into **Query A**
+4. Click **Add expression** → choose `Threshold`
+5. Set:
+
+   * Input: A
+   * Condition: `IS ABOVE` or `IS EQUAL TO`
+   * Value: (based on your logic)
+6. Click **Set as alert condition**
+7. Set evaluation frequency (e.g. every 1m)
+8. Choose your **Contact Point (Slack, Email, etc.)**
+9. Save alert rule
+
+---
+
+Would you like me to turn this into a Markdown or Word doc version for documentation use?
