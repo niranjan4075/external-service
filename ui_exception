@@ -1,0 +1,53 @@
+Thanks for pointing that out — you're right to be cautious. Let's adjust the syntax and provide a **working version** specifically for Loki **when `|= "Exception"` didn't return results**.
+
+---
+
+### ✅ **Correct Loki Log Query for Exception Detection (UI Pod)**
+
+If `|= "Exception"` didn’t work, try using a **case-insensitive regex match** with `|~`:
+
+```logql
+count_over_time({
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"mobility-ops-storefront-poc-ut-.*"
+} |~ "(?i)exception" [1h])
+```
+
+> ✅ This will match **Exception**, **exception**, or even `EXCEPTION` regardless of case.
+
+---
+
+### 🚨 **Alert Rule for Exception Logs**
+
+#### 📌 Query A:
+
+Use the query above.
+
+#### ➕ Expression B: `Reduce`
+
+* **Input:** A
+* **Function:** `Last`
+* **Mode:** `Strict`
+
+#### ➕ Expression C: `Threshold`
+
+* **Input:** B
+* **Condition:** `IS ABOVE`
+* **Value:** `5` *(or any value based on your sensitivity)*
+
+✅ **Set C as Alert Condition**
+
+---
+
+### 🛎️ Alert Metadata
+
+**Alert Name:**
+`UI Pod Exception Log Spike`
+
+**Description:**
+This alert is triggered when more than 5 logs containing the word "exception" (in any case) are found in the past hour for UI pods (`mobility-ops-storefront-poc-ut-*`) in the `storefront-storefront-ut` namespace.
+
+---
+
+Let me know if you want to monitor for other terms like `Traceback`, `error`, or `Unhandled`.
