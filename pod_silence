@@ -1,0 +1,59 @@
+Great — let’s now tackle **“Pod Silence – No Logs Output”**. This alert detects if **a pod stops emitting logs**, which could indicate it’s stuck, deadlocked, or silently crashed.
+
+---
+
+## ✅ **Query: Pod Silence (No Logs Output)**
+
+```logql
+count_over_time({
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"mobility-ops-storefront-poc-ut-.*"
+} [30m])
+```
+
+> 🔍 This returns the **number of log lines** emitted by matching pods in the last 30 minutes.
+
+---
+
+## 🚨 **Alert Query Setup**
+
+### 🔷 Query A — Log Silence Detection
+
+Use the query above in **Query A**.
+
+---
+
+### 🔷 Expression B — Reduce
+
+* **Input:** A
+* **Function:** `Last`
+* **Mode:** `Strict`
+
+---
+
+### 🔷 Expression C — Threshold
+
+* **Input:** B
+* **Condition:** `IS BELOW`
+* **Value:** `1`
+
+✅ **Set C as the alert condition.**
+
+---
+
+## 🛎️ Alert Metadata
+
+**Alert Name:**
+`UI Pod Silence - No Logs Output`
+
+**Description:**
+This alert is triggered when a UI pod (`mobility-ops-storefront-poc-ut-*`) in the `storefront-storefront-ut` namespace has not emitted any logs in the last 30 minutes, which could indicate the pod is stuck or unresponsive.
+
+**Severity:** `warning` or `critical`
+
+**Recommendation:** Check the pod status using `kubectl describe pod` or inspect readiness/liveness probes and container status.
+
+---
+
+Would you also like to combine this with pod readiness or restart counts for correlation?
