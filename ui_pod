@@ -1,0 +1,36 @@
+Yes — here are the **most essential alerts you should set up for pods**, especially in a production or tightly monitored environment like your **Storefront UT** namespace. These help ensure **stability, availability, and performance**.
+
+---
+
+## ✅ **Core Pod-Level Alerts (Must-Have)**
+
+| # | Alert Name                          | Purpose                                                                 |
+| - | ----------------------------------- | ----------------------------------------------------------------------- |
+| 1 | **Pod Not Running**                 | Detects pods in states other than `Running` (e.g., `Pending`, `Failed`) |
+| 2 | **Pod Restart Detected**            | Captures any restarts in the last N minutes                             |
+| 3 | **CrashLoopBackOff**                | Detects if containers are stuck in restart loops                        |
+| 4 | **Pod Uptime Too Low**              | Alerts if a pod was recently restarted or created                       |
+| 5 | **Pod Uptime Too High**             | Detects long-living pods that haven’t been rolled (e.g., > 7 days)      |
+| 6 | **Pod CPU Usage Too High**          | Catches pods consuming unexpected CPU                                   |
+| 7 | **Pod Memory Usage Too High**       | Catches memory-hungry pods that may OOM                                 |
+| 8 | **Pod Not Ready**                   | Flags pods whose containers fail readiness probes                       |
+| 9 | **Unscheduled Pods (Pending Long)** | Detects pods stuck in `Pending` due to scheduling/resource issues       |
+
+---
+
+## 📌 Bonus / Optional Alerts (Advanced Monitoring)
+
+| #  | Alert Name                       | When to use                                                              |
+| -- | -------------------------------- | ------------------------------------------------------------------------ |
+| 10 | **Pod Evicted**                  | Detects pods removed from nodes due to resource pressure                 |
+| 11 | **Pod Distribution Imbalance**   | Too many replicas of a service running on same node                      |
+| 12 | **OOMKilled Detection**          | Use `container_status_terminated_reason` with `reason="OOMKilled"`       |
+| 13 | **Container Image Pull Error**   | Detects `ImagePullBackOff`, etc. using `container_status_waiting_reason` |
+| 14 | **Node-to-Pod Saturation Ratio** | Helps with planning scale-up / bin-packing checks                        |
+
+---
+
+Would you like me to provide full setup for one of the next:
+→ `CrashLoopBackOff`,
+→ `Not Ready`, or
+→ `High CPU/Memory usage`?
