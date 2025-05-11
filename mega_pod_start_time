@@ -1,32 +1,17 @@
-Here’s the **complete setup** for monitoring **Pod Start Time**, which helps you identify **when a pod was last deployed or restarted**.
+Here’s the **complete documentation** for tracking **Pod Uptime in Minutes**, including the query, alert setup, explanation, and a real-world example (like the 6500-minute uptime in your screenshot).
 
 ---
 
-## 🕓 **Pod Start Time Alert (Unix Timestamp)**
+# **Pod Uptime in Minutes Monitoring & Alerting**
+
+This setup helps you monitor how long each pod has been running continuously. It's useful for:
+
+* Detecting recent restarts (short uptime)
+* Identifying pods that haven't been rolled in a long time (long uptime)
 
 ---
 
-### ✅ 1. Main Query (Prometheus)
-
-```prometheus
-kube_pod_start_time{
-  cluster_name="azure-eastus-st-085-np-aks-001",
-  namespace="storefront-storefront-ut",
-  pod=~"storefront-api-ut-.*"
-}
-```
-
-> This returns the **start time of each pod** as a Unix timestamp. It updates when the pod restarts or is recreated.
-
----
-
-### 🚨 2. Alert Query Setup (for detecting recent restarts)
-
-You likely want to alert if a pod has **started within the last X minutes** (e.g., 5 minutes = potential restart).
-
----
-
-### ✅ Alert Query (calculate pod uptime in minutes)
+## ✅ 1. Main Prometheus Query (Uptime in Minutes)
 
 ```prometheus
 (time() - kube_pod_start_time{
@@ -36,34 +21,74 @@ You likely want to alert if a pod has **started within the last X minutes** (e.g
 }) / 60
 ```
 
----
+### Output:
 
-### 🚨 Alert Rule Setup (Grafana Unified Alerting)
-
-| Setting            | Value                                                             |
-| ------------------ | ----------------------------------------------------------------- |
-| **Query A**        | Use the alert query above                                         |
-| **Expression B**   | `Reduce` → Function: `Min` or `Max` → Input: `A`                  |
-| **Expression C**   | `Threshold` → Input: `B`, Condition: `IS BELOW`, Value: `5`       |
-| **Evaluate every** | `3m`                                                              |
-| **For (pending)**  | `1m`                                                              |
-| **Alert name**     | `Pod Recently Started`                                            |
-| **Folder**         | `MOBILITY_OPERATIONS_STOREFRONT-nonProd`                          |
-| **Labels**         | `alert_type: pod_start_time`, `environment: ut`, `severity: info` |
+Returns **uptime in minutes** for each pod.
+Example: `6500` means the pod has been running for approximately **4.5 days** (`6500 ÷ 60 = 108.3 hours`).
 
 ---
 
-### 📝 3. Description (for Alert)
+## 📊 2. Grafana Panel Setup (Uptime Graph)
+
+**Panel Type**: Time Series
+**Y-axis**: Minutes
+**Legend**: Pod name
+**Instant**: Disabled (default time series behavior)
+
+Use this for visibility over time on how long pods have been up.
+
+---
+
+## 🚨 3. Alert Rule Setup – Detect Recently Started Pods
+
+This alert fires if **any pod uptime is less than 10 minutes**, indicating a possible restart or rollout.
+
+### **Alert Query**
+
+Same as main query:
+
+```prometheus
+(time() - kube_pod_start_time{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
+}) / 60
+```
+
+### **Grafana Unified Alert Configuration:**
+
+| Step               | Value                                                      |
+| ------------------ | ---------------------------------------------------------- |
+| **Query A**        | Use the above uptime query                                 |
+| **Expression B**   | Reduce → Function: `Min` → Input: `A`                      |
+| **Expression C**   | Threshold → Input: `B`, Condition: `IS BELOW`, Value: `10` |
+| **Evaluate Every** | `3m`                                                       |
+| **For (pending)**  | `1m`                                                       |
+| **Folder**         | `MOBILITY_OPERATIONS_STOREFRONT-nonProd`                   |
+| **Labels**         | `alert_type=pod_uptime`, `environment=ut`, `severity=info` |
+| **Alert Name**     | `Pod Uptime Alert`                                         |
+
+---
+
+## 📝 4. Alert Description
 
 ```yaml
-summary: "Pod recently started in storefront-storefront-ut"
+summary: "Pod has low uptime"
 description: |
-  One or more pods in namespace `storefront-storefront-ut` were started 
-  within the last 5 minutes in cluster `azure-eastus-st-085-np-aks-001`. 
-  This may be expected (e.g., rollout), or may indicate unexpected restarts. 
-  Review deployment timelines and container logs if unplanned.
+  One or more pods in namespace `storefront-storefront-ut` have uptime less than 10 minutes 
+  in cluster `azure-eastus-st-085-np-aks-001`. This usually means a recent restart or redeployment. 
+  Check deployment history and container logs to confirm whether it was expected.
 ```
 
 ---
 
-Would you like me to now proceed with the same format for **CrashLoopBackOff** or **Pod not running**?
+## ✅ 5. Optional: Long Uptime Alert (No Redeployment in Days)
+
+If you want to be notified when a pod hasn’t restarted in X days (e.g. for stale rollouts), reverse the condition:
+
+\| Condition           | `IS ABOVE`  |
+\| Threshold value     | `10080` (7 days in minutes) |
+
+---
+
+Would you also like to track pod uptimes grouped by namespace or deployment label for summary dashboards?
