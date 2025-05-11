@@ -3,6 +3,86 @@ Perfect — since `kube_pod_info` worked, that confirms:
 * **Your Prometheus setup is good**
 * The **`pod` label is available**
 * Other pod-level metrics like `status_ready`, `start_time`, or `restarts_total` may need to be **joined with `kube_pod_info`** to extract full pod metadata
+Absolutely — here are all the key pod health and status Prometheus queries, rewritten in your preferred structure:
+
+> **Order: `cluster_name` → `namespace` → `pod`**
+
+---
+
+## ✅ 1. **Pod Running Status**
+
+```prometheus
+kube_pod_status_phase{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*",
+  phase="Running"
+}
+```
+
+---
+
+## ✅ 2. **Pod Restart Count**
+
+```prometheus
+kube_pod_container_status_restarts_total{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
+}
+```
+
+---
+
+## ✅ 3. **Pod Start Time (Unix Timestamp)**
+
+```prometheus
+kube_pod_start_time{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
+}
+```
+
+---
+
+## ✅ 4. **Pod Uptime in Minutes**
+
+```prometheus
+(time() - kube_pod_start_time{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
+}) / 60
+```
+
+---
+
+## ✅ 5. **CPU Usage per Pod**
+
+```prometheus
+rate(container_cpu_usage_seconds_total{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
+}[5m])
+```
+
+---
+
+## ✅ 6. **Pod Info (Metadata like node name, IP, etc.)**
+
+```prometheus
+kube_pod_info{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
+}
+```
+
+---
+
+Would you like me to bundle these into a single Grafana dashboard or help create alerts based on them?
 
 ---
 
