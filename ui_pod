@@ -1,36 +1,103 @@
-Yes — here are the **most essential alerts you should set up for pods**, especially in a production or tightly monitored environment like your **Storefront UT** namespace. These help ensure **stability, availability, and performance**.
+Thanks — since this is a **UI pod** named:
+
+```text
+mobility-ops-storefront-poc-ut-*
+```
+
+in cluster `azure-eastus-st-085-np-aks-001` and namespace `storefront-storefront-ut`, here are key alerts tailored for UI-facing components:
 
 ---
 
-## ✅ **Core Pod-Level Alerts (Must-Have)**
+## 1. **Pod Not Ready Alert** (UI Not Serving Traffic)
 
-| # | Alert Name                          | Purpose                                                                 |
-| - | ----------------------------------- | ----------------------------------------------------------------------- |
-| 1 | **Pod Not Running**                 | Detects pods in states other than `Running` (e.g., `Pending`, `Failed`) |
-| 2 | **Pod Restart Detected**            | Captures any restarts in the last N minutes                             |
-| 3 | **CrashLoopBackOff**                | Detects if containers are stuck in restart loops                        |
-| 4 | **Pod Uptime Too Low**              | Alerts if a pod was recently restarted or created                       |
-| 5 | **Pod Uptime Too High**             | Detects long-living pods that haven’t been rolled (e.g., > 7 days)      |
-| 6 | **Pod CPU Usage Too High**          | Catches pods consuming unexpected CPU                                   |
-| 7 | **Pod Memory Usage Too High**       | Catches memory-hungry pods that may OOM                                 |
-| 8 | **Pod Not Ready**                   | Flags pods whose containers fail readiness probes                       |
-| 9 | **Unscheduled Pods (Pending Long)** | Detects pods stuck in `Pending` due to scheduling/resource issues       |
+### ✅ Main Query
+
+```prometheus
+kube_pod_container_status_ready{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"mobility-ops-storefront-poc-ut-.*"
+} == 0
+```
+
+> Checks if any container in the UI pod is **not ready**.
+
+### 🚨 Alert Rule
+
+| Setting           | Value               |
+| ----------------- | ------------------- |
+| **Expression**    | Use above query (A) |
+| **Reduce**        | `Max`               |
+| **Threshold**     | `IS ABOVE 0`        |
+| **Eval Interval** | `3m`                |
+| **Pending**       | `1m`                |
+| **Severity**      | `critical`          |
+
+### 📝 Description
+
+```yaml
+summary: "UI pod is not ready"
+description: |
+  The UI pod `mobility-ops-storefront-poc-ut` is not passing readiness checks and may not be serving traffic. 
+  Investigate probe status, container logs, or startup delays.
+```
 
 ---
 
-## 📌 Bonus / Optional Alerts (Advanced Monitoring)
+## 2. **Pod Restart Alert** (Possible Crash or Instability)
 
-| #  | Alert Name                       | When to use                                                              |
-| -- | -------------------------------- | ------------------------------------------------------------------------ |
-| 10 | **Pod Evicted**                  | Detects pods removed from nodes due to resource pressure                 |
-| 11 | **Pod Distribution Imbalance**   | Too many replicas of a service running on same node                      |
-| 12 | **OOMKilled Detection**          | Use `container_status_terminated_reason` with `reason="OOMKilled"`       |
-| 13 | **Container Image Pull Error**   | Detects `ImagePullBackOff`, etc. using `container_status_waiting_reason` |
-| 14 | **Node-to-Pod Saturation Ratio** | Helps with planning scale-up / bin-packing checks                        |
+### ✅ Main Query
+
+```prometheus
+increase(kube_pod_container_status_restarts_total{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"mobility-ops-storefront-poc-ut-.*"
+}[5m])
+```
+
+### 🚨 Alert Rule
+
+* Same setup as before: `Reduce: Max`, `Threshold > 0`, `Eval: 3m`, `Pending: 1m`
+
+### 📝 Description
+
+```yaml
+summary: "UI pod has restarted"
+description: |
+  The UI pod `mobility-ops-storefront-poc-ut` has restarted in the last 5 minutes.
+  This could indicate container crashes, OOMKills, or failed probes. Check logs for root cause.
+```
 
 ---
 
-Would you like me to provide full setup for one of the next:
-→ `CrashLoopBackOff`,
-→ `Not Ready`, or
-→ `High CPU/Memory usage`?
+## 3. **UI Pod Down (Pod Not Running)**
+
+### ✅ Main Query
+
+```prometheus
+kube_pod_status_phase{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"mobility-ops-storefront-poc-ut-.*",
+  phase!="Running"
+}
+```
+
+### 🚨 Alert Rule
+
+* Reduce: Count
+* Threshold: `IS ABOVE 0`
+
+### 📝 Description
+
+```yaml
+summary: "UI pod not running"
+description: |
+  The UI pod is in a non-running state (e.g., Pending, Failed). It may be failing to schedule or crashing. 
+  This can result in the user interface being unavailable.
+```
+
+---
+
+Would you like to bundle all three into a **dashboard panel group** or export them into alert rule JSON for importing?
