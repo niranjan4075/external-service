@@ -1,0 +1,88 @@
+Thanks — you're asking for a **clear, production-ready alert** that notifies you when **any pod** in your namespace:
+
+1. **Goes down (not running)**
+2. **Restarts**
+
+Here’s exactly what you need — both **main queries** and **alert rules** step-by-step.
+
+---
+
+## ✅ MONITOR TARGET
+
+* **Cluster**: `azure-eastus-st-085-np-aks-001`
+* **Namespace**: `storefront-storefront-ut`
+* **Pods**: All pods
+
+---
+
+## 🔹 1. ALERT: **Pod is not running**
+
+### ✅ Main Query
+
+```prometheus
+kube_pod_status_phase{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  phase!="Running"
+}
+```
+
+### 🔔 Alert Rule Setup
+
+* **Query:** Use the above
+* **Reduce:** `Count`
+* **Threshold Condition:** `IS ABOVE 0`
+* **Evaluation Interval:** `3m`
+* **Pending:** `1m`
+
+### 📌 Meaning:
+
+> Triggers if **any pod is not in Running phase** (e.g., `Pending`, `Failed`, `Unknown`)
+
+---
+
+## 🔹 2. ALERT: **Pod Restart Detected**
+
+### ✅ Main Query
+
+```prometheus
+increase(kube_pod_container_status_restarts_total{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut"
+}[5m])
+```
+
+### 🔔 Alert Rule Setup
+
+* **Reduce:** `Max`
+* **Condition:** `IS ABOVE 0`
+* **Evaluate Every:** `3m`
+* **Pending:** `1m`
+
+### 📌 Meaning:
+
+> Triggers if **any pod restarted in the last 5 minutes**
+
+---
+
+## 🧾 Optional Labels for Both Alerts
+
+```yaml
+labels:
+  severity: critical
+  alert_type: pod_unhealthy
+  environment: ut
+```
+
+---
+
+## 📝 Optional Annotations
+
+```yaml
+summary: "Pod issue detected in storefront-storefront-ut"
+description: "One or more pods are either down or recently restarted. Check cluster health."
+```
+
+---
+
+Would you like me to give you this as a ready-to-import **Grafana JSON alert rule** next?
