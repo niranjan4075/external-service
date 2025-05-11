@@ -1,0 +1,69 @@
+Here’s the **complete setup** for monitoring **Pod Start Time**, which helps you identify **when a pod was last deployed or restarted**.
+
+---
+
+## 🕓 **Pod Start Time Alert (Unix Timestamp)**
+
+---
+
+### ✅ 1. Main Query (Prometheus)
+
+```prometheus
+kube_pod_start_time{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
+}
+```
+
+> This returns the **start time of each pod** as a Unix timestamp. It updates when the pod restarts or is recreated.
+
+---
+
+### 🚨 2. Alert Query Setup (for detecting recent restarts)
+
+You likely want to alert if a pod has **started within the last X minutes** (e.g., 5 minutes = potential restart).
+
+---
+
+### ✅ Alert Query (calculate pod uptime in minutes)
+
+```prometheus
+(time() - kube_pod_start_time{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut",
+  pod=~"storefront-api-ut-.*"
+}) / 60
+```
+
+---
+
+### 🚨 Alert Rule Setup (Grafana Unified Alerting)
+
+| Setting            | Value                                                             |
+| ------------------ | ----------------------------------------------------------------- |
+| **Query A**        | Use the alert query above                                         |
+| **Expression B**   | `Reduce` → Function: `Min` or `Max` → Input: `A`                  |
+| **Expression C**   | `Threshold` → Input: `B`, Condition: `IS BELOW`, Value: `5`       |
+| **Evaluate every** | `3m`                                                              |
+| **For (pending)**  | `1m`                                                              |
+| **Alert name**     | `Pod Recently Started`                                            |
+| **Folder**         | `MOBILITY_OPERATIONS_STOREFRONT-nonProd`                          |
+| **Labels**         | `alert_type: pod_start_time`, `environment: ut`, `severity: info` |
+
+---
+
+### 📝 3. Description (for Alert)
+
+```yaml
+summary: "Pod recently started in storefront-storefront-ut"
+description: |
+  One or more pods in namespace `storefront-storefront-ut` were started 
+  within the last 5 minutes in cluster `azure-eastus-st-085-np-aks-001`. 
+  This may be expected (e.g., rollout), or may indicate unexpected restarts. 
+  Review deployment timelines and container logs if unplanned.
+```
+
+---
+
+Would you like me to now proceed with the same format for **CrashLoopBackOff** or **Pod not running**?
