@@ -1,0 +1,22 @@
+Here’s a **simple difference chart** between **Pod Start Time** and **Pod Uptime in Minutes** for quick understanding:
+
+---
+
+### **Simple Comparison Chart**
+
+| Feature                     | **Pod Start Time**                       | **Pod Uptime in Minutes**                          |
+| --------------------------- | ---------------------------------------- | -------------------------------------------------- |
+| **Metric**                  | `kube_pod_start_time`                    | `(time() - kube_pod_start_time) / 60`              |
+| **Unit**                    | Unix Timestamp (seconds)                 | Minutes                                            |
+| **Value Format**            | Large number (e.g., `1747050000`)        | Small number (e.g., `45`, `680.5`)                 |
+| **Meaning**                 | Exact time the pod started               | How long the pod has been running                  |
+| **Use Case**                | Timestamp for logs, debugging            | Health checks, restart detection, alert thresholds |
+| **Alerting Difficulty**     | Complex (need timestamp comparison)      | Easy (just check if uptime < threshold)            |
+| **Example Value**           | `1715645400` → "2025-05-13 00:00:00 UTC" | `30` → Pod running for 30 minutes                  |
+| **Visual Pattern in Chart** | Flat lines unless pod restarts           | Increases over time; drops to low value on restart |
+
+---
+
+This table gives a quick visual understanding of when and why you'd use each metric.
+
+Let me know if you'd like this exported to Markdown or shown on a Grafana tooltip!
