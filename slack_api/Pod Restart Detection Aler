@@ -1,0 +1,97 @@
+Here’s a fully copyable version of the documentation for your Pod Restart Detection Alert setup:
+
+---
+
+## Pod Restart Detection Alert – Monitoring & Alerting
+
+### 1. Purpose
+
+This chart and alert detect when Kubernetes pods are restarting frequently in a specific cluster and namespace. It helps identify crash loops, unstable containers, or deployment issues early.
+
+---
+
+### 2. Chart Title
+
+Pod Restart Detection Alert
+
+---
+
+### 3. Panel Query
+
+```promql
+increase(kube_pod_container_status_restarts_total{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut"
+}[5m])
+```
+
+* This calculates how many times a pod restarted over the past 5 minutes.
+* Any value above 0 indicates a restart happened.
+
+---
+
+### 4. X-Axis
+
+Date timeline (e.g., 04/14, 04/16, etc.)
+
+---
+
+### 5. Y-Axis
+
+Number of restarts detected in a 5-minute window
+
+* Example:
+
+  * 0 = No restarts
+  * 2 = Two restarts occurred during that time window
+
+---
+
+### 6. Alert Query
+
+```promql
+avg_over_time(
+  increase(kube_pod_container_status_restarts_total{
+    cluster_name="azure-eastus-st-085-np-aks-001",
+    namespace="storefront-storefront-ut"
+  }[5m])[1m:]
+)
+```
+
+* Uses average over time for better smoothing across multiple 1-minute samples.
+
+---
+
+### 7. Alert Rule Configuration
+
+* Rule Type: Grafana-managed
+* Function: Max
+* Mode: Strict
+* Threshold: IS ABOVE 0
+* Evaluation interval: Every 5 minutes
+
+> If any pod shows restart > 0 in a 5-minute window, the alert fires.
+
+---
+
+### 8. Example Scenario
+
+* If Pod A restarts 3 times between 02:00–02:05
+* Query result = 3
+* Alert fires with the message:
+  "Pod restart detected in storefront-storefront-ut (3 restarts in 5m)"
+
+---
+
+### 9. Benefits
+
+| Feature                      | Benefit                                        |
+| ---------------------------- | ---------------------------------------------- |
+| Real-time crash detection    | Quickly detect failing containers              |
+| Easy threshold configuration | Prevent alert fatigue by tuning restart limits |
+| Scoped to cluster/namespace  | Helps isolate issues cleanly                   |
+| Visualization + Alerting     | Visual history & real-time notification        |
+
+---
+
+Let me know if you want a version in Markdown format or to attach this into a Grafana dashboard description or README.
