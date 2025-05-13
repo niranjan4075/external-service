@@ -1,0 +1,139 @@
+Here is the **complete documentation** for the **Pod Start Time Alert (Unix Timestamp)** chart, including the alert setup using `kube_pod_start_time`.
+
+---
+
+## **Pod Start Time Alert (Unix Timestamp) – Monitoring & Alerting**
+
+---
+
+### **1. Purpose**
+
+This panel and alert setup track the exact start time of Kubernetes pods using Unix timestamps. It is useful to detect **pod restarts** based on changes in start time, without relying solely on restart counters.
+
+---
+
+### **2. Panel Title**
+
+**Pod Start Time Alert (Unix Timestamp)**
+
+---
+
+### **3. Metrics Query (Displayed in Panel)**
+
+```promql
+kube_pod_start_time{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut"
+}
+```
+
+#### **Explanation**
+
+This metric shows the Unix timestamp (in seconds) for when each pod started. A change in the timestamp over time means the pod has restarted or been re-created.
+
+---
+
+### **4. X-Axis**
+
+**Time Series (HH\:MM\:SS format)**
+
+* Updates at 1-minute intervals.
+* Represents the timeline where each timestamp is evaluated.
+
+---
+
+### **5. Y-Axis**
+
+**Unix Timestamp (Seconds)**
+
+* Represents pod start time.
+* Example value: `1747000000` = `May 13, 2025 00:00:00 UTC`.
+* If a line suddenly drops to a newer timestamp, the pod has **restarted**.
+
+---
+
+### **6. Example Interpretation**
+
+| Timestamp                             | Meaning                     |
+| ------------------------------------- | --------------------------- |
+| Constant (e.g., 1746950000)           | Pod has not restarted       |
+| New value (e.g., jumps to 1747050000) | Pod restarted or re-created |
+
+---
+
+### **7. Alert Query Setup**
+
+#### **Primary Alert Query:**
+
+```promql
+(time() - kube_pod_start_time{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut"
+}) / 60
+```
+
+#### **Purpose:**
+
+* Measures **pod uptime in minutes** by subtracting the pod start time from the current time.
+
+---
+
+### **8. Alert Condition Configuration**
+
+| Component     | Setting                                  |
+| ------------- | ---------------------------------------- |
+| **Function**  | `Min`                                    |
+| **Mode**      | `Strict`                                 |
+| **Threshold** | If **uptime < X minutes**, trigger alert |
+
+> Example: Alert if uptime is less than **30 minutes** → indicates pod has restarted recently.
+
+---
+
+### **9. Alert Rule Logic**
+
+If the minimum uptime for any pod is below the defined threshold (e.g., 30 minutes), the alert fires:
+
+**Trigger Condition:**
+
+```text
+(time() - kube_pod_start_time) / 60 < 30
+```
+
+---
+
+### **10. Example Scenario**
+
+* Current Unix time: `1715647200`
+* Pod start time: `1715645400`
+
+Then:
+
+```text
+Uptime = (1715647200 - 1715645400) / 60 = 30 minutes
+```
+
+If a pod restarts and this number becomes `5`, the alert fires.
+
+---
+
+## **Benefits & Use Cases**
+
+| Feature                         | Benefit                                        |
+| ------------------------------- | ---------------------------------------------- |
+| Precise Start Time Tracking     | Know exactly when each pod started             |
+| Detect Restarts Without Counter | Works even if restart metrics are missing      |
+| Time-Based Alerting             | Catch pods restarted within short intervals    |
+| Unix Timestamp View             | Useful for debugging and correlation with logs |
+
+---
+
+## **Suggestions**
+
+* Use this together with `increase(kube_pod_container_status_restarts_total)` for redundancy.
+* Display human-readable timestamps using Grafana transformations or labels.
+* Consider grouping by pod name or instance to target alerts better.
+
+---
+
+Let me know if you'd like this formatted for a README, Markdown dashboard description, or attached to alert documentation!
