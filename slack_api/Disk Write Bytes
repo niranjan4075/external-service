@@ -1,0 +1,88 @@
+Here is the **complete documentation** for the **Disk Write Bytes/sec** panel you shared:
+
+---
+
+## **Disk Write Bytes/sec – Monitoring Panel**
+
+---
+
+### **1. Purpose**
+
+This panel tracks **disk write throughput** for containers in bytes per second, helping you monitor high I/O workloads, detect write-intensive processes, and understand storage pressure trends across your Kubernetes pods.
+
+---
+
+### **2. Chart Title**
+
+**Disk Write Bytes/sec**
+
+---
+
+### **3. Prometheus Query Used**
+
+```promql
+rate(container_fs_writes_bytes_total{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-ut"
+}[6h])
+```
+
+---
+
+### **4. Query Explanation**
+
+* `container_fs_writes_bytes_total`: Cumulative number of bytes written to the container’s filesystem.
+* `rate(...)`: Calculates the per-second rate of writes based on change over time.
+* `[6h]`: Smooths the data using a 6-hour range to give a clearer trend for long-term monitoring.
+
+---
+
+### **5. X-Axis**
+
+**Date Timeline (e.g., 04/16, 04/18, 04/20)**
+
+* Represents time across several days.
+* Helps correlate disk write spikes with deployments, traffic peaks, or issues.
+
+---
+
+### **6. Y-Axis**
+
+**Bytes per Second (Disk Write Throughput)**
+
+* Shows the rate at which bytes are being written to disk by containers.
+* Example range: `0` to `7,000,000 B/s` (≈6.6 MB/s)
+
+---
+
+### **7. Interpretation**
+
+| Behavior              | Meaning                                                          |
+| --------------------- | ---------------------------------------------------------------- |
+| Spike in values       | Heavy disk writing activity (e.g., logging, caching, temp files) |
+| Flat line at 0        | No disk writes or inactive pod/container                         |
+| Sudden drop           | Pod restart or container I/O stall                               |
+| Frequent fluctuations | Normal for applications with intermittent writes                 |
+
+---
+
+### **8. Use Cases**
+
+| Use Case                       | Benefit                                            |
+| ------------------------------ | -------------------------------------------------- |
+| Detect write-heavy pods        | Identify apps causing disk pressure                |
+| Monitor I/O during deployments | Observe performance during new releases            |
+| Optimize storage usage         | Spot excessive file operations or logging          |
+| Alert on abnormal spikes       | Prevent performance degradation or data loss risks |
+
+---
+
+### **9. Suggestions**
+
+* **Add Alert Rule**: Trigger if disk write rate exceeds a critical threshold for a sustained period (e.g., `>10 MB/s` for 5 mins).
+* **Segment by Pod/Container**: Add labels like `container`, `pod`, or `device` in the legend to identify write-heavy containers.
+* **Overlay Deployment Annotations**: Useful to correlate spikes with app updates.
+
+---
+
+Let me know if you'd like help creating an alert rule for disk I/O spikes or exporting this into documentation format (Markdown or README).
