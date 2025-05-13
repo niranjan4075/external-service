@@ -1,0 +1,44 @@
+To **count how many times a keyword appears in logs**, such as the phrase `POST /generate_ref`, you need to use **LogQL (Loki) query with a `count_over_time`** function in Grafana.
+
+---
+
+### **Correct LogQL Query to Count Keyword Usage:**
+
+```logql
+count_over_time(
+  {cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-dv", pod=~"storefront-api-dv.*"}
+  |= "POST /generate_ref"
+  [6h]
+)
+```
+
+---
+
+### **Explanation:**
+
+* **`{...}`**: Filters by `cluster_name`, `namespace`, and pod pattern.
+* **`|= "POST /generate_ref"`**: Searches only log lines containing that exact phrase.
+* **`[6h]`**: Time range (last 6 hours). You can adjust this to `[1h]`, `[24h]`, etc.
+* **`count_over_time(...)`**: Counts how many times matching logs occurred in the selected time window.
+
+---
+
+### **Optional: Group by Pod Name**
+
+To see **how many times each pod used this**:
+
+```logql
+sum by(pod) (
+  count_over_time(
+    {cluster_name="azure-eastus-st-085-np-aks-001", namespace="storefront-dv", pod=~"storefront-api-dv.*"}
+    |= "POST /generate_ref"
+    [6h]
+  )
+)
+```
+
+This groups the count per pod, which is useful for finding which pod made the most requests.
+
+---
+
+Let me know if you want to **turn this into an alert rule** or **visualize on a dashboard panel**!
