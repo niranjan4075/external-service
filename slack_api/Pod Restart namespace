@@ -1,0 +1,143 @@
+Here is the **complete documentation** for the **Pod Restart** chart and **Test Storefront Alert** you’ve configured:
+
+---
+
+## **Pod Restart – Monitoring & Alerting**
+
+---
+
+### **1. Purpose**
+
+This Grafana panel tracks **cumulative pod restarts** grouped by pod name. It helps detect which pods in your environment are experiencing restarts and when, offering clear visibility into deployment or runtime instability.
+
+---
+
+### **2. Chart Title**
+
+**Pod Restart**
+
+---
+
+### **3. Query Used in Panel**
+
+```promql
+sum by (pod) (
+  kube_pod_container_status_restarts_total{
+    cluster_name="azure-eastus-st-085-np-aks-001",
+    namespace="storefront-dv"
+  }
+)
+```
+
+---
+
+### **4. Query Explanation**
+
+* `kube_pod_container_status_restarts_total`: A counter that increases every time a container restarts.
+* `sum by (pod)`: Groups the restart totals per pod.
+* This shows the total restarts **per pod**, not over time — it keeps increasing unless the pod is deleted and recreated.
+
+---
+
+### **5. X-Axis**
+
+**Time Series (Date-Time)**
+
+* Represents the timeline (e.g., `05/06`, `05/07`, `05/08`)
+* Each dot or bar shows the latest known restart total for that pod at a given timestamp.
+
+---
+
+### **6. Y-Axis**
+
+**Restart Count**
+
+* Number of total restarts per pod.
+* Examples:
+
+  * `0` = never restarted
+  * `6.5` = restarted 6 times, possibly mid-interval
+
+---
+
+### **7. Interpretation**
+
+| Observation     | Meaning                           |
+| --------------- | --------------------------------- |
+| Steady values   | No new restarts                   |
+| Sudden jump     | New restart event                 |
+| Flat at 0       | Pod is stable                     |
+| Frequent spikes | Pod in crash loop or under stress |
+
+---
+
+### **8. Alert Configuration – Test Storefront Alert**
+
+#### **Query:**
+
+```promql
+sum by (pod) (
+  kube_pod_container_status_restarts_total{
+    cluster_name="azure-eastus-st-085-np-aks-001",
+    namespace="storefront-dv",
+    pod=~"storefront-api-dv.*"
+  }
+)
+```
+
+#### **Alert Type:**
+
+Grafana-managed
+
+#### **Expression Settings:**
+
+| Setting         | Value    |
+| --------------- | -------- |
+| Reduce Function | `Min`    |
+| Mode            | `Strict` |
+
+#### **Threshold:**
+
+```text
+IS ABOVE 0
+```
+
+---
+
+### **9. Alert Logic**
+
+If **any pod** matching `storefront-api-dv.*` has a restart count **above 0**, the alert will trigger. This helps detect **first restart events** quickly.
+
+---
+
+### **10. Example Scenario**
+
+| Time        | Restart Count | Result      |
+| ----------- | ------------- | ----------- |
+| 05/06 16:00 | 0             | No alert    |
+| 05/08 08:00 | 6.5           | Alert fires |
+
+The chart shows **colored lines per pod**, allowing easy pinpointing of which pod restarted.
+
+---
+
+### **11. Suggestions & Enhancements**
+
+* **Add `increase()` for smoother trend detection:**
+
+  ```promql
+  increase(kube_pod_container_status_restarts_total[5m])
+  ```
+
+  This is better for **alerting based on recent activity** rather than absolute totals.
+
+* **Group by deployment or instance** for higher-level alerts.
+
+* **Visual tips:**
+
+  * Add panel thresholds or annotations for alerts.
+  * Use dashboard variables to filter by namespace or pod pattern.
+
+---
+
+Let me know if you want this turned into alert policy documentation or linked with Slack/MS Teams alerts for faster incident response!
