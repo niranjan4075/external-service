@@ -1,0 +1,113 @@
+Here is a **complete documentation** for the chart titled **"Pod Uptime in Minutes Monitoring & Alerting"** — including purpose, axes explanation, query logic, example, alerting use case, and how to interpret the graph.
+
+---
+
+## **Pod Uptime in Minutes Monitoring & Alerting – Documentation**
+
+### **Purpose**
+
+This Grafana panel is designed to monitor the uptime of Kubernetes pods in minutes. It helps detect unexpected pod restarts or crashes by continuously evaluating how long each pod has been running since its last start. This visibility is essential for identifying stability issues and triggering alerts for abnormal behaviors.
+
+---
+
+### **Panel Title**
+
+**Pod Uptime in Minutes Monitoring & Alerting**
+
+---
+
+### **Prometheus Query**
+
+```promql
+(time() - kube_pod_start_time{ 
+  cluster_name="azure-eastus-st-085-np-aks-001", 
+  namespace="storefrontnp-storefront-uat"
+}) / 60
+```
+
+---
+
+### **Data Source**
+
+`azure-metrics-np` (Prometheus)
+
+---
+
+### **X-Axis: Time (Time Series)**
+
+* Format: HH\:MM\:SS
+* Represents the timeline at fixed intervals (e.g., every 1 minute).
+* Shows how pod uptime changes over time.
+* Useful to observe **when** a pod restarted by identifying sudden drops.
+
+---
+
+### **Y-Axis: Pod Uptime (Minutes)**
+
+* Represents the total number of **minutes** a pod has been running continuously.
+
+* Uptime is computed dynamically using:
+
+  ```promql
+  (current_time - pod_start_time) / 60
+  ```
+
+* Higher values = pods are running longer without restart.
+
+* Lower values = recently started pods (or pods that crashed/restarted).
+
+---
+
+### **Example Calculation**
+
+Assume the following:
+
+* `time()` = `1715647200` (Unix timestamp of current time)
+* `kube_pod_start_time` = `1715606400` (Unix timestamp when pod started)
+
+**Uptime in Minutes**:
+
+```
+(1715647200 - 1715606400) / 60 = 680 minutes
+```
+
+So, the pod has been running for **680 minutes (\~11.3 hours)**.
+
+---
+
+### **How to Interpret the Chart**
+
+| Uptime Value                                | Interpretation                      |
+| ------------------------------------------- | ----------------------------------- |
+| Steady high value (e.g. \~8000 min)         | Pod is healthy and stable           |
+| Sudden drop to low value (e.g. \~10–60 min) | Pod has restarted recently          |
+| Frequent fluctuations                       | Possible crash loops or instability |
+| Flat horizontal line                        | No restarts during the window       |
+
+---
+
+### **Alerting Use Case**
+
+You can create an alert if pod uptime drops below a specific threshold (e.g., 30 minutes), which may indicate a crash or restart.
+
+**Alert Rule Example:**
+
+```promql
+(time() - kube_pod_start_time{namespace="storefrontnp-storefront-uat"}) / 60 < 30
+```
+
+**Alert Description:**
+
+> "Pod in `storefrontnp-storefront-uat` namespace has restarted — uptime is less than 30 minutes."
+
+---
+
+### **Best Practices**
+
+* Set alert thresholds based on pod behavior (e.g., critical services might warrant alerts for uptime < 60 min).
+* Combine this with **restart count** metrics to get deeper insight into pod stability.
+* Tag each pod with instance/cluster name in the legend for easier identification.
+
+---
+
+Let me know if you’d like this exported to Markdown or added to your Grafana dashboard as a description.
