@@ -1,0 +1,126 @@
+Based on your screenshots, here's the **complete documentation** for the "Monitor Target" chart and alerting logic using the `kube_pod_status_phase` and `kube_pod_container_status_restarts_total` metrics.
+
+---
+
+## **Monitor Target – Pod Running State and Restart Alerting**
+
+---
+
+### **1. Purpose**
+
+This dashboard panel monitors whether Kubernetes pods in the specified namespace and cluster are in the `Running` phase. In combination with an alert rule, it helps detect **pod restart events**, enabling proactive incident response.
+
+---
+
+### **2. Panel Title**
+
+**MONITOR TARGET**
+
+---
+
+### **3. Metrics Query (Normal Monitoring Panel)**
+
+```promql
+kube_pod_status_phase{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-uat",
+  phase="Running"
+}
+```
+
+#### **Explanation**
+
+This query returns a value of `1` for each pod that is currently in the `Running` phase and `0` if not.
+
+---
+
+### **4. X-Axis**
+
+**Time Series (HH\:MM\:SS format)**
+
+* Represents the progression of time, updating at 1-minute intervals.
+* Each point shows the status at that moment.
+
+---
+
+### **5. Y-Axis**
+
+**Pod Status (Binary: 0 or 1)**
+
+* `1` means the pod is in the **Running** state.
+* `0` means the pod is in another state (e.g., `Pending`, `Succeeded`, `Failed`, `CrashLoopBackOff`, etc.).
+
+---
+
+### **6. Interpretation**
+
+* A consistent value of `1` indicates that all monitored pods are healthy and running.
+* A drop to `0` or missing lines means the pod is not in `Running` state and might have crashed or been evicted.
+
+---
+
+## **Alerting Configuration – Detecting Pod Restarts**
+
+---
+
+### **Alert Expression Query**
+
+```promql
+increase(kube_pod_container_status_restarts_total{
+  cluster_name="azure-eastus-st-085-np-aks-001",
+  namespace="storefront-storefront-uat"
+}[5m])
+```
+
+#### **Explanation**
+
+* Calculates how many times a pod has restarted **within the past 5 minutes**.
+* Uses the `increase()` function to track deltas over time.
+
+---
+
+### **Alert Rule Configuration**
+
+* **Condition**: `IS ABOVE 0`
+* **Meaning**: Alert triggers if **any pod restarts** within the last 5 minutes.
+* **Evaluation**: Checked every minute.
+* **Recovery**: Automatically clears if no restarts are detected afterward.
+
+---
+
+### **7. Example Scenario**
+
+**Case 1:**
+
+* Pod A is restarted due to an out-of-memory error at `12:00:00`.
+* At `12:01:00`, the query sees `increase(...) > 0` over `[5m]`.
+* Alert fires with **"Pod restart detected in storefront-storefront-uat"**.
+
+**Case 2:**
+
+* All pods are running steadily for hours.
+* Chart shows continuous line at `1`, and no restart increase is detected.
+* No alert is triggered.
+
+---
+
+## **Use Cases & Benefits**
+
+| Feature                       | Benefit                                               |
+| ----------------------------- | ----------------------------------------------------- |
+| Pod Running Chart             | Ensures pods are continuously in the `Running` phase  |
+| Restart Alert                 | Detects unexpected crashes or restarts quickly        |
+| Binary Status View            | Easy to visually spot missing pods or unhealthy ones  |
+| Scoped by Namespace & Cluster | Helps isolate issues within specific app environments |
+
+---
+
+## **Suggested Enhancements**
+
+* Add a **legend alias** to show pod names for easier tracking.
+* Combine with **Uptime in Minutes** for broader insight.
+* Add a **Slack or Teams alert channel** to notify on restarts.
+
+---
+
+Let me know if you want this exported as Markdown, JSON, or embedded into a README or Grafana dashboard description.
