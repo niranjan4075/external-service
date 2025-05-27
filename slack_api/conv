@@ -1,0 +1,18 @@
+Here’s how you can respond constructively and clarify your position in the conversation:
+
+---
+
+Thanks Charlie — good point on the synthetic test.
+
+To clarify:
+The **7-day uptime alert** is not about real-time failures but helps us detect **stagnant deployments** — services that haven’t restarted or deployed in a long time. This helps track apps that may be outdated or not receiving updates.
+
+The **5-minute restart alert** is synthetic in nature — it simulates real-time checks for unexpected restarts, helping us catch instability in actively running pods.
+
+And yes, you're right — **pods** are part of the infrastructure; not the app itself but containers that run the app. But by monitoring pod behavior, we indirectly monitor app activity.
+
+Happy to adjust based on how our system evolves!
+
+---
+
+Let me know if you want a shorter or more technical version.
