@@ -14,5 +14,15 @@ And yes, you're right — **pods** are part of the infrastructure; not the app i
 Happy to adjust based on how our system evolves!
 
 ---
+Thanks for sharing the conversation. Here's a refined way you can **respond to clarify why the 5-minute restart alert is synthetic in nature**, especially in the context of **Grafana + Prometheus/Kubernetes**:
 
-Let me know if you want a shorter or more technical version.
+---
+
+**Suggested Reply:**
+
+> You're right that pod restarts reflect infrastructure behavior rather than the app itself. When I said the 5-minute restart alert is *synthetic in nature*, I meant it's a **proactive, system-defined check**, not triggered by real user activity or functional errors. It's based on a **recurring time-based evaluation window** (e.g., `changes(restarts[5m]) > 0`) — much like synthetic uptime tests simulate traffic, this simulates a *watchdog-style* condition for app stability. So while it's not a synthetic HTTP test, it *synthetically infers instability* through infrastructure signals rather than direct user impact.
+
+---
+
+Would you like me to tailor this response to fit your team's tone more precisely?
+
