@@ -1,0 +1,156 @@
+Great! Here's a **complete setup documentation** tailored for your **FastAPI-based Slack Integration and Remedy Automation System**, including purpose, environment setup, Slack API integration, branch strategy, deployment links, and necessary environment variables.
+
+---
+
+## 🚀 Project Setup: FastAPI – Slack Integration + Remedy Automation
+
+---
+
+### 📘 Overview
+
+This repository powers the **Slack integration and automated remedy workflow** for internal IT operations. It supports:
+
+* 🟢 Slack channel notifications for device requests, approvals, and provisioning
+* 🛠 Remedy ticket creation and status tracking
+* 🔐 Microsoft Entra ID-based user authentication and authorization
+* 📊 PostgreSQL integration for persistent interaction logging
+* 🌐 RESTful APIs to drive all user and admin workflows
+
+---
+
+### 🏗️ Project Setup – Local Development
+
+#### 1. Clone the repository
+
+```bash
+git clone <your-repo-url>
+cd <your-repo-name>
+```
+
+---
+
+#### 2. Create `.env` File
+
+Create a `.env` file at the root level with the following keys:
+
+```env
+# Database
+DATABASE_USER=svc_test
+SVC_PASSWORD=pword
+DATABASE_HOST=localhost
+DATABASE_PORT=5432
+DATABASE_NAME=msdb_local
+
+# Azure (for Entra ID / Graph)
+client_id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+client_secret=your_client_secret
+tenant_id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+scopes="https://graph.microsoft.com/.default"
+
+# Slack
+SLACK_BOT_TOKEN=xoxb-xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+SLACK_SIGNING_SECRET=your_slack_signing_secret
+SLACK_CHANNEL_ID=C1234567890
+
+# Remedy / ServiceNow (if applicable)
+REMEDY_API_BASE=https://remedy.api.endpoint
+REMEDY_USERNAME=remedy_user
+REMEDY_PASSWORD=remedy_password
+```
+
+---
+
+#### 3. Create Virtual Environment & Install Requirements
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+---
+
+#### 4. Run Server Locally
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+---
+
+### 🐳 Docker Setup
+
+If you're running via Docker (e.g., for staging):
+
+1. Update `.env` → change `DATABASE_HOST=host.docker.internal`
+2. Ensure Docker Desktop or Rancher Desktop is running
+3. Run the following:
+
+```bash
+docker compose build
+docker compose up
+```
+
+---
+
+### 🔗 Slack API Setup
+
+To integrate with Slack:
+
+1. Go to [https://api.slack.com/apps](https://api.slack.com/apps)
+2. Create a new app with **Socket Mode** and **Bot Token scopes**
+3. Enable the following scopes:
+
+   * `chat:write`
+   * `commands`
+   * `users:read`
+   * `users.profile:read`
+   * `channels:read`
+4. Add your bot to the target Slack channel
+5. Save and use:
+
+   * **Bot User OAuth Token** → `SLACK_BOT_TOKEN`
+   * **Signing Secret** → `SLACK_SIGNING_SECRET`
+
+---
+
+### 🌿 Environment Branches
+
+| Environment  | Git Branch      | Purpose                        |
+| ------------ | --------------- | ------------------------------ |
+| Development  | `main` or `dev` | Actively developed and tested  |
+| QA / Staging | `staging`       | Pre-prod testing (via Docker)  |
+| Production   | `release`       | Stable branch for prod release |
+
+---
+
+### 🚀 Deployment URLs
+
+| Environment | URL                                                          |
+| ----------- | ------------------------------------------------------------ |
+| Dev         | `https://mobility_ops_storefront-poc-dv-aze.cloud.geico.net` |
+| Staging     | `https://mobility_ops_storefront-stage.cloud.geico.net`      |
+| Production  | `https://mobility_ops_storefront-prod.cloud.geico.net`       |
+
+---
+
+### 🛠️ Tools Used
+
+* **FastAPI** – REST API framework
+* **PostgreSQL** – Persistent storage
+* **SQLAlchemy** – ORM for DB operations
+* **Slack SDK (`slack_sdk`)** – Slack bot integration
+* **Microsoft Entra ID** – Authentication via Graph API
+* **Docker / Docker Compose** – Containerization
+* **Alembic** – DB migrations
+* **Uvicorn** – ASGI server for FastAPI
+
+---
+
+Let me know if you'd like to include:
+
+* A default `main.py` or `Slack event handler` example
+* GitHub Actions for CI/CD
+* FastAPI auto-generated Swagger docs setup
+
+Would you like me to create a `README.md` version of this as well?
