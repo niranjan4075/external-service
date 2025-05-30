@@ -1,0 +1,234 @@
+Here is a **UI Requirements Document** tailored for a **UI/UX Designer** and front-end development team. It translates the original feature ideas into clear, screen-by-screen UI expectations with components, layouts, inputs, interactions, and data requirements.
+
+---
+
+# 📘 **UI Requirements Document – Storefront Admin UI**
+
+## 📜 Overview
+
+The Storefront Admin UI is a centralized admin panel for internal IT and procurement teams to view, control, and manage all aspects of the Storefront system. It provides visibility and management capabilities for user device inventory, request lifecycle tracking, Slack-based approval workflows, real-time device analytics, and inventory stock updates. This platform is crucial for enhancing efficiency, governance, and decision-making across IT asset management workflows.
+
+---
+
+## 🛡️ Page-Level UI Requirements
+
+### 1. **User Device Inventory Search**
+
+* **Page Title**: User Inventory Search
+* **Purpose**: Search and view current user-to-device assignments
+* **Description**: This page allows admin users to retrieve and analyze device assignments. The search is driven by multiple input fields and returns a detailed table. This is used for audits, tracking lifecycle states, and managing asset ownership. It enables administrators to make informed decisions on asset retirement, replacement, or reassignment based on lease timelines and device condition. This feature is also crucial for maintaining data integrity in inventory audits and compliance reports.
+* **Page Title**: User Inventory Search
+* **Purpose**: Search and view current user-to-device assignments
+* **Description**: This page allows admin users to retrieve and analyze device assignments. The search is driven by multiple input fields and returns a detailed table. This is used for audits, tracking lifecycle states, and managing asset ownership.
+* **UI Components**:
+
+  * **Search Filters** (Multi-field):
+
+    * Email ID (text input)
+    * Device Name (dropdown or auto-complete)
+    * Serial Number (text input)
+    * Lease End Date (date picker)
+    * End of Life Date (date picker)
+  * **Search Button**
+  * **Results Table**:
+
+    * Columns: Email, Device Name, Serial Number, Lease End, EOL Date, Status
+    * Pagination
+    * Export to CSV (optional)
+* **Interactions**:
+
+  * Search triggers API call to fetch matched records
+  * Filters are optional but combinable
+  * Clicking a record could open a side panel for more details (optional)
+
+---
+
+### 2. **Storefront Request Search**
+
+* **Page Title**: Request Search
+* **Purpose**: Track device requests submitted by users
+* **Description**: Designed to monitor and audit user-submitted hardware or peripheral requests. The page allows filtering by reference number, user details, device types, and dates, enabling faster triage of open or completed requests. It supports quick investigation of pending or failed requests and helps enforce request lifecycle policies. This view also enables operational insights into request frequency, approval delays, and fulfillment trends.
+* **Page Title**: Request Search
+* **Purpose**: Track device requests submitted by users
+* **Description**: Designed to monitor and audit user-submitted hardware or peripheral requests. The page allows filtering by reference number, user details, device types, and dates, enabling faster triage of open or completed requests.
+* **UI Components**:
+
+  * **Search Filters**:
+
+    * Reference Number (text input)
+    * Email Address (text input)
+    * Requested Device Type (dropdown)
+    * Requested Date (range date picker)
+  * **Search Button**
+  * **Results Table**:
+
+    * Columns: Ref ID, Email, Device Type, Requested Date, Status
+    * Actions: View Request Details (button/icon)
+    * Pagination
+* **Interactions**:
+
+  * Results are shown in table format
+  * Export option for results
+  * Filter state should persist during navigation (optional)
+
+---
+
+### 3. **Slack Approval Toggle Controls**
+
+* **Page Title**: Slack Approval Settings
+* **Purpose**: Enable or disable Slack-based approval by department or user type
+* **Description**: A control panel for customizing the Slack workflow logic. This allows specific teams (e.g., Engineering) to bypass approvals for internal or low-risk devices, enabling faster turnarounds and fewer manual steps. This adds flexibility for business units with established self-approval authority or rapid fulfillment needs. The toggles provide granular control and reduce administrative overhead for trusted workflows.
+* **Page Title**: Slack Approval Settings
+* **Purpose**: Enable or disable Slack-based approval by department or user type
+* **Description**: A control panel for customizing the Slack workflow logic. This allows specific teams (e.g., Engineering) to bypass approvals for internal or low-risk devices, enabling faster turnarounds and fewer manual steps.
+* **UI Components**:
+
+  * **Toggle Switch List**:
+
+    * Label: Department/Group Name (e.g., Technology, HR, Finance)
+    * Switch Component: On/Off
+    * Description or Tooltip for each row explaining the behavior
+  * **Save Changes** Button
+* **Interactions**:
+
+  * Each toggle change is saved after clicking Save
+  * Can be extended to support rule-based toggles (e.g., auto-approve for test devices)
+
+---
+
+### 4. **Device Trend & Analytics Dashboard**
+
+* **Page Title**: Analytics Dashboard
+* **Purpose**: Show visual representation of device request patterns and department usage
+* **Description**: This dashboard aggregates request data across the platform and presents it visually for better decision-making. It helps in analyzing demand trends, department-level consumption, and forecasting inventory needs. With interactive filters and real-time metrics, this page allows IT and procurement managers to optimize stock levels, identify high-demand profiles, and track departmental usage behavior over time.
+* **Page Title**: Analytics Dashboard
+* **Purpose**: Show visual representation of device request patterns and department usage
+* **Description**: This dashboard aggregates request data across the platform and presents it visually for better decision-making. It helps in analyzing demand trends, department-level consumption, and forecasting inventory needs.
+* **UI Components**:
+
+  * **Small Cards / Widgets** (top-level metrics):
+
+    * Total Requests Today
+    * Total Approved
+    * Pending Requests
+  * **Bar Chart**: Requests per Day (X: Date, Y: Number of Requests)
+  * **Pie Chart**: Mac vs Windows
+  * **Horizontal Bar Chart**: Requests by Department
+  * **Filter Panel** (optional): Date Range Picker, Department
+* **Interactions**:
+
+  * Responsive widgets
+  * Hover tooltips on charts
+  * Filterable data views
+
+---
+
+### 5. **Inventory Dashboard**
+
+* **Page Title**: Inventory Overview
+* **Purpose**: Display current inventory of devices and peripherals
+* **Description**: Displays real-time inventory status for all available hardware and peripherals. Enables IT and procurement teams to plan restocking, detect shortages, and track aging equipment. With color-coded statuses and summary widgets, users can quickly assess inventory health and make procurement decisions accordingly. This page serves as the operational hub for daily hardware visibility.
+* **Page Title**: Inventory Overview
+* **Purpose**: Display current inventory of devices and peripherals
+* **Description**: Displays real-time inventory status for all available hardware and peripherals. Enables IT and procurement teams to plan restocking, detect shortages, and track aging equipment.
+* **UI Components**:
+
+  * **Filter Panel**:
+
+    * Device Type (Laptop/Peripheral dropdown)
+    * OS Type (Mac/Windows dropdown)
+    * Availability (Available / Unavailable / In Use)
+  * **Summary Cards**:
+
+    * Total Available Devices
+    * Total In Use
+    * Peripheral Count
+  * **Inventory Table**:
+
+    * Columns: Device Type, Model, Status, Last Updated
+    * Tag/Badge for status
+    * Pagination
+* **Interactions**:
+
+  * Dropdown filters trigger re-rendering of inventory list
+  * Status shown as colored badges (green: available, red: unavailable, grey: in use)
+
+---
+
+### 6. **Device & Peripheral Management (Add/Update)**
+
+* **Page Title**: Device Management
+* **Purpose**: Admins can add new devices or update status of existing ones
+* **Description**: A form-driven management interface where admins can input device details and update inventory status. Supports profile-based classification and allows selective device availability. This helps streamline device onboarding and ensures new entries are standardized. It minimizes errors, simplifies deactivation of retired assets, and guarantees that users only see approved and available devices during request workflows.
+* **Page Title**: Device Management
+* **Purpose**: Admins can add new devices or update status of existing ones
+* **Description**: A form-driven management interface where admins can input device details and update inventory status. Supports profile-based classification and allows selective device availability.
+* **UI Components**:
+
+  * **Form Section – Add New Device**:
+
+    * Device Type: Dropdown (Laptop / Peripheral)
+    * OS Type: Dropdown (Mac / Windows / Other)
+    * Device Model: Dropdown (Pre-defined or free text)
+    * User Profile Type: Dropdown (Executive / Standard / Performance)
+    * Serial Number (optional)
+    * Status Toggle (Available / Unavailable)
+    * Submit Button
+  * **Form Section – Update Existing**:
+
+    * Select device by serial or device ID
+    * Editable fields: Status, Assigned Profile
+    * Save Changes Button
+* **Interactions**:
+
+  * Forms should have validation (e.g., required fields, dropdown dependencies)
+  * Confirmation modals before saving changes
+  * Show success or error toasts
+
+---
+
+## 📌 General UI/UX Considerations
+
+* **Design System**: Preferably align with existing internal design system (GEICO theme or Material UI if none)
+* **Navigation**:
+
+  * Sidebar-based navigation or top-tab layout for sections
+* **Responsiveness**:
+
+  * Must work on desktop; mobile support is optional
+* **Loading States**:
+
+  * Show skeleton loaders or spinners on data-heavy components
+* **Error Handling**:
+
+  * Friendly error messages for empty results or server errors
+* **Permissions**:
+
+  * Hide or disable sensitive controls based on role (optional)
+
+---
+
+## 🔍 Suggested Component Libraries
+
+* React-based: Material UI, Ant Design, or Chakra UI
+* Charting: Recharts / Chart.js / ApexCharts
+* Date Pickers: React-DateRange or Material Pickers
+
+---
+
+## 🧐 References from ServiceNow
+
+To guide UI/UX design choices, here are some commonly used ServiceNow modules you can draw inspiration from:
+
+| ServiceNow Module        | Equivalent Admin UI Feature |
+| ------------------------ | --------------------------- |
+| Asset Search             | User Inventory Search       |
+| Requested Items          | Storefront Request Search   |
+| Approvals Matrix         | Slack Approval Toggle       |
+| Performance Analytics    | Device Trend Dashboard      |
+| CMDB Inventory           | Inventory Dashboard         |
+| Catalog Item Maintenance | Device Add/Update           |
+
+---
+
+Would you like this exported as a **PDF/Word** doc, or would you prefer a **Figma wireframe brief** template next?
