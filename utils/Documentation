@@ -229,6 +229,20 @@ To guide UI/UX design choices, here are some commonly used ServiceNow modules yo
 | CMDB Inventory           | Inventory Dashboard         |
 | Catalog Item Maintenance | Device Add/Update           |
 
+
+Here’s an improved **description** for the **Available Devices Dashboard** section based on what’s shown in your image:
+
+---
+
+### 📊 **Available Devices Dashboard**
+
+**Description**:
+The Available Devices Dashboard provides a real-time, filterable overview of all inventory items—laptops, peripherals, and their status. It helps IT admins quickly assess what's currently available, in use, or unavailable. With visual indicators like color-coded badges and summary cards, this dashboard is critical for supporting timely decision-making on hardware provisioning, restocking, and asset tracking. It also ensures better alignment between demand forecasting and inventory readiness, reducing bottlenecks in the device request lifecycle.
+
+---
+
+Would you like me to insert this directly into your document?
+
 ---
 
 Would you like this exported as a **PDF/Word** doc, or would you prefer a **Figma wireframe brief** template next?
