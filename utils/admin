@@ -1,0 +1,107 @@
+Here is the complete and improved content for your **Azure DevOps Feature** titled **“Develop backend APIs to support Storefront Admin Portal”**, including a clear **Description** and well-defined **Acceptance Criteria**, aligned with your **UI Requirements Document**:
+
+---
+
+### 📄 **Description**
+
+This feature covers the design and implementation of backend APIs required to power the **Storefront Admin UI**, which serves internal IT and procurement teams for efficient device and inventory management.
+
+The APIs must support all core admin operations such as:
+
+* **User Inventory Search**: Filter and retrieve user-to-device assignments based on multiple fields (email, device name, serial number, lease end, etc.)
+* **Request Data Search**: Fetch request and approval history based on filters like requester email, device type, status, and date range
+* **Slack Approval Configurations**: Toggle Slack-based approval workflows by department or group with persistent settings
+* **Device Trend & Analytics**: Provide metrics for request volume, department-wise usage, OS distribution, and trends for visualization in charts
+* **Inventory Dashboard**: Expose APIs to track device availability, usage, and peripheral counts with filters
+* **Device Add/Update**: Allow authorized admins to add new inventory entries or modify status, type, or assignment of existing devices
+
+These backend services will follow REST principles, secured with token-based authentication (OAuth2/JWT), and respond in a structured format suitable for integration with React-based frontend components.
+
+---
+
+### ✅ **Acceptance Criteria**
+
+* **AC1 – Inventory Search API**
+
+  * *Given* admin applies filters on the frontend,
+  * *Then* the backend must return filtered inventory data using parameters like email, device type, lease end, EOL date, and serial number with pagination.
+
+* **AC2 – Request Data Search API**
+
+  * *Given* the admin wants to track user requests,
+  * *Then* the backend should return all request records filtered by reference number, email, device type, date range, and status.
+
+* **AC3 – Slack Approval Settings API**
+
+  * *Given* the admin updates department-level Slack approval settings,
+  * *Then* the backend must persist toggle configurations and expose current settings via a GET endpoint.
+
+* **AC4 – Analytics Dashboard API**
+
+  * *Then* the API should return:
+
+    * Count of total requests (pending, approved, fulfilled)
+    * Request trends per day/week/month
+    * Mac vs Windows device distribution
+    * Requests segmented by department
+
+* **AC5 – Inventory Dashboard API**
+
+  * *Then* the API must provide:
+
+    * Total available and in-use devices
+    * Peripheral counts
+    * Device models with their last updated status
+    * Filterable by OS and availability
+
+* **AC6 – Device Add/Update API**
+
+  * *Then* the backend should support:
+
+    * POST for new device entries with validation
+    * PUT/PATCH for updates to device status, assignment, and metadata
+    * Server-side validation and audit logging of changes
+
+* **AC7 – Auth & Security**
+
+  * *Then* all endpoints must enforce admin-level access with JWT/OAuth2
+  * Unauthorized access should return 401/403 with a meaningful error
+
+* **AC8 – Performance & Error Handling**
+
+  * *Then* APIs must respond within 2 seconds for typical queries
+  * Must include structured error messages and handle edge cases (invalid input, missing data, duplicate entries)
+
+---
+
+Let me know if you want to include the **API endpoint design**, **database schema structure**, or **Postman test cases** for implementation next.
+
+Here’s a strong **Benefit Explanation** section tailored for your feature **“Develop backend APIs to support Storefront Admin Portal”**, highlighting technical, operational, and business impact:
+
+---
+
+### 💡 **Benefit Explanation**
+
+* **Centralized Admin Control**
+  Enables IT and procurement teams to manage inventory, request tracking, and Slack approval workflows from a single unified admin interface powered by robust APIs.
+
+* **Scalable Backend Foundation**
+  Establishes a modular and scalable backend architecture that can support additional admin functionalities in the future, such as device bulk import, reporting, and auto-approvals.
+
+* **Real-Time Insights and Decision Making**
+  Provides timely access to device trends, request statuses, and inventory availability, helping teams take action faster and avoid manual follow-ups.
+
+* **Improved Auditability and Traceability**
+  Every backend API interaction will be logged and traceable, offering full transparency on device status updates, approvals, and admin activities.
+
+* **Enhanced Security and Role-Based Access**
+  Protects sensitive inventory operations through secure authentication and authorization, ensuring only permitted admins can add, update, or view critical data.
+
+* **Reduced Manual Intervention**
+  Automates manual processes like email-based approvals, offline tracking, and spreadsheet-based inventory handling, significantly improving operational efficiency.
+
+---
+
+Let me know if you want this broken down by **technical**, **operational**, and **business value** bullets separately, or if you'd like this included in a formatted PDF/markdown version for ADO.
+
+
