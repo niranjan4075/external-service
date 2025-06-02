@@ -1,0 +1,70 @@
+Thanks! Based on your clarification that **Titan** refers to your internal **Grafana-based monitoring platform** for **Azure metrics and logs**, here's an updated and accurate version of the feature documentation:
+
+---
+
+### **Feature Title**: Onboarding Storefront into Titan (Grafana Monitoring)
+
+**Feature ID**: 9596794
+**State**: Active
+**Area**: Mobility | Operations Engineering
+**Iteration**: Mobility\2025
+
+---
+
+### 📄 **Description**
+
+This feature enables the onboarding of the **Storefront application** into the internal **Titan monitoring platform**, which is based on **Grafana** and integrated with **Azure metrics and logs**.
+
+The objective is to establish real-time observability into Storefront’s health, performance, and error trends by connecting it to Titan dashboards and alerts. The onboarding will involve:
+
+* Registering Storefront’s Azure-based infrastructure (pods, APIs, services) with Titan
+* Creating customized Grafana dashboards for request volume, response time, pod status, error rates, and resource utilization
+* Setting up log queries to capture exceptions and time-based events from Azure Log Analytics
+* Defining Prometheus/LogQL/ADX-based alert rules for failures, downtime, or anomalies
+* Making the dashboards visible and shareable for engineering and operations teams
+
+---
+
+### ✅ **Acceptance Criteria**
+
+* **AC1 – Metrics Onboarding:**
+  *Given* Storefront runs on Azure,
+  *Then* its CPU, memory, and API latency metrics must be collected and displayed in Titan dashboards.
+
+* **AC2 – Log Integration:**
+  *Given* Storefront emits logs to Azure Log Analytics,
+  *Then* those logs should be queryable from Grafana for error tracking and analysis.
+
+* **AC3 – Dashboard Setup:**
+  *When* Storefront is onboarded,
+  *Then* a centralized Grafana dashboard must show key metrics such as:
+
+  * Pod uptime
+  * Restart counts
+  * Exception logs
+  * Request/response trends
+
+* **AC4 – Alert Configuration:**
+  *Then* alert rules must be defined and validated for:
+
+  * API failures
+  * No log activity (silence detection)
+  * High response latency
+  * Pod crash or restarts
+
+* **AC5 – Access & Visibility:**
+  *Then* the Titan dashboard for Storefront must be accessible to relevant engineers, support teams, and stakeholders.
+
+---
+
+### 💡 **Benefit Explanation**
+
+* Enables **real-time monitoring** of Storefront health and performance
+* Reduces Mean Time To Detect (MTTD) by leveraging **predefined alerts**
+* Provides **data-driven visibility** to engineering and operations
+* Eliminates manual checks through automated dashboards and logs
+* Aligns Storefront with enterprise-wide monitoring standards
+
+---
+
+Let me know if you’d like sample alert queries, PromQL examples, or guidance for dashboard layout in Grafana (Titan).
