@@ -1,0 +1,79 @@
+Here’s a detailed **User Story** for your **Slack Integration – Manager Approval Workflow** feature:
+
+---
+
+## 👤 **User Story – Slack-Based Device Request Approval Workflow**
+
+### **Title**: Slack Integration for Device Request Approvals
+
+### **As a**
+
+Manager of an associate who requested a device,
+
+### **I want**
+
+to receive an actionable Slack notification with the associate’s request details and Approve/Reject buttons,
+
+### **So that**
+
+I can quickly review the request and approve or reject it in real time without logging into a separate system, while ensuring my response is securely recorded and the workflow advances automatically.
+
+---
+
+### 📘 **Detailed Description**
+
+When an associate submits a request for a new laptop or accessory through the **Storefront platform**, the system initiates an automated Slack notification to the associate’s reporting manager.
+
+This Slack message is sent via the **Virtual Storefront Slack App**, and includes:
+
+* Associate’s name, email, job title, department, and associate ID
+* Requested device model and OS
+* List of accessories (if applicable)
+* Requester's email (if different from the associate)
+* Two action buttons: ✅ Approve and ❌ Reject
+
+Upon interaction with the buttons:
+
+* The system **captures the manager’s response** (Approve/Reject)
+* The system also **records the exact timestamp** of the interaction (`user_interacted_at`)
+* The data is **stored in the `slack_response` table** for traceability and audit logging
+* The request then moves to the next workflow stage: provisioning, notification, or closure, depending on the manager’s response
+
+This feature reduces approval delays, eliminates dependency on emails, and offers a modern, chat-based interaction model that integrates seamlessly with Slack.
+
+---
+
+### ✅ **Acceptance Criteria**
+
+| ID  | Scenario             | Given                                 | When                                  | Then                                                                                                |
+| --- | -------------------- | ------------------------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| AC1 | Slack Notification   | An associate submits a device request | The request is successfully submitted | The associate’s manager receives a Slack notification                                               |
+| AC2 | Slack Message Format | A Slack message is sent               |                                       | It includes associate name, email, job title, department, associate ID, device, OS, and accessories |
+| AC3 | Manager Approval     | Manager clicks “Approve”              |                                       | The system records the approval and timestamp, and triggers the next step in the workflow           |
+| AC4 | Manager Rejection    | Manager clicks “Reject”               |                                       | The system records the rejection and timestamp, and halts the request                               |
+| AC5 | Traceability         | A manager responds                    |                                       | The response and `user_interacted_at` are saved in the `slack_response` table                       |
+
+---
+
+### 📊 **Tracking and Logging**
+
+* All manager interactions are logged with:
+
+  * `request_id`
+  * `manager_email`
+  * `action_taken` (approve/reject)
+  * `user_interacted_at`
+* These records will support audit logs, reporting, and future SLA validations.
+
+---
+
+### 🚀 **Business Value**
+
+* Reduces time-to-approve by eliminating portal-based review
+* Improves experience for both requesters and managers
+* Enables real-time workflows and traceability
+* Centralized record of approval events for compliance and audit
+
+---
+
+Let me know if you’d like a **flow diagram**, **data model**, or **Slack message payload structure** as a next step.
