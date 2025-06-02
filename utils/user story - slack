@@ -43,15 +43,64 @@ This feature reduces approval delays, eliminates dependency on emails, and offer
 
 ---
 
+To make the **Acceptance Criteria** look clean and professional inside **Azure DevOps**, which doesn't always render markdown tables well, you can format the content using **bulleted lists** and **simple bold headers**. Here's a refined version tailored to paste neatly:
+
+---
+
 ### ✅ **Acceptance Criteria**
 
-| ID  | Scenario             | Given                                 | When                                  | Then                                                                                                |
-| --- | -------------------- | ------------------------------------- | ------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| AC1 | Slack Notification   | An associate submits a device request | The request is successfully submitted | The associate’s manager receives a Slack notification                                               |
-| AC2 | Slack Message Format | A Slack message is sent               |                                       | It includes associate name, email, job title, department, associate ID, device, OS, and accessories |
-| AC3 | Manager Approval     | Manager clicks “Approve”              |                                       | The system records the approval and timestamp, and triggers the next step in the workflow           |
-| AC4 | Manager Rejection    | Manager clicks “Reject”               |                                       | The system records the rejection and timestamp, and halts the request                               |
-| AC5 | Traceability         | A manager responds                    |                                       | The response and `user_interacted_at` are saved in the `slack_response` table                       |
+* **AC1 – Slack Notification:**
+  *Given* an associate submits a device request,
+  *When* the request is successfully submitted,
+  *Then* the associate’s manager should receive a Slack notification.
+
+* **AC2 – Slack Message Format:**
+  *Given* a Slack message is sent,
+  *Then* it must include:
+
+  * Associate name
+  * Email
+  * Job title
+  * Department
+  * Associate ID
+  * Device model & OS
+  * Accessories
+
+* **AC3 – Manager Approval:**
+  *Given* a manager clicks “Approve”,
+  *Then* the system must:
+
+  * Record the approval
+  * Capture the timestamp (`user_interacted_at`)
+  * Trigger the next step in the workflow
+
+* **AC4 – Manager Rejection:**
+  *Given* a manager clicks “Reject”,
+  *Then* the system must:
+
+  * Record the rejection
+  * Capture the timestamp (`user_interacted_at`)
+  * Stop further processing of the request
+
+* **AC5 – Traceability & Logging:**
+  *Given* a manager interacts with the Slack message,
+  *Then* the system must save:
+
+  * `request_id`
+  * `manager_email`
+  * `user_interacted_at`
+  * `action_taken`
+    in the `slack_response` table
+
+---
+
+### 📈 **Tracking and Logging**
+
+All interactions are logged for audit and reporting purposes. This ensures full traceability of manager decisions and system behavior.
+
+---
+
+This format avoids markdown table rendering issues and fits cleanly into Azure DevOps text boxes. Let me know if you want me to reformat the **User Story**, **Feature Description**, or **Benefit Explanation** in a similar style!
 
 ---
 
