@@ -1,35 +1,34 @@
-
-Here’s an improved and complete version of your **Azure DevOps user story** for the Remedy workflow ticket shown in the image:
+Here is an improved and complete version of your **Azure DevOps User Story** for the workflow that consolidates multiple work order IDs into a single email confirmation:
 
 ---
 
-### **User Story**: `9826344 – New Remedy Workflow – Create Multiple Work Orders in Remedy`
+### **User Story**: `9826415 – New Remedy Workflow – Process Work Order IDs in a Single Email Confirmation`
 
 #### **Description**
 
-Enhance the Remedy integration to support the creation of multiple work orders when a user requests more than one device or peripheral in a single Storefront submission. This feature aims to streamline the backend workflow, reduce manual processing, and ensure each requested item is accurately tracked and fulfilled independently.
+Optimize the Remedy notification workflow to consolidate multiple work order IDs into a single email when a user submits a request that generates multiple device or peripheral work orders. This enhancement will streamline communication and reduce notification fatigue for users.
 
 ---
 
 #### **Acceptance Criteria**
 
-1. ✅ If a user selects multiple devices/peripherals in a single request, the system should generate individual Remedy work orders for each item.
-2. ✅ Each work order should include the specific device/peripheral name, associated user information, and unique identifiers for tracking.
-3. ✅ The Remedy request IDs should be stored in the backend for audit and reporting purposes.
-4. ✅ In the event of a failure in work order creation for one or more items, appropriate logs and alerts should be generated without affecting successful items.
-5. ✅ Unit and integration tests must validate the creation of multiple work orders per request.
-6. ✅ Work orders should be visible in the admin dashboard with status and requestor linkage.
+1. ✅ When multiple work orders are created from a single user request, only one consolidated email should be sent to the requestor.
+2. ✅ The email must include all individual Remedy work order IDs, item names, and status summaries in a structured format.
+3. ✅ The email subject should clearly indicate that it contains multiple work orders.
+4. ✅ If there is a failure in email generation or delivery, fallback logging must capture the user ID, request ID, and generated work order IDs.
+5. ✅ Email template must be reviewed and approved by UX or content team for clarity and completeness.
+6. ✅ Unit and integration tests must validate the correct email payload and delivery under multi-item scenarios.
 
 ---
 
 #### **Benefits**
 
-* 🔄 Automates multi-device ordering without manual intervention.
-* 📦 Ensures independent tracking and fulfillment of each item.
-* 📉 Reduces operational load on IT teams by preventing grouped requests from being processed manually.
-* 🧾 Improves auditability and traceability in Remedy and Storefront logs.
-* 🧠 Lays the groundwork for future enhancements like bulk approval workflows or status notifications per item.
+* 📧 Prevents spamming users with multiple email confirmations for a single request.
+* 🧘 Improves user experience and reduces inbox clutter.
+* 📋 Ensures all work order information is centralized and easy to track.
+* 📊 Enhances auditability and traceability of multi-device order communication.
+* ⏱️ Saves backend resources by avoiding redundant email generation.
 
 ---
 
-Let me know if you'd like to add technical tasks, workflow diagrams, or API-related notes too.
+Let me know if you'd like a mock email format or additional test scenarios included in this story.
