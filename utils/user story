@@ -1,0 +1,35 @@
+
+Here’s an improved and complete version of your **Azure DevOps user story** for the Remedy workflow ticket shown in the image:
+
+---
+
+### **User Story**: `9826344 – New Remedy Workflow – Create Multiple Work Orders in Remedy`
+
+#### **Description**
+
+Enhance the Remedy integration to support the creation of multiple work orders when a user requests more than one device or peripheral in a single Storefront submission. This feature aims to streamline the backend workflow, reduce manual processing, and ensure each requested item is accurately tracked and fulfilled independently.
+
+---
+
+#### **Acceptance Criteria**
+
+1. ✅ If a user selects multiple devices/peripherals in a single request, the system should generate individual Remedy work orders for each item.
+2. ✅ Each work order should include the specific device/peripheral name, associated user information, and unique identifiers for tracking.
+3. ✅ The Remedy request IDs should be stored in the backend for audit and reporting purposes.
+4. ✅ In the event of a failure in work order creation for one or more items, appropriate logs and alerts should be generated without affecting successful items.
+5. ✅ Unit and integration tests must validate the creation of multiple work orders per request.
+6. ✅ Work orders should be visible in the admin dashboard with status and requestor linkage.
+
+---
+
+#### **Benefits**
+
+* 🔄 Automates multi-device ordering without manual intervention.
+* 📦 Ensures independent tracking and fulfillment of each item.
+* 📉 Reduces operational load on IT teams by preventing grouped requests from being processed manually.
+* 🧾 Improves auditability and traceability in Remedy and Storefront logs.
+* 🧠 Lays the groundwork for future enhancements like bulk approval workflows or status notifications per item.
+
+---
+
+Let me know if you'd like to add technical tasks, workflow diagrams, or API-related notes too.
