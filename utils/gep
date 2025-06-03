@@ -1,0 +1,43 @@
+Here’s a well-structured version of the **Description**, **Acceptance Criteria**, and **Benefits** for the user story titled:
+**"SPIKE: Investigate GEP Workday API Integrations"**:
+
+---
+
+### 🔍 **Description**
+
+Previously, we attempted to directly integrate with Workday to retrieve user data but found it inaccessible. Upon further investigation, we learned that the **Supplier Tech Management** team currently has access to Workday user data and uses it to support other applications. To resolve recurring user data issues in **Storefront**, we plan to explore sourcing accurate user and hierarchy data from this team.
+
+This spike is intended to:
+
+* Understand how the Supplier Tech Management team retrieves Workday data.
+* Evaluate possible tech stack options (e.g., APIs, batch jobs, data pipelines) for integration.
+* Determine update frequency (real-time, daily batch, or event-driven).
+* Define data ownership, consistency rules, and data model for storing user profiles.
+* Design a new `user_profile` table that will serve as the single source of truth for user metadata (e.g., manager hierarchy, title, department).
+* Establish the foundation for syncing this data into Storefront services.
+
+---
+
+### ✅ **Acceptance Criteria**
+
+1. ✅ Document how Supplier Tech Management currently accesses Workday data.
+2. ✅ Identify the available data formats and transport mechanisms (API, flat files, etc.).
+3. ✅ List potential technologies to consume and store the data (e.g., Azure Data Factory, ETL, REST API, Kafka pipeline).
+4. ✅ Recommend a suitable data update strategy (e.g., hourly/daily batch job or real-time ingestion).
+5. ✅ Draft the schema for a new `user_profile` table covering necessary fields like email, name, title, manager, department, hierarchy, etc.
+6. ✅ Outline a proposed workflow to ingest and update the data regularly.
+7. ✅ Determine the feasibility of storing this user data in Storefront and its accessibility across services.
+
+---
+
+### 💡 **Benefits**
+
+* ✅ Ensures **accurate and consistent user data** across Storefront modules.
+* ✅ Enables **hierarchy-based workflows**, such as manager approvals and delegation logic.
+* ✅ Reduces dependency on unreliable or stale data from multiple sources.
+* ✅ Lays the groundwork for **scalable data integration**, reducing manual interventions and support tickets.
+* ✅ Supports future analytics and compliance checks with reliable user metadata.
+
+---
+
+Let me know if you also want a visual workflow diagram or schema suggestion for the `user_profile` table.
