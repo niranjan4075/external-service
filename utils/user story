@@ -1,36 +1,23 @@
-Great—here’s a refined and professional version of that description for your **Appendix** or **Data Collection** section:
+Great addition! Here’s the **updated version** with your new context woven in smoothly:
 
 ---
 
-### 📄 Data Captured During Request Submission
+### 📄 Existing User Device Data
 
-When a user submits a device or peripheral request through Storefront, the following **basic information is captured and stored** to support workflow automation, auditing, and reporting:
+To maintain accurate and up-to-date information about corporate assets, **existing user device data** is aggregated from multiple sources, including **Remedy**, **Aternity**, **CrowdStrike**, and other internal systems or team-provided exports. This data is consolidated into a consistent format and uploaded into the **Storefront database** as a single source of truth.
 
-* **First Name**
-* **Last Name**
-* **User Email**
-* **Requester Email**
-* **Manager’s Email**
-* **Device and Peripheral Requested Details**
-* **Request Type** (e.g., New, Replacement, Return)
-* **Requested Timestamp**
-* **Employee ID**
-* **Job Title**
-* **Department**
+The dataset includes key attributes required for tracking asset lifecycle and supporting decisions like replacements or upgrades:
 
-This data ensures accurate routing of requests, visibility for approvers, and alignment with internal asset management policies.
+* **Device Name**
+* **Device Serial Number**
+* **Device Manufacturer**
+* **End-of-Life Date**
+* **Lease End Date**
+* **Device Received Year**
+* **Device Age**
+
+This enriched dataset enables the Storefront system to **proactively identify devices nearing their end-of-life or lease expiration within the next 90 days**. Based on this intelligence, Storefront allows users to **initiate a replacement request** for eligible devices, ensuring smooth transitions and minimizing operational disruption.
 
 ---
 
-### 📄 Slack Workflow Metadata
-
-As part of the integrated Slack approval workflow, the following metadata is stored to support interaction logging and traceability:
-
-* **Slack Status**: Indicates the current state of the request in Slack (`sent`, `approved`, `rejected`)
-* **Slack Button Clicked Timestamp**: Captures the exact time the approval or rejection action was taken
-
-This information is critical for monitoring engagement, auditing response times, and troubleshooting workflow issues.
-
----
-
-Let me know if you’d like a table version of this or want this included in the Remedy section too.
+Let me know if you want to pair this with a flowchart or add logic criteria (e.g., how the 90-day filter is applied).
