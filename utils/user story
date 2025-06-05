@@ -1,16 +1,36 @@
-Absolutely! Here's the revised version with **two additional lines** added at the end to enhance clarity and traceability:
+Great—here’s a refined and professional version of that description for your **Appendix** or **Data Collection** section:
 
 ---
 
-### 📄 Remedy Workflow Overview
+### 📄 Data Captured During Request Submission
 
-Once a user submits a device request via Storefront, the workflow diverges based on the user's role. If the requester is an **executive** or an **executive assistant**, the system **automatically creates a work order in Remedy** with the status set to **"Assigned"**, bypassing the approval step for expedited processing. However, if the requester is a **non-executive associate**, the system triggers a **Slack bot notification to their reporting manager**, requesting approval. Based on the manager's decision:
+When a user submits a device or peripheral request through Storefront, the following **basic information is captured and stored** to support workflow automation, auditing, and reporting:
 
-* If **approved**, a work order is created in **Remedy** with the status **"Assigned"**.
-* If **rejected**, a work order is created with the status **"Rejected"** to maintain a complete audit trail.
+* **First Name**
+* **Last Name**
+* **User Email**
+* **Requester Email**
+* **Manager’s Email**
+* **Device and Peripheral Requested Details**
+* **Request Type** (e.g., New, Replacement, Return)
+* **Requested Timestamp**
+* **Employee ID**
+* **Job Title**
+* **Department**
 
-All status transitions and timestamps are logged in the Storefront backend for traceability. This design ensures transparency, accountability, and automation across the request lifecycle.
+This data ensures accurate routing of requests, visibility for approvers, and alignment with internal asset management policies.
 
 ---
 
-Let me know if you'd like the Slack flow summarized in a diagram or visual as well.
+### 📄 Slack Workflow Metadata
+
+As part of the integrated Slack approval workflow, the following metadata is stored to support interaction logging and traceability:
+
+* **Slack Status**: Indicates the current state of the request in Slack (`sent`, `approved`, `rejected`)
+* **Slack Button Clicked Timestamp**: Captures the exact time the approval or rejection action was taken
+
+This information is critical for monitoring engagement, auditing response times, and troubleshooting workflow issues.
+
+---
+
+Let me know if you’d like a table version of this or want this included in the Remedy section too.
