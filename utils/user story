@@ -1,35 +1,16 @@
-Here is a polished and complete version of your **Azure DevOps User Story** for configuring and testing the Remedy API in production with Slack workflow integration:
+Absolutely! Here's the revised version with **two additional lines** added at the end to enhance clarity and traceability:
 
 ---
 
-### **User Story**: `9842286 – Configure & Test Remedy API in Prod`
+### 📄 Remedy Workflow Overview
 
-#### **Description**
+Once a user submits a device request via Storefront, the workflow diverges based on the user's role. If the requester is an **executive** or an **executive assistant**, the system **automatically creates a work order in Remedy** with the status set to **"Assigned"**, bypassing the approval step for expedited processing. However, if the requester is a **non-executive associate**, the system triggers a **Slack bot notification to their reporting manager**, requesting approval. Based on the manager's decision:
 
-Configure the Remedy API in the production environment and integrate it with the Slack workflow to enable seamless automation of work order creation and tracking. Ensure that the production integration supports end-to-end communication between the Slack bot and Remedy, enabling real-time work order generation and response logging based on user actions.
+* If **approved**, a work order is created in **Remedy** with the status **"Assigned"**.
+* If **rejected**, a work order is created with the status **"Rejected"** to maintain a complete audit trail.
 
----
-
-#### **Acceptance Criteria**
-
-1. ✅ Remedy API credentials, endpoints, and production base URL are correctly configured in the prod environment.
-2. ✅ All required headers, tokens, and authentication mechanisms are securely applied and tested.
-3. ✅ Slack bot interaction (e.g., approval/rejection) triggers appropriate Remedy API calls to create or update work orders.
-4. ✅ Remedy responses (success/failure) are handled gracefully and logged in the system database for audit and debugging.
-5. ✅ End-to-end test is performed to validate successful creation of a work order from a Slack approval workflow.
-6. ✅ System logs capture all API requests/responses for traceability.
-7. ✅ A fallback mechanism is in place in case the Remedy API is unavailable during interaction.
+All status transitions and timestamps are logged in the Storefront backend for traceability. This design ensures transparency, accountability, and automation across the request lifecycle.
 
 ---
 
-#### **Benefits**
-
-* 🔗 Establishes a secure and reliable connection between Slack workflows and Remedy API in production.
-* 🧠 Automates manual ticket creation processes, saving time for IT and Ops teams.
-* 📋 Ensures proper audit logging for compliance and traceability.
-* 💬 Enables real-time user feedback and transparent work order handling via Slack.
-* 🚦 Reduces the chance of failed or duplicated work order submissions through proper API error handling.
-
----
-
-Let me know if you want to include Swagger spec references, integration diagrams, or a checklist for post-deployment validation.
+Let me know if you'd like the Slack flow summarized in a diagram or visual as well.
