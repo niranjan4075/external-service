@@ -1,0 +1,28 @@
+Thanks! Here’s the updated version reflecting that the prerequisites were completed last week:
+
+⸻
+
+Hi [Manager’s Name],
+
+I wanted to update you that we’re onboarding our application into Hut8 to enable secure data encryption and decryption for the Storefront API service.
+
+As part of this effort:
+	•	The Storefront API collects the user’s home address, which the external service will pass to Remedy.
+	•	We’re encrypting and storing the address in the database as an arbitrary/binary value, and decrypting it when sending it to Remedy.
+	•	The necessary prerequisites were completed last week, including:
+	•	Certificate generation using Terraform.
+	•	Registration via GSP and GHCQ apps, with certs added to the Secrets Engine.
+	•	Mapping of pass identities with GSP using the Service Principal Name and ID.
+
+With these completed, we’ve now moved forward with onboarding into the Hut8 application.
+
+Since Hut8 currently doesn’t support Python, we’ll generate our own SDK and build out the necessary integration. Hut8 will then host the Storefront encryption logic.
+
+Let me know if you’d like any further details or if there’s anything you’d like us to prioritize.
+
+Best regards,
+Niranjan
+
+⸻
+
+Let me know if you’d like to convert this to a Teams or Slack message format too.
