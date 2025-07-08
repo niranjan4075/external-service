@@ -1,0 +1,1 @@
+./create-resources.sh send_user_computing np 8db59402-c2e8-403f-9f66-a2c867bcd247 true '["HOME_ADDRESS"]' '["HOME_ADDRESS"]' ''
