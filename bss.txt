@@ -1,58 +1,21 @@
-Here’s a polished **Business Justification** you can use based on your case:
-
----
-
-**Business Justification**
-
-We are developing a role-based storefront application that streamlines and secures the device request process for employees. When a user logs into the storefront, they are presented with a personalized list of devices that are pre-mapped to them, ensuring relevance and compliance with internal policies.
-
-Upon submitting a request, a Slack notification is automatically sent to the user's manager, identified by their email address, to initiate the approval workflow. This real-time notification mechanism ensures timely manager intervention and avoids delays often associated with traditional approval methods.
-
-Once the manager approves or rejects the request, the decision is automatically logged and submitted to **Remedy**, our internal IT Service Management system, for recordkeeping, ticketing, and further action. This end-to-end automation reduces manual overhead, minimizes the risk of human error, enhances auditability, and accelerates the overall fulfillment process.
-
-This application increases efficiency, accountability, and transparency in device provisioning while aligning with enterprise compliance standards and operational workflows.
-
----
-
-Let me know if you'd like it tailored for a specific audience—like IT leadership, business stakeholders, or compliance teams.
-
-
-
-Yes, this integration is primarily designed to provide real-time notifications and event triggers to streamline the approval process and minimize context switching. When a user places a device request via the storefront application, the system automatically sends a Slack notification to the user’s manager. This helps ensure prompt approvals or rejections without requiring the manager to log into a separate system.
-
-By keeping managers engaged through Slack, where they are already active, we reduce turnaround time and enhance the user experience. Once the manager responds, the status is updated, and the final decision is submitted to Remedy for tracking and auditing. This integration ultimately improves operational efficiency, speeds up device provisioning, and enables a seamless experience for Geico associates.
-
-
-
-
-Based on all the screenshots and your note, here's how you can fill in the required fields accurately and professionally:
-
----
-
-### **Question 3 – Overview:**
->We are implementing a role-based storefront application that streamlines the device request process. Once a user requests a device, their manager receives a real-time Slack bot notification with **Approve** and **Reject** options. Based on the manager's input, the system automatically logs the decision and creates a work order in **Remedy**, our internal ITSM platform.  
->This integration eliminates manual approval delays, ensures auditability, and enables seamless fulfillment tracking across Slack and Remedy systems.
-
----
-
-### **Question 4 – Application/System Name:**
->Mobility Ops Storefront
-
----
-
-### **Question 5 – Description:**
->This application enables users to request pre-approved, role-based devices from a centralized storefront. It integrates with Slack for real-time approval workflows and with Remedy for automated work order creation and tracking.  
->The app enforces data security through ARC group validation via GEICO Entra instance, TLS encryption, and API-level authentication.  
->Slack scopes such as `chat:write`, `commands`, and `users:read.email` are used to notify managers and collect decisions.  
->This setup improves provisioning transparency while aligning with GEICO’s security standards.
-
----
-
-### **Question 6 – Business Justification:**
->This solution reduces manual overhead, accelerates device fulfillment, and enhances the approval audit trail. It ensures timely manager intervention via Slack and reduces dependency on traditional email or ticket-based approvals.  
->By automatically interfacing with Remedy, the system maintains consistent records while minimizing human error.  
->Ultimately, it supports enterprise compliance and improves operational efficiency through automation and centralized visibility.
-
----
-
-Let me know if you'd like a shorter or more technical version of any of these.
+def insert_event_store(event_store: EventStore):
+    """
+    Inserts an event store record into the database if not exists.
+    """
+    try:
+        with Session() as db:
+            existing = db.query(EventStore).filter_by(request_reference=event_store.request_reference).first()
+            if existing:
+                logger.info(f"EventStore with request_reference={event_store.request_reference} already exists. Skipping insert.")
+                return existing
+            
+            db.add(event_store)
+            db.commit()
+            db.refresh(event_store)
+            logger.info(
+                f"Successfully inserted event store record with ID: {event_store.id if hasattr(event_store, 'id') else 'N/A'}"
+            )
+            return event_store
+    except Exception as e:
+        logger.error(f"Error inserting event store record: {str(e)}")
+        raise
