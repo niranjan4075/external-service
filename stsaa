@@ -20,23 +20,25 @@ secrets:
     }
     {{- end }}
 
-  # Inject cert: ca.crt
-  vault.hashicorp.com/agent-inject-secret-ca.crt: ve_mobility-ops-storefront-np/server_cert
-  vault.hashicorp.com/agent-inject-template-ca.crt: |
+   # Inject certs into /vault/certs/ folder
+  vault.hashicorp.com/agent-inject-secret-cert1: ve_mobility-ops-storefront-np/server_cert
+  vault.hashicorp.com/agent-inject-template-cert1: |
     {{- with secret "ve_mobility-ops-storefront-np/server_cert" -}}
     {{ .Data.data["ca.crt"] }}
     {{- end }}
+  vault.hashicorp.com/agent-inject-file-cert1: certs/ca.crt
 
-  # Inject cert: tls.crt
-  vault.hashicorp.com/agent-inject-secret-tls.crt: ve_mobility-ops-storefront-np/server_cert
-  vault.hashicorp.com/agent-inject-template-tls.crt: |
+  vault.hashicorp.com/agent-inject-secret-cert2: ve_mobility-ops-storefront-np/server_cert
+  vault.hashicorp.com/agent-inject-template-cert2: |
     {{- with secret "ve_mobility-ops-storefront-np/server_cert" -}}
     {{ .Data.data["tls.crt"] }}
     {{- end }}
+  vault.hashicorp.com/agent-inject-file-cert2: certs/tls.crt
 
-  # Inject cert: tls.key
-  vault.hashicorp.com/agent-inject-secret-tls.key: ve_mobility-ops-storefront-np/server_cert
-  vault.hashicorp.com/agent-inject-template-tls.key: |
+  vault.hashicorp.com/agent-inject-secret-cert3: ve_mobility-ops-storefront-np/server_cert
+  vault.hashicorp.com/agent-inject-template-cert3: |
     {{- with secret "ve_mobility-ops-storefront-np/server_cert" -}}
     {{ .Data.data["tls.key"] }}
     {{- end }}
+  vault.hashicorp.com/agent-inject-file-cert3: certs/tls.key
+
