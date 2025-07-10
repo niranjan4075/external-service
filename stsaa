@@ -1,0 +1,42 @@
+secrets:
+  serviceAccountName: svc-storefront-built-robot
+
+  vault.hashicorp.com/service: https://secmgmt-api-pd1.geico.net/api/vault
+  vault.hashicorp.com/role: vr_mobility-ops-storefront-np
+  vault.hashicorp.com/secret-volume-path: /vault/secrets
+  vault.hashicorp.com/tls-secret: vault-tls-secret
+
+  # Inject dynamic secrets as valid JSON
+  vault.hashicorp.com/agent-inject-secret-api.json: ve_mobility-ops-storefront-np/data/api
+  vault.hashicorp.com/agent-inject-template-api.json: |
+    {{- with secret "ve_mobility-ops-storefront-np/data/api" -}}
+    {
+    {{- $counter := 1 -}}
+    {{- $totalKeys := len .Data.data -}}
+    {{- range $key, $value := .Data.data }}
+      "{{ $key }}": "{{ $value }}"{{ if ne $counter $totalKeys }},{{ end }}
+      {{- $counter = add $counter 1 -}}
+    {{- end }}
+    }
+    {{- end }}
+
+  # Inject cert: ca.crt
+  vault.hashicorp.com/agent-inject-secret-ca.crt: ve_mobility-ops-storefront-np/server_cert
+  vault.hashicorp.com/agent-inject-template-ca.crt: |
+    {{- with secret "ve_mobility-ops-storefront-np/server_cert" -}}
+    {{ .Data.data["ca.crt"] }}
+    {{- end }}
+
+  # Inject cert: tls.crt
+  vault.hashicorp.com/agent-inject-secret-tls.crt: ve_mobility-ops-storefront-np/server_cert
+  vault.hashicorp.com/agent-inject-template-tls.crt: |
+    {{- with secret "ve_mobility-ops-storefront-np/server_cert" -}}
+    {{ .Data.data["tls.crt"] }}
+    {{- end }}
+
+  # Inject cert: tls.key
+  vault.hashicorp.com/agent-inject-secret-tls.key: ve_mobility-ops-storefront-np/server_cert
+  vault.hashicorp.com/agent-inject-template-tls.key: |
+    {{- with secret "ve_mobility-ops-storefront-np/server_cert" -}}
+    {{ .Data.data["tls.key"] }}
+    {{- end }}
