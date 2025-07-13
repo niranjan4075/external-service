@@ -3,23 +3,15 @@ import json
 
 class CertLoader:
     """
-    CertLoader fetches TLS certificate, key, and CA cert needed for mutual TLS (mTLS)
-    using the following priority:
-    1. Vault-injected JSON file at /vault/secrets/server_certs
-    2. Environment variables: TLS_CRT, TLS_KEY, CA_CRT
+    Loads mTLS certificates from a Vault-injected file or environment variables.
+    - Preferred: /vault/secrets/server_certs (injected as JSON)
+    - Fallback: TLS_CRT, TLS_KEY, CA_CRT environment variables
     """
 
     def __init__(self, vault_path="/vault/secrets/server_certs"):
         self.vault_path = vault_path
 
     def load(self):
-        """
-        Returns:
-            tuple: (tls_crt: bytes, tls_key: bytes, ca_crt: bytes)
-
-        Raises:
-            Exception if certs cannot be loaded from either source.
-        """
         if os.path.exists(self.vault_path):
             return self._load_from_file()
         else:
@@ -32,10 +24,10 @@ class CertLoader:
                 tls_crt = data["tls.crt"].encode()
                 tls_key = data["tls.key"].encode()
                 ca_crt = data["ca.crt"].encode()
-                print("✅ Loaded certs from Vault-injected file:", self.vault_path)
+                print("✅ Loaded certs from Vault-injected file")
                 return tls_crt, tls_key, ca_crt
         except Exception as e:
-            raise Exception(f"❌ Failed to load certs from {self.vault_path}: {e}")
+            raise Exception(f"❌ Failed to load certs from file: {e}")
 
     def _load_from_env(self):
         try:
