@@ -1,8 +1,9 @@
 python -m grpc_tools.protoc \
-  -Isrc \
-  --python_out=src \
-  --grpc_python_out=src \
-  src/v1/encrypt_request.proto \
-  src/v1/encrypt_response.proto \
-  src/v1/cryptor_service.proto
+  -Iv1 \
+  --python_out=v1 \
+  --grpc_python_out=v1 \
+  v1/encrypt_request.proto \
+  v1/encrypt_response.proto \
+  v1/cryptor_service.proto
+
 
