@@ -5,5 +5,3 @@ python -m grpc_tools.protoc \
   v1/encrypt_request.proto \
   v1/encrypt_response.proto \
   v1/cryptor_service.proto
-
-
