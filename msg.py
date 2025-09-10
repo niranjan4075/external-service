@@ -3,8 +3,15 @@ from slack_sdk.errors import SlackApiError
 
 client = WebClient(token="xoxb-your-slack-bot-token")
 
-def render_followup_slack_message(associate_name: str, serial_number: str = None) -> str:
-    return f"""
+client.chat_postMessage(
+    channel=channel,
+    text="Laptop upgrade notice",   # fallback text (for notifications / search)
+    blocks=[
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": f"""
 Hello <@{associate_name}>,
 
 Friendly reminder — your current laptop has been identified as due for an upgrade.  
@@ -19,9 +26,14 @@ from the most recent Associate Opinion Survey, and we are excited to help elevat
 3. Enter your shipping details.
 4. Submit your order.
 """
-
-def render_notes_block() -> str:
-    return """
+            }
+        },
+        { "type": "divider" },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": """
 *Important Notes:*
 1. Please make your selection today, Friday, Sep. 5.
 2. Once your new laptop has shipped, you will receive an email with tracking information.  
@@ -36,28 +48,21 @@ For tech support, please contact the *Tech Solution Center* at <tel:+18669862211
 Thank you for your attention,  
 *Asset Management*
 """
-
-def send_followup_message(channel: str, associate_name: str, serial_number: str = None):
-    try:
-        intro = render_followup_slack_message(associate_name, serial_number)
-        notes = render_notes_block()
-
-        client.chat_postMessage(
-            channel=channel,
-            text="Laptop upgrade notice",   # fallback text
-            blocks=[
+            }
+        },
+        {
+            "type": "actions",
+            "elements": [
                 {
-                    "type": "section",
-                    "text": {"type": "mrkdwn", "text": intro}
-                },
-                {"type": "divider"},
-                {
-                    "type": "section",
-                    "text": {"type": "mrkdwn", "text": notes}
+                    "type": "button",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Visit Hardware Storefront"
+                    },
+                    "url": "https://geckotech.geico.com/",
+                    "style": "primary"
                 }
             ]
-        )
-        print("✅ Message sent successfully")
-
-    except SlackApiError as e:
-        print(f"❌ Error sending message: {e.response['error']}")
+        }
+    ]
+)
