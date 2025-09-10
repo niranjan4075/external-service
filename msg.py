@@ -18,7 +18,10 @@ from the most recent Associate Opinion Survey, and we are excited to help elevat
 2. Select your current laptop and browse for your new replacement option.
 3. Enter your shipping details.
 4. Submit your order.
+"""
 
+def render_notes_block() -> str:
+    return """
 *Important Notes:*
 1. Please make your selection today, Friday, Sep. 5.
 2. Once your new laptop has shipped, you will receive an email with tracking information.  
@@ -36,7 +39,8 @@ Thank you for your attention,
 
 def send_followup_message(channel: str, associate_name: str, serial_number: str = None):
     try:
-        message = render_followup_slack_message(associate_name, serial_number)
+        intro = render_followup_slack_message(associate_name, serial_number)
+        notes = render_notes_block()
 
         client.chat_postMessage(
             channel=channel,
@@ -44,10 +48,12 @@ def send_followup_message(channel: str, associate_name: str, serial_number: str 
             blocks=[
                 {
                     "type": "section",
-                    "text": {
-                        "type": "mrkdwn",   # 👈 enables Slack markdown + links
-                        "text": message
-                    }
+                    "text": {"type": "mrkdwn", "text": intro}
+                },
+                {"type": "divider"},
+                {
+                    "type": "section",
+                    "text": {"type": "mrkdwn", "text": notes}
                 }
             ]
         )
