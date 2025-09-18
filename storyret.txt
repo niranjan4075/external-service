@@ -1,0 +1,22 @@
+Description (4 lines)
+
+This update ensures executives and ELTs are not directly notified by workflow emails.
+All workflow notifications will instead be routed to their designated executive assistants.
+This avoids frequent interruptions for executives while keeping assistants informed.
+The system must enforce that no email is ever sent directly to executives.
+
+Acceptance Criteria (7 lines)
+
+All workflow-generated emails for executives/ELTs are redirected to their assistants.
+
+Executives/ELTs must never appear in the “To” or “CC” fields of any email.
+
+A configuration mapping must exist between each executive and their assistant’s email.
+
+If a mapping is missing, the system must log an error and skip sending the email.
+
+Redirected emails must include audit logging with original and final recipients.
+
+QA testing must confirm only assistants receive the notifications, never executives.
+
+System must be regression-tested to ensure no existing email workflows are broken.
