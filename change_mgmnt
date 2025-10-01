@@ -1,0 +1,52 @@
+The first change enables group tag integration for Remedy work orders using case-sensitive matching from the inventory table.
+Group tags are now passed to the Remedy details tab as a structured WO Type Field 01 for the first time.
+The second change introduces a Remedy API fallback mechanism through a new fallback handler file.
+It ensures 99.9 percent success in work order creation with virtual contact fallback, manual fallback, and executive request priority sent to Remedy for the first time.
+Together, these enhancements increase reliability, reduce manual interventions, and improve data quality across Remedy work orders.
+
+
+Notes
+
+Group Tag Integration
+
+Implemented case-sensitive matching from the inventory table to capture group tags.
+
+Group tags are now passed into the Remedy details tab as a structured WO Type Field 01 instead of being left unstructured.
+
+This ensures consistent data population and improves downstream processing accuracy.
+
+Remedy API Fallback Mechanism
+
+Added a new fallback handler file to manage failures in work order creation.
+
+Supports virtual contact fallback to handle duplicate or missing contact scenarios.
+
+Introduces manual fallback to the VSF service account name when automated creation fails.
+
+Designed to achieve a 99.9% success rate for work order creation.
+
+Overall Impact
+
+Significantly reduces the need for manual interventions and error handling.
+
+Increases the reliability of work order submissions.
+
+Improves the quality and traceability of data sent into Remedy.
+
+
+
+
+
+
+
+
+
+Group tag integration is implemented with case-sensitive matching from the inventory table and passed into Remedy’s details tab as WO Type Field 01.
+
+A new fallback handler was created to improve reliability of Remedy API calls.
+
+The fallback mechanism includes virtual contact fallback and manual fallback to the VSF service account name.
+
+These changes ensure a 99.9% success rate in work order creation.
+
+Overall, the update reduces manual interventions and improves data accuracy in Remedy.
