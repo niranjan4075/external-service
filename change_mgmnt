@@ -13,3 +13,45 @@ Verified behavior in lower environments to ensure accurate tagging and no impact
 Improves automation accuracy for Remedy and downstream workflows dependent on group tag values.
 
 No impact on existing records; new logic applies only to newly processed requests in production.
+
+
+
+Change Summary
+
+This change includes a database schema update deployed via Alembic migration to support the latest feature enhancements in production. The update introduces new columns and structural changes required for improved group tag handling, device tracking, and data consistency across Storefront services.
+
+Change Notes
+
+Executed Alembic migration scripts to update database schema safely in production.
+
+Added/modified columns to support new Group Tag identification logic and related attributes.
+
+Ensured backward compatibility with existing tables and data records.
+
+Validated schema integrity and successful migration in lower environments (DV, UT, NP).
+
+Migration scripts include automatic downgrade rollback support in case of validation issues.
+
+No data loss or downtime expected; migration runs in online mode using transactional DDL where applicable.
+
+
+
+
+
+Change Summary
+
+This change updates the Remedy API integration to log out after each Work Order creation, ensuring better session management, enhanced security, and prevention of stale or concurrent API session issues in production.
+
+Change Notes
+
+Implemented logic to perform an explicit Remedy API logout immediately after successful Work Order creation.
+
+Prevents accumulation of active Remedy sessions and potential authentication timeouts in subsequent requests.
+
+Tested and validated the logout flow in lower environments (DV, UT, NP) to ensure no disruption to existing workflows.
+
+Improves system reliability and API performance by reducing session conflicts and token expiration errors.
+
+No change to Work Order creation logic; update is limited to post-creation API session cleanup.
+
+Rollback plan: revert to previous handler version without the logout step if any session termination issues occur.
