@@ -1,18 +1,13 @@
-Here’s a short and clear version for your **spike story – “Investigate Standard Bulk Purchase Workflow” (User Story 10797907)**, aligned with how Azure DevOps spike items are usually written:
+Description
 
----
+Test and fix the issue related to multiple work orders being created for a single request in the Remedy workflow. Ensure that the workflow correctly handles multiple items within a single request without generating duplicate work orders.
 
-### **Description**
+Acceptance Criteria
 
-Work with the respective engineering and operations teams to identify and document the **Standard Bulk Purchase workflow**, including current process flow, dependencies, and integration points.
+When a user requests multiple items within a single request, Storefront should generate only one consolidated work order instead of multiple.
 
----
+Validate that the workflow correctly processes all requested items within the same work order.
 
-### **Acceptance Criteria**
+Confirm that recent changes do not reintroduce the duplication issue.
 
-* Collaborated with relevant teams to gather details of the existing bulk purchase process.
-* Documented the end-to-end workflow and outlined potential areas for improvement or automation.
-
----
-
-Would you like me to add a one-line **Release Notes** section too (e.g., “Investigated and documented the Standard Bulk Purchase workflow with identified improvement areas”)?
+Successfully tested end-to-end in both DV and UT environments with Remedy integration.
