@@ -1,18 +1,18 @@
-Here’s a concise version suitable for your **Spike Story – “Requirements Gathering for Shuttle”** (User Story 10581138), keeping it short and clear as you requested:
+Here’s a short and clear version for your **spike story – “Investigate Standard Bulk Purchase Workflow” (User Story 10797907)**, aligned with how Azure DevOps spike items are usually written:
 
 ---
 
 ### **Description**
 
-Work with the **Shuttle onboarding team** to gather requirements and understand system dependencies, data flow, and integration points with Mobility workflows.
+Work with the respective engineering and operations teams to identify and document the **Standard Bulk Purchase workflow**, including current process flow, dependencies, and integration points.
 
 ---
 
 ### **Acceptance Criteria**
 
-* Requirements are documented after discussions with the Shuttle onboarding team.
-* Key integration and data flow dependencies are identified and reviewed with stakeholders.
+* Collaborated with relevant teams to gather details of the existing bulk purchase process.
+* Documented the end-to-end workflow and outlined potential areas for improvement or automation.
 
 ---
 
-Would you like me to make a version that includes a **Release Notes** line too (e.g., “Requirements gathered for Shuttle onboarding integration with Mobility workflows”)?
+Would you like me to add a one-line **Release Notes** section too (e.g., “Investigated and documented the Standard Bulk Purchase workflow with identified improvement areas”)?
