@@ -1,15 +1,18 @@
-Description
+Here’s a concise version suitable for your **Spike Story – “Requirements Gathering for Shuttle”** (User Story 10581138), keeping it short and clear as you requested:
 
-Perform a discovery spike to analyze and document the Mobile Device workflow. Collaborate with the respective engineering, infrastructure, and business teams to identify dependencies, integration points, and potential improvements required for future implementation.
+---
 
-Acceptance Criteria
+### **Description**
 
-Conduct discussions with Operations Engineering, Storefront, and related platform teams to understand current workflow gaps and integration needs.
+Work with the **Shuttle onboarding team** to gather requirements and understand system dependencies, data flow, and integration points with Mobility workflows.
 
-Document the end-to-end flow of the existing Mobile Device process, including triggers, data exchange, and external service interactions.
+---
 
-Identify pain points, validation gaps, and dependencies across systems.
+### **Acceptance Criteria**
 
-Provide a summary of findings and recommended next steps for implementation.
+* Requirements are documented after discussions with the Shuttle onboarding team.
+* Key integration and data flow dependencies are identified and reviewed with stakeholders.
 
-Discovery documentation is reviewed and approved by stakeholders before closure.
+---
+
+Would you like me to make a version that includes a **Release Notes** line too (e.g., “Requirements gathered for Shuttle onboarding integration with Mobility workflows”)?
