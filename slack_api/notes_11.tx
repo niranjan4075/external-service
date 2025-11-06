@@ -1,0 +1,48 @@
+Here’s the **final, detailed email version** that includes the additional information from the notes (device details, user info, cost center, etc.) for full clarity:
+
+---
+
+**Subject:** Update on Director Thomas Webb’s Device Replacement Requests
+
+Hi [Manager’s Name],
+
+I wanted to share a detailed summary of Director **Thomas Webb’s device replacement requests**, including both the active and cancelled work orders for better visibility.
+
+* The **initial request** was submitted on **September 9, 2025**, and another request was created on **September 28**, which generated a **new work order (WO0000002786776)** on **October 2** under *PlazaLAN (Steve Sykes)*.
+* The **PlazaLAN work order (WO0000002786776)** was **cancelled** by Steve, as he noted that the user already had an **active ticket with the Storefront team**, which is being handled by the **Central Provisioning (CP Exec Employee Store)** group.
+* The **Storefront work order (WO0000002762794)** remains **active** under *Virtual_Storefront Service → CP Exec Employee Store*, and continues to be tracked by the Central Provisioning team for fulfillment.
+
+Below are the key details from the **active Storefront work order (WO0000002762794):**
+
+* **Associate Name:** Thomas Webb
+* **Email:** [WWebb@geico.com](mailto:WWebb@geico.com)
+* **Employee ID:** 270504
+* **Job Title:** Director, Claims Strategic Analytics
+* **Department:** Claims Operations – Claims Operations 29
+* **Requester Email:** [WWebb@geico.com](mailto:WWebb@geico.com)
+* **Phone:** +1-123-456-7890
+* **Device Name:** Dell Pro
+* **Device Model:** 16 Premium Max
+* **Device Type:** Performance
+* **Replaced Device Serial:** PF3JQAFN
+* **Storefront Reference Number:** 2134
+* **Address:** 2111 Keith Ln, Midlothian, VA 23113
+* **Address Type:** Home
+* **Executive Request:** Yes
+* **Cost Center:** co0001 – Claims Operations
+* **Device OS:** Windows
+
+**Summary:**
+
+* **Active Ticket:** WO0000002762794 (Storefront – CP Exec Employee Store)
+* **Cancelled Ticket:** WO0000002786776 (PlazaLAN – Steve Sykes)
+* The Help Desk/PlazaLAN request was cancelled to avoid duplication since provisioning is being managed under the Storefront’s Central Provisioning workflow.
+
+Please let me know if you’d like me to follow up with the **Central Provisioning team** to get the latest update on device delivery or assignment.
+
+Thanks,
+Niranjan
+
+---
+
+Would you like me to refine this version for sending to **Varun, Rachele, and Raymond** (to match their communication tone)? I can make it slightly more executive-style.
