@@ -1,19 +1,12 @@
-Change Summary
+**One-line Summary:**
+Updated Nginx configuration to standardize proxy headers, improve SSL handling, and align with all environment branches.
 
-"Adding a new is_active column to the offices table to track active/inactive office locations. As part of this change, Tampa Building 1 and Tampa Building 2 will be marked as inactive. This update enables better management of office availability and ensures downstream systems correctly reflect the current operational status of offices."
+**Notes (6–7 lines):**
 
-
-
-Notes
-
-Schema change introduces a new boolean field is_active in the offices table.
-
-Default value will be set to true (active) for all existing offices.
-
-Tampa Building 1 and Tampa Building 2 records will be updated to false (inactive).
-
-No application downtime expected; change is backward-compatible.
-
-Change has been tested in lower environments prior to this request.
-
-Rollback is possible by dropping the new column and restoring previous data.
+* Added consistent proxy headers for better routing and request tracking.
+* Introduced SSL configuration with SNI to fix certificate validation issues.
+* Implemented uniform timeout settings to enhance reliability.
+* Enabled Slack deployment notifications for better visibility.
+* Ensured alignment with configurations from staging, UAT, and production.
+* Performed code cleanup for consistency across all branches.
+* Verified configuration changes in lower environments before promotion.
