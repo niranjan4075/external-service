@@ -1,12 +1,22 @@
-**One-line Summary:**
-Updated Nginx configuration to standardize proxy headers, improve SSL handling, and align with all environment branches.
+Got it — here’s the refined version without that irrelevant second point, keeping it clean and accurate:
 
-**Notes (6–7 lines):**
+---
 
-* Added consistent proxy headers for better routing and request tracking.
-* Introduced SSL configuration with SNI to fix certificate validation issues.
-* Implemented uniform timeout settings to enhance reliability.
-* Enabled Slack deployment notifications for better visibility.
-* Ensured alignment with configurations from staging, UAT, and production.
-* Performed code cleanup for consistency across all branches.
-* Verified configuration changes in lower environments before promotion.
+### **Change Summary**
+
+Enabled **rate limiting in production** to ensure users can submit only one request at a time, preventing duplicate or excessive submissions. Updated production and DV spec files with necessary configuration changes to support the new restriction.
+
+---
+
+### **Notes**
+
+1. Added new environment variable flags in both **DV** and **PD** YAMLs to enable rate-limiting configuration.
+2. Turned on rate limiting specifically in **production** to allow only a single request per user.
+3. Verified YAML consistency across environments and ensured all group IDs remain aligned.
+4. Made minor alignment and formatting updates for better readability and deployment consistency.
+5. Validated deployment readiness and confirmed expected behavior in non-prod before enabling in production.
+
+---
+
+Would you like me to make it fit your **Azure DevOps PR format** (e.g., include “One-line Summary” + “Detailed Notes” + “Validation Steps”)?
+
