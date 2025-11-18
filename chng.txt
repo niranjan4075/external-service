@@ -1,21 +1,50 @@
-[11/18/25, 7:36:23 AM] ~N~: Here you go — clean, precise, and suitable for PR / release notes.
+Got it — here is a **clean, structured, detailed version with sub-headings**, but still in point format (not paragraphs):
 
-⸻
+---
 
-✅ One-Line Change Summary
+### **Inventory Email Matching**
 
-Updated the group-tag lookup logic to ensure case-insensitive email matching using SQLAlchemy func.lower().
+* Updated the inventory email filtering logic to use **case-insensitive comparison**, ensuring accurate matching regardless of how the email is stored or entered
+* Standardized the query behavior so lowercase transformation happens consistently across all inventory-related lookups
 
-⸻
+---
 
-✅ Change Notes (4–5 lines, no special characters)
-	•	Updated inventory email filtering to use case insensitive comparison
-	•	Added SQLAlchemy func import to enable lower case matching
-	•	Ensures consistent group tag resolution regardless of email casing
-	•	Prevents mismatched results when user email case varies across systems
-	•	Minor cleanup to maintain alignment with existing query structure
+### **SQLAlchemy Enhancements**
 
-⸻
+* Added the required **SQLAlchemy `func` import** to safely apply `func.lower()` for database-level case normalization
+* Ensures queries work uniformly across different environments and database engines
 
-If you want, I can also generate a commit message, PR description, or deployment notes.
-[11/18/25, 7:36:45 AM] ~N~: Revert the change back to the original email matching logic and deploy across environments after confirming testing is completed.
+---
+
+### **Storefront Verified DB Integration**
+
+* Improved consistency between incoming user email data and the **Storefront Verified DB** by normalizing casing
+* Reduces lookup failures when device records, user records, or group tags have inconsistent capitalization
+
+---
+
+### **Remedy Group Tag Population**
+
+* Ensures group-tag mapping logic behaves correctly when Remedy stores email IDs in varying case formats
+* Prevents incorrect or missing group-tag assignments during Remedy workflow processing
+
+---
+
+### **Cross-System Reliability**
+
+* Eliminates mismatched results when user email casing differs between Storefront, Remedy, Azure/Entra, or external systems
+* Strengthens the accuracy of downstream workflows relying on group-tag resolution
+
+---
+
+### **Code Quality Improvements**
+
+* Performed minor cleanup to keep the query pattern aligned with existing conventions
+* Improves maintainability and readability for future updates
+
+---
+
+If you want, I can also prepare:
+✅ A shorter version
+✅ A PR description
+✅ A deployment summary or justification
