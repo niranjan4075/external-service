@@ -1,22 +1,21 @@
-Got it — here’s the refined version without that irrelevant second point, keeping it clean and accurate:
+[11/18/25, 7:36:23 AM] ~N~: Here you go — clean, precise, and suitable for PR / release notes.
 
----
+⸻
 
-### **Change Summary**
+✅ One-Line Change Summary
 
-Enabled **rate limiting in production** to ensure users can submit only one request at a time, preventing duplicate or excessive submissions. Updated production and DV spec files with necessary configuration changes to support the new restriction.
+Updated the group-tag lookup logic to ensure case-insensitive email matching using SQLAlchemy func.lower().
 
----
+⸻
 
-### **Notes**
+✅ Change Notes (4–5 lines, no special characters)
+	•	Updated inventory email filtering to use case insensitive comparison
+	•	Added SQLAlchemy func import to enable lower case matching
+	•	Ensures consistent group tag resolution regardless of email casing
+	•	Prevents mismatched results when user email case varies across systems
+	•	Minor cleanup to maintain alignment with existing query structure
 
-1. Added new environment variable flags in both **DV** and **PD** YAMLs to enable rate-limiting configuration.
-2. Turned on rate limiting specifically in **production** to allow only a single request per user.
-3. Verified YAML consistency across environments and ensured all group IDs remain aligned.
-4. Made minor alignment and formatting updates for better readability and deployment consistency.
-5. Validated deployment readiness and confirmed expected behavior in non-prod before enabling in production.
+⸻
 
----
-
-Would you like me to make it fit your **Azure DevOps PR format** (e.g., include “One-line Summary” + “Detailed Notes” + “Validation Steps”)?
-
+If you want, I can also generate a commit message, PR description, or deployment notes.
+[11/18/25, 7:36:45 AM] ~N~: Revert the change back to the original email matching logic and deploy across environments after confirming testing is completed.
