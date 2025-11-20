@@ -1,32 +1,32 @@
-Got it — removing auto-provisioning completely.
-Here is the corrected, clean version you can paste into ADO 👇
+ Here is a **clean, professional, and precise** Description, Acceptance Criteria, and Benefit Explanation for the *ELT & Executive Workflow* feature.
+You can directly paste this into ADO.
 
 ---
 
 ### **Description**
 
-Enable Mobile Device Management (MDM) support within Storefront by introducing mobile devices into the catalog and defining the end-to-end request and approval workflow. This feature focuses on making mobile devices available to users based on their role, along with proper routing, visibility, and fulfillment steps handled by Mobility Ops (no automated provisioning).
+Implement an ELT & Executive workflow within Storefront that allows executives and ELT-level users to request any device or accessory without requiring manager approval. When an executive submits a request, the system should automatically create a work order and route it directly to Mobility Ops for fulfillment. Role detection should be based on AD groups or designated executive identifiers.
 
 ---
 
 ### **Acceptance Criteria**
 
-* Mobile device catalog is added to Storefront with accurate models, specifications, and availability details.
-* Role-based visibility ensures only authorized users or AD groups can view or request mobile devices.
-* End-to-end workflow—from request creation to approval routing and handoff to Mobility Ops—is fully validated.
-* Fulfillment instructions clearly define manual steps Mobility Ops must follow for device setup and MDM enrollment.
-* All UI and API flows for requesting mobile devices are tested for consistency and correctness.
+* Executives/ELT users are identified through a specific AD group or role configuration.
+* When an executive submits a request, the workflow bypasses all manager approvals.
+* A work order is automatically created and routed to Mobility Ops for fulfillment.
+* UI and API flows clearly reflect that the request does not require approval for executive users.
+* Testing verifies that non-executive users still follow the standard approval workflow.
 
 ---
 
 ### **Benefit Explanation**
 
-This feature introduces mobile devices into Storefront, enabling a standardized request and approval process. It improves visibility for users, provides clarity for Mobility Ops, and creates a single, organized channel for managing corporate mobile device requests—without relying on automated provisioning.
+This workflow streamlines device acquisition for executives by eliminating unnecessary approval steps and ensuring faster fulfillment. It reduces processing time, improves executive experience, and maintains clear operational routing through automated work order creation.
 
 ---
 
-If you want, I can also create smaller child stories for:
-✔ device catalog setup
-✔ role-based access
-✔ workflow integration
-✔ fulfillment steps & documentation
+If you want, I can also generate sub-stories for:
+✔ AD group mapping
+✔ Workflow rules
+✔ API changes
+✔ UI indicators for “no approval required”
