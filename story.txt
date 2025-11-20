@@ -1,12 +1,21 @@
-Work with Varun and key Storefront stakeholders to define a phased rollout roadmap for launching Storefront to all users. Identify user groups, AD-based access levels, and determine which features (devices, peripherals, workflows) should be released in each phase or wave. Establish a clear sequence for onboarding, permissions, and feature enablement.
+Here is a **clean Description** and **5-line Acceptance Criteria** you can paste directly:
 
+---
 
-A phased or wave-based rollout plan is documented, reviewed, and approved by Varun and relevant stakeholders.
+### **Description**
 
-AD groups and user segments required for each rollout phase are clearly identified and mapped.
+Conduct UAT testing for all peripherals and accessories currently displayed in Storefront. Validate that each accessory appears with correct details, pricing, and availability. Ensure role-based visibility is enforced so users only see accessories they are authorized to request based on their AD group or assigned permissions.
 
-Feature sets (devices, peripherals, workflows) for each phase are defined and aligned with business and operational needs.
+---
 
-Dependencies, risks, and sequencing for each wave are captured and communicated with the Storefront team.
+### **Acceptance Criteria**
 
-Final roadmap is shared with Mobility Ops, Storefront engineering, and leadership for visibility and execution.
+* All peripherals and accessories in Storefront are reviewed and validated for accuracy (name, SKU, price, image, availability).
+* Role-based visibility is tested to confirm users only see accessories allowed for their AD group or assigned role.
+* Any mismatches, missing items, or incorrectly visible items are documented and assigned for fix.
+* Test cases cover end-to-end flows including viewing, adding to cart (if applicable), and request creation.
+* UAT results are reviewed with stakeholders, and sign-off is obtained once all issues are resolved.
+
+---
+
+If you want, I can also generate UAT test cases for these accessories.
