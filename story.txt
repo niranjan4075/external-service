@@ -1,32 +1,33 @@
- Here is a **clean, professional, and precise** Description, Acceptance Criteria, and Benefit Explanation for the *ELT & Executive Workflow* feature.
-You can directly paste this into ADO.
+Here is a **clean, professional, and accurate** Description, Acceptance Criteria, and Benefit Explanation for the **Shuttle Integration** feature.
+You can paste this directly into ADO.
 
 ---
 
 ### **Description**
 
-Implement an ELT & Executive workflow within Storefront that allows executives and ELT-level users to request any device or accessory without requiring manager approval. When an executive submits a request, the system should automatically create a work order and route it directly to Mobility Ops for fulfillment. Role detection should be based on AD groups or designated executive identifiers.
+Integrate the Shuttle onboarding platform with Storefront to automatically receive new-hire user data. Shuttle is the first step in the GEICO onboarding journey, and Storefront follows as the platform for provisioning devices. This integration will allow Storefront to pull user attributes, roles, and required device information from Shuttle so the device-ordering workflow is pre-populated and triggered accurately for new employees.
 
 ---
 
 ### **Acceptance Criteria**
 
-* Executives/ELT users are identified through a specific AD group or role configuration.
-* When an executive submits a request, the workflow bypasses all manager approvals.
-* A work order is automatically created and routed to Mobility Ops for fulfillment.
-* UI and API flows clearly reflect that the request does not require approval for executive users.
-* Testing verifies that non-executive users still follow the standard approval workflow.
+* Shuttle API or data feed is integrated with Storefront to retrieve new-hire user details.
+* Required fields such as name, email, start date, role, AD group, and location are mapped and stored within Storefront.
+* Storefront can identify “new user onboarding” cases and prepare device workflows based on Shuttle data.
+* Validation ensures data is synced correctly and duplicates or missing information are handled gracefully.
+* End-to-end testing confirms that a new hire completing Shuttle appears in Storefront with correct device eligibility.
 
 ---
 
 ### **Benefit Explanation**
 
-This workflow streamlines device acquisition for executives by eliminating unnecessary approval steps and ensuring faster fulfillment. It reduces processing time, improves executive experience, and maintains clear operational routing through automated work order creation.
+Integrating Shuttle with Storefront streamlines the new-hire onboarding process by eliminating manual data entry and ensuring accurate, timely device provisioning. This reduces operational overhead, improves the employee onboarding experience, and creates a seamless flow from initial onboarding (Shuttle) to device fulfillment (Storefront).
 
 ---
 
-If you want, I can also generate sub-stories for:
-✔ AD group mapping
-✔ Workflow rules
-✔ API changes
-✔ UI indicators for “no approval required”
+If you want, I can also create sub-stories for:
+✔ API integration
+✔ Data mapping
+✔ Sync validation
+✔ Workflow updates
+✔ Error handling
