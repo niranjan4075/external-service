@@ -1,21 +1,32 @@
-Here is a **clean Description** and **5-line Acceptance Criteria** you can paste directly:
+Got it — removing auto-provisioning completely.
+Here is the corrected, clean version you can paste into ADO 👇
 
 ---
 
 ### **Description**
 
-Conduct UAT testing for all peripherals and accessories currently displayed in Storefront. Validate that each accessory appears with correct details, pricing, and availability. Ensure role-based visibility is enforced so users only see accessories they are authorized to request based on their AD group or assigned permissions.
+Enable Mobile Device Management (MDM) support within Storefront by introducing mobile devices into the catalog and defining the end-to-end request and approval workflow. This feature focuses on making mobile devices available to users based on their role, along with proper routing, visibility, and fulfillment steps handled by Mobility Ops (no automated provisioning).
 
 ---
 
 ### **Acceptance Criteria**
 
-* All peripherals and accessories in Storefront are reviewed and validated for accuracy (name, SKU, price, image, availability).
-* Role-based visibility is tested to confirm users only see accessories allowed for their AD group or assigned role.
-* Any mismatches, missing items, or incorrectly visible items are documented and assigned for fix.
-* Test cases cover end-to-end flows including viewing, adding to cart (if applicable), and request creation.
-* UAT results are reviewed with stakeholders, and sign-off is obtained once all issues are resolved.
+* Mobile device catalog is added to Storefront with accurate models, specifications, and availability details.
+* Role-based visibility ensures only authorized users or AD groups can view or request mobile devices.
+* End-to-end workflow—from request creation to approval routing and handoff to Mobility Ops—is fully validated.
+* Fulfillment instructions clearly define manual steps Mobility Ops must follow for device setup and MDM enrollment.
+* All UI and API flows for requesting mobile devices are tested for consistency and correctness.
 
 ---
 
-If you want, I can also generate UAT test cases for these accessories.
+### **Benefit Explanation**
+
+This feature introduces mobile devices into Storefront, enabling a standardized request and approval process. It improves visibility for users, provides clarity for Mobility Ops, and creates a single, organized channel for managing corporate mobile device requests—without relying on automated provisioning.
+
+---
+
+If you want, I can also create smaller child stories for:
+✔ device catalog setup
+✔ role-based access
+✔ workflow integration
+✔ fulfillment steps & documentation
