@@ -1,12 +1,12 @@
-Update the Storefront asset automation pipeline to correct existing asset data issues and switch the data consumption pattern from “full load” to incremental. The pipeline should only consume newly created/updated records on each run, reducing duplicate processing and improving performance and accuracy for Storefront asset workflows.
+Work with Varun and key Storefront stakeholders to define a phased rollout roadmap for launching Storefront to all users. Identify user groups, AD-based access levels, and determine which features (devices, peripherals, workflows) should be released in each phase or wave. Establish a clear sequence for onboarding, permissions, and feature enablement.
 
 
-The pipeline should consume only newly created or updated asset records instead of processing the full dataset each time.
+A phased or wave-based rollout plan is documented, reviewed, and approved by Varun and relevant stakeholders.
 
-Existing incorrect or stale asset data must be corrected without creating duplicates.
+AD groups and user segments required for each rollout phase are clearly identified and mapped.
 
-The updated workflow must be fully idempotent, ensuring reruns do not generate conflicting or repeated entries.
+Feature sets (devices, peripherals, workflows) for each phase are defined and aligned with business and operational needs.
 
-Incremental processing should reduce execution time and improve overall pipeline efficiency.
+Dependencies, risks, and sequencing for each wave are captured and communicated with the Storefront team.
 
-Validation checks must confirm accurate record counts and successful data correction after deployment.
+Final roadmap is shared with Mobility Ops, Storefront engineering, and leadership for visibility and execution.
