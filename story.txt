@@ -1,17 +1,17 @@
-Here’s a tight Description + 5-line Acceptance Criteria you can paste into ADO 👇
+Here’s a clean version you can paste into ADO 👇
 
 ---
 
 ### Description
 
-Review the existing Storefront certificates for all prod and non-prod environments. If any cert is set to expire before **Nov 30**, generate and install new certificates, update configuration as needed, and validate that Storefront encryption and connectivity continue to work as expected.
+Update the Storefront group tag assignment logic to support a fallback based on job title. Today, group tags are derived from the user’s existing group value in the inventory table, but this is sometimes null or missing. Using the job-title mappings provided by Curt and Diego, introduce a new lookup table so that when the primary group tag is not available, Storefront assigns the appropriate group tag based on the user’s job title.
 
 ---
 
 ### Acceptance Criteria
 
-* All Storefront certs in prod and non-prod are reviewed and their expiry dates documented.
-* Any certificate expiring before Nov 30 is renewed, installed, and referenced correctly in application and platform configs.
-* Storefront services start successfully with the new certificates and no TLS/handshake errors are observed in logs.
-* Data encryption and secure communication (mTLS/HTTPS) are validated via functional and smoke tests across environments.
-* Stakeholders sign off that there is no customer or internal impact from the cert updates.
+* When a valid group tag exists in the inventory table, it continues to be used as the primary source.
+* If the inventory group tag is null or missing, the system looks up the user’s job title in the new mapping table and assigns the corresponding group tag.
+* A default/“no match” behavior is defined for job titles that are not present in the mapping table.
+* Logic is implemented in a single, reusable component/service and covered with unit tests for both primary and fallback scenarios.
+* Sample test users are validated end-to-end to confirm correct group tag assignment from inventory first and job-title mapping as fallback.
