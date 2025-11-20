@@ -1,33 +1,23 @@
-Here is a **clean, professional, and accurate** Description, Acceptance Criteria, and Benefit Explanation for the **Shuttle Integration** feature.
-You can paste this directly into ADO.
+Here’s a clean version you can paste into the **Asset Data Automation** feature.
 
 ---
 
-### **Description**
+### Description
 
-Integrate the Shuttle onboarding platform with Storefront to automatically receive new-hire user data. Shuttle is the first step in the GEICO onboarding journey, and Storefront follows as the platform for provisioning devices. This integration will allow Storefront to pull user attributes, roles, and required device information from Shuttle so the device-ordering workflow is pre-populated and triggered accurately for new employees.
-
----
-
-### **Acceptance Criteria**
-
-* Shuttle API or data feed is integrated with Storefront to retrieve new-hire user details.
-* Required fields such as name, email, start date, role, AD group, and location are mapped and stored within Storefront.
-* Storefront can identify “new user onboarding” cases and prepare device workflows based on Shuttle data.
-* Validation ensures data is synced correctly and duplicates or missing information are handled gracefully.
-* End-to-end testing confirms that a new hire completing Shuttle appears in Storefront with correct device eligibility.
+Build and maintain an automated asset data pipeline that pulls device and user information from multiple sources (Power BI reports, CrowdStrike, Intune, etc.) into a single Storefront inventory table. The pipeline should normalize and merge these feeds to create a consistent view of user-to-device mappings, EOL status, and group tags that can be consumed by Storefront workflows and reporting.
 
 ---
 
-### **Benefit Explanation**
+### Acceptance Criteria
 
-Integrating Shuttle with Storefront streamlines the new-hire onboarding process by eliminating manual data entry and ensuring accurate, timely device provisioning. This reduces operational overhead, improves the employee onboarding experience, and creates a seamless flow from initial onboarding (Shuttle) to device fulfillment (Storefront).
+* Data ingestion is set up from all required sources (Power BI report, CrowdStrike, Intune and any future-approved feeds).
+* Mappings are defined so user identifiers, device IDs, platform details, EOL dates, and group tags are normalized into the inventory table schema.
+* Merge and de-duplication logic ensures each active device/user record appears once with the most recent attributes.
+* Pipeline runs on a defined schedule with logging, basic error handling, and monitoring to detect failed or partial loads.
+* Validation checks (sample comparisons and record counts) confirm that inventory data matches source systems within agreed tolerances.
 
 ---
 
-If you want, I can also create sub-stories for:
-✔ API integration
-✔ Data mapping
-✔ Sync validation
-✔ Workflow updates
-✔ Error handling
+### Benefit Explanation
+
+This feature creates a single, trusted source of asset data for Storefront by automatically consolidating information from Power BI, CrowdStrike, Intune, and other systems. It reduces manual reconciliation, improves accuracy of user and device records (including EOL and group tags), and enables more reliable automation, analytics, and decision-making across Mobility Operations.
