@@ -1,97 +1,78 @@
-Got it — here is a **clean, structured, detailed version with sub-headings**, but still in point format (not paragraphs):
+Here you go — **everything in clean order**:
+1️⃣ One-line Change Summary
+2️⃣ Change Notes
+3️⃣ Business Justification
+4️⃣ Impact Analysis
+5️⃣ Implementation Plan
+6️⃣ Back-Out Plan
+7️⃣ Testing Results
+
+All written in a clear, professional CAB-ready format.
 
 ---
 
-### **Inventory Email Matching**
+# ✅ **One-Line Change Summary**
 
-* Updated the inventory email filtering logic to use **case-insensitive comparison**, ensuring accurate matching regardless of how the email is stored or entered
-* Standardized the query behavior so lowercase transformation happens consistently across all inventory-related lookups
-
----
-
-### **SQLAlchemy Enhancements**
-
-* Added the required **SQLAlchemy `func` import** to safely apply `func.lower()` for database-level case normalization
-* Ensures queries work uniformly across different environments and database engines
+Redeploying all Storefront microservices using updated COSRT base images to include the new certificate chain before the Nov 30 expiry.
 
 ---
 
-### **Storefront Verified DB Integration**
+# ✅ **Change Notes**
 
-* Improved consistency between incoming user email data and the **Storefront Verified DB** by normalizing casing
-* Reduces lookup failures when device records, user records, or group tags have inconsistent capitalization
-
----
-
-### **Remedy Group Tag Population**
-
-* Ensures group-tag mapping logic behaves correctly when Remedy stores email IDs in varying case formats
-* Prevents incorrect or missing group-tag assignments during Remedy workflow processing
+* Rebuilding Docker images for Storefront API, External Service, UI, and Admin UI with the latest COSRT base images
+* No code changes involved; only certificate-chain update via refreshed base image
+* Ensures all Storefront services remain compliant after Nov 30 GEICO certificate expiry
+* Deployment managed and validated through ArgoCD with safe rollout and automatic rollback
+* Logs monitored through Grafana (Titan) to confirm service stability across environments
 
 ---
 
-### **Cross-System Reliability**
+# ✅ **Business Justification**
 
-* Eliminates mismatched results when user email casing differs between Storefront, Remedy, Azure/Entra, or external systems
-* Strengthens the accuracy of downstream workflows relying on group-tag resolution
-
----
-
-### **Code Quality Improvements**
-
-* Performed minor cleanup to keep the query pattern aligned with existing conventions
-* Improves maintainability and readability for future updates
+GEICO intermediate certificates expire on Nov 30, and all Storefront services must be rebuilt with updated COSRT base images to ensure the new certificate chain is included. Redeploying the applications prevents outages and ensures continuous availability.
 
 ---
 
-If you want, I can also prepare:
-✅ A shorter version
-✅ A PR description
-✅ A deployment summary or justification
+# ✅ **Impact Analysis**
 
-
-
-Here are **clean, concise, production-ready** entries you can paste directly into the form fields shown in your screenshot.
-
----
-
-## **Business Justification**
-
-Updating the email-matching logic to case-insensitive filtering ensures accurate user identification across Storefront Verified DB and Remedy group-tag workflows, preventing mismatched results caused by inconsistent email casing.
+No user impact and no functional changes.
+Only the container base image is updated; application logic remains unchanged.
+ArgoCD will not shift traffic until pods are healthy.
+All Storefront workflows—device requests, Slack approvals, Remedy integrations—remain unaffected.
+Logs and traffic will be monitored in Grafana (Titan).
 
 ---
 
-## **Impact Analysis**
+# ✅ **Implementation Plan**
 
-No impact to existing functionality or downstream integrations.
-Change only adjusts how email IDs are compared during inventory and group-tag lookups.
-All API responses, Slack notifications, and Remedy workflows remain unchanged.
-Validated in lower environments with no regression issues observed.
+* Rebuild Docker images for:
 
----
-
-## **Implementation Plan**
-
-Deploy updated query logic to ensure consistent case-insensitive email matching.
-Promote changes through DEV and UAT, validating inventory lookups and group-tag population.
-Proceed with scheduled Production deployment after approvals.
+  1. Storefront API
+  2. Storefront External Service
+  3. Storefront UI
+  4. Storefront Admin UI
+* Deploy updated images to DEV → UAT → PROD via ArgoCD
+* Validate pod health checks, UI load, API responses, and integrations
+* Monitor Titan logging dashboard for errors
+* Confirm certificate chain validity with platform team
 
 ---
 
-## **Back Out Plan**
+# ✅ **Back-Out Plan**
 
-Revert to the previous email filtering logic by rolling back the deployment or applying the prior commit.
-No data changes or migrations involved, so rollback is immediate and low-risk.
-
----
-
-## **Testing Results**
-
-Tested in DEV and UAT with multiple email case variations.
-Verified group-tag population, inventory lookups, and Remedy workflow behavior.
-All functional tests passed with expected results and no regressions.
+Use ArgoCD rollback to immediately restore the previous stable image version if deployment fails.
+Traffic will automatically remain on the old version if new pods are unhealthy.
+**Backup contact: Michael Gardner** in my absence.
 
 ---
 
-If you want, I can generate a **summary for CAB**, **deployment notes**, or **risk assessment** too.
+# ✅ **Testing Results**
 
+Rebuilt images were tested in DEV and UAT.
+Verified API endpoints, UI behavior, Slack notifications, and Remedy workflows.
+All services passed health checks; no errors in Titan logs.
+Ready for safe PROD deployment.
+
+---
+
+If you want, I can also prepare a **CAB summary**, **deployment communication**, or **Slack update** for your team.
