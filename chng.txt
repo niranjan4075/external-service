@@ -1,18 +1,43 @@
-Here is your entire CRQ document rewritten cleanly in **plain copy-paste text format**, with no formatting issues and no emojis. You can copy this directly into email, Word, or a change ticket.
+Below is a **perfectly formatted TEXT version** that will look **exactly like the Word document** when you copy and paste it into Microsoft Word.
+
+It includes:
+
+* Title page
+* Page breaks
+* Table of contents placeholder
+* Proper headings
+* Clean spacing
+
+Just **copy and paste the entire block** into Word.
 
 ---
 
-CRQ000000807543 – Change Request Detailed Documentation
+# **Change Request Detailed Documentation**
 
-Overview
+**CRQ000000807543**
+
+--------------------------PAGE BREAK--------------------------
+
+# **Table of Contents**
+
+(Word will auto-generate once you right-click → Update Field)
+
+--------------------------PAGE BREAK--------------------------
+
+# **Overview**
+
 This document provides a comprehensive and detailed explanation of the change request involving the rebuild and redeployment of all Storefront services using updated COSRT base images to ensure certificate chain continuity before the November 30 expiration. The change is strictly related to infrastructure compliance, without introducing any code changes or functional modifications to the services.
 
-Background
+# **Background**
+
 GEICO's intermediate certificates are set to expire on November 30. Multiple internal platforms, including Storefront, rely on these certificates for secure service communication. The Storefront ecosystem consists of several microservices, including the Storefront API, Storefront External Service, Storefront UI, and Storefront Admin UI. All of these require updated base images that include the new certificate chain published by COSRT.
 
-Failure to rebuild and redeploy these applications before the certificate expiry date poses a risk of service disruptions across internal workflows, device ordering pipelines, Slack approvals, Remedy integrations, and general API access. This CR has been initiated to proactively rebuild and redeploy the services using the latest COSRT base images, ensuring the updated certificate chain is included and services remain stable and compliant.
+Failure to rebuild and redeploy these applications before the certificate expiry date poses a risk of service disruptions across internal workflows, device ordering pipelines, Slack approvals, Remedy integrations, and general API access.
 
-Scope of Change
+This CR has been initiated to proactively rebuild and redeploy the services using the latest COSRT base images, ensuring the updated certificate chain is included and services remain stable and compliant.
+
+# **Scope of Change**
+
 The scope covers all core Storefront microservices:
 
 1. Storefront API
@@ -22,7 +47,8 @@ The scope covers all core Storefront microservices:
 
 The change does not alter application logic, business rules, or user interface components. It is strictly a container platform refresh to incorporate updated certificate chain data from COSRT-published images. All services will be rebuilt, redeployed, verified, and promoted through standard environment progression (DEV → UAT → PROD).
 
-Business Justification
+# **Business Justification**
+
 This CR is required to ensure the continuity of Storefront operations following the expiration of the current GEICO intermediate certificate. Without updating the base images and redeploying the affected microservices, certificate validation failures may occur, potentially interrupting critical workflows such as device ordering processes, automated notifications, Remedy group-tag validation, and cross-platform integrations.
 
 Updating the COSRT base images and redeploying ensures:
@@ -32,33 +58,34 @@ Updating the COSRT base images and redeploying ensures:
 * Alignment with platform security guidelines and operational best practices
 * Maintaining uninterrupted availability across all Storefront applications and services
 
-Impact Analysis
+# **Impact Analysis**
 
-1. Functional Impact:
+1. **Functional Impact**
    No functional impact is expected. There are no code changes being introduced, and the business logic, workflows, integrations, and UI components remain unchanged.
 
-2. Application Availability:
+2. **Application Availability**
    During the redeployment process, ArgoCD will manage rollout through controlled strategies. Traffic will only be routed to new pods once they are verified as healthy. If new pods fail health checks, ArgoCD will not proceed, preventing downtime.
 
-3. User Impact:
+3. **User Impact**
    There is no impact to internal or external users. All interfaces and workflows will continue functioning normally.
 
-4. Integration Impact:
+4. **Integration Impact**
    Slack approvals, Remedy workflows, group-tag population, device ordering flows, and data synchronization will remain fully operational.
 
-5. Monitoring:
+5. **Monitoring**
    All logs and application performance data will be monitored continuously through Grafana (Titan) dashboards. Any anomalies will be immediately visible and triaged.
 
-Implementation Plan
+# **Implementation Plan**
+
 The implementation will follow a structured and controlled multi-step approach:
 
-1. Preparation Phase:
+1. **Preparation Phase**
 
 * Confirm availability of updated COSRT base images
 * Validate that all required certificate updates are included in the base image
 * Ensure ArgoCD pipelines are aligned and ready for deployment
 
-2. Image Rebuild:
+2. **Image Rebuild**
 
 * Build updated Docker images for:
   a. Storefront API
@@ -67,10 +94,10 @@ The implementation will follow a structured and controlled multi-step approach:
   d. Storefront Admin UI
 * Verify that each image contains the updated certificate chain
 
-3. Deployment Process:
+3. **Deployment Process**
 
 * Deploy updated images to the DEV environment
-* Validate successful deployment including:
+* Validate successful deployment:
 
   * Pod readiness
   * Endpoint accessibility
@@ -78,71 +105,71 @@ The implementation will follow a structured and controlled multi-step approach:
   * Internal API communication
   * Log verification via Grafana
 * Promote changes to UAT
-* Perform the same validations
+* Perform the same set of validations
 * Schedule and execute PROD deployment using ArgoCD
 
-4. Validation:
+4. **Validation**
 
 * Application logs will be reviewed for certificate-related errors
 * Network and TLS handshake validation will be performed
 * Cross-service communication will be tested for certificate acceptance
 
-5. Completion:
+5. **Completion**
 
 * Document deployment results
 * Notify dependent teams of successful rollout
 
-Back-Out Plan
+# **Back-Out Plan**
+
 The rollback strategy leverages ArgoCD's automated monitoring and rollback capabilities.
 
-1. If new pods fail readiness checks, ArgoCD will not route traffic to them, preventing runtime issues.
+1. If new pods fail readiness checks, ArgoCD will not route traffic to them.
 2. Manual rollback can be triggered at any time through the ArgoCD interface to restore the previous stable version.
 3. Since no schema or configuration changes are introduced, rollback is instantaneous and risk-free.
-4. Backup contact for emergency recovery: Michael Gardner.
+4. Backup contact: Michael Gardner
 
 No persistent data or system state changes are introduced by this CR, ensuring a safe and clean back-out path.
 
-Testing Results
-Comprehensive testing was conducted in the DEV and UAT environments.
+# **Testing Results**
 
-DEV testing included:
+**DEV Testing:**
 
-* Full application startup validation
-* Service-to-service communication validation
+* Application startup validation
+* Service-to-service communication
 * UI accessibility
 * API handshake checks
 * Log inspection in Grafana
 * Certificate chain validation
 
-UAT testing included:
+**UAT Testing:**
 
 * End-to-end workflow validation
 * UI and API behavior under expected load
 * Slack and Remedy workflow testing
 * Device ordering flow validation
-* TLS certificate-based communication confirmation
+* TLS certificate validation
 
-All tests passed successfully. No regressions, performance issues, or certificate validation errors were detected. The updated images are stable and ready for PROD deployment.
+All tests passed successfully with no performance issues or regressions.
 
-Monitoring and Verification
-Monitoring will be conducted primarily through Grafana (Titan) dashboards. The team will validate:
+# **Monitoring and Verification**
+
+Monitoring will be conducted through Grafana (Titan). The team will validate:
 
 * Pod health
-* CPU and memory consumption
-* API response times
-* Error logs and TLS failure logs
-* Deployment success events
-* Any anomalies in network communication
+* Resource consumption
+* Response times
+* Error logs
+* TLS failures
+* Deployment success indicators
 
-The platform team will assist with certificate-related verification as needed.
+# **Conclusion**
 
-Conclusion
-This CR ensures that all Storefront services remain fully operational and compliant after the upcoming certificate expiration on November 30. The approach is low-risk, thoroughly tested, reversible, and aligns with GEICO's infrastructure standards and security requirements. The Storefront engineering team has verified all relevant components, and all microservices are prepared for a smooth and safe deployment across environments.
+This CR ensures uninterrupted Storefront operations after the November 30 certificate expiration. The approach is low-risk, reversible, and fully tested across environments. The Storefront engineering team has verified all components, and all microservices are prepared for a smooth and safe deployment.
 
 ---
 
-If you'd like, I can generate:
+If you want, I can also generate:
 
-* A shorter summary version
-* A PDF version
-* A fully formatted official-style Word document with headers, TOC, and pagination
+* A polished **PDF version**
+* A shortened **CAB Summary**
+* A **risk matrix section** for leadership approval
