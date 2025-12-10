@@ -1,175 +1,214 @@
-Below is a **perfectly formatted TEXT version** that will look **exactly like the Word document** when you copy and paste it into Microsoft Word.
-
-It includes:
-
-* Title page
-* Page breaks
-* Table of contents placeholder
-* Proper headings
-* Clean spacing
-
-Just **copy and paste the entire block** into Word.
+Perfect — here is the **fully rewritten document**, exactly matching the style, format, structure, tone, and level of detail from the sample CR you uploaded.
+This is ready for **copy–paste directly into Word**, and the formatting will remain identical.
 
 ---
 
-# **Change Request Detailed Documentation**
-
-**CRQ000000807543**
+# **CRQ000000XXXXX – Change Request Detailed Documentation**
 
 --------------------------PAGE BREAK--------------------------
 
 # **Table of Contents**
 
-(Word will auto-generate once you right-click → Update Field)
+(Word will auto-generate this section after you: Right-click → Update Field → Update Entire Table)
 
 --------------------------PAGE BREAK--------------------------
 
 # **Overview**
 
-This document provides a comprehensive and detailed explanation of the change request involving the rebuild and redeployment of all Storefront services using updated COSRT base images to ensure certificate chain continuity before the November 30 expiration. The change is strictly related to infrastructure compliance, without introducing any code changes or functional modifications to the services.
+This document provides a comprehensive explanation of the change request involving the creation and deployment of a new backend API that enables Storefront users to securely download inventory data, along with a new corresponding page in the Storefront Admin UI that exposes this functionality to administrators. In addition to these functional enhancements, this release includes the remediation of multiple severity-level security findings and the upgrade of several impacted dependencies using BugBot automation. All changes included in this CR have been successfully developed, integrated, and tested in both the DEV and UAT environments.
+
+This change introduces new, additive capabilities while improving the security posture of Storefront services. Existing application functionality, workflows, and integrations remain unaffected.
 
 # **Background**
 
-GEICO's intermediate certificates are set to expire on November 30. Multiple internal platforms, including Storefront, rely on these certificates for secure service communication. The Storefront ecosystem consists of several microservices, including the Storefront API, Storefront External Service, Storefront UI, and Storefront Admin UI. All of these require updated base images that include the new certificate chain published by COSRT.
+The Storefront ecosystem provides multiple operational tools used by administrators, support teams, and internal users to manage device inventory, request processing, and reporting workflows. Historically, Storefront did not provide a centralized API or UI mechanism for downloading inventory data in a secure, consistent, and audited manner. Teams were dependent on manual extraction or non-standard internal tools, resulting in inefficiencies and potential data-management inconsistencies.
 
-Failure to rebuild and redeploy these applications before the certificate expiry date poses a risk of service disruptions across internal workflows, device ordering pipelines, Slack approvals, Remedy integrations, and general API access.
+To address this need, a new Inventory Download API was developed within the Storefront service layer. This API securely retrieves inventory data and is designed for internal user consumption with proper authentication and access control.
 
-This CR has been initiated to proactively rebuild and redeploy the services using the latest COSRT base images, ensuring the updated certificate chain is included and services remain stable and compliant.
+In parallel, a new dedicated "Inventory Download" page has been added to the Storefront Admin UI. This page allows administrators to initiate and download inventory data directly through the UI, providing a more streamlined and user-friendly experience.
+
+During the same development cycle, several severity-level vulnerabilities were detected in Storefront backend dependencies. With the assistance of BugBot’s automated recommendations, the necessary library and dependency updates were applied. All updated components were rebuilt, regression tested, and validated in DEV and UAT.
 
 # **Scope of Change**
 
-The scope covers all core Storefront microservices:
+The scope of this CR includes:
 
-1. Storefront API
-2. Storefront External Service
-3. Storefront UI
-4. Storefront Admin UI
+1. **Development of a new Inventory Download API**
+   A new backend service endpoint was created to support secure and consistent export of inventory data.
 
-The change does not alter application logic, business rules, or user interface components. It is strictly a container platform refresh to incorporate updated certificate chain data from COSRT-published images. All services will be rebuilt, redeployed, verified, and promoted through standard environment progression (DEV → UAT → PROD).
+2. **Enhancement of Storefront Admin UI**
+   A new page has been introduced to allow administrators to download inventory data through a guided UI workflow.
+
+3. **Resolution of severity security findings**
+   All vulnerabilities identified by BugBot have been remediated through recommended dependency upgrades and version updates.
+
+4. **Library and dependency version upgrades**
+   Outdated or vulnerable packages within Storefront APIs were upgraded to stable and secure versions.
+
+5. **DEV and UAT functional and regression testing**
+   All new features and security updates were validated across both non-production environments.
+
+6. **Deployment of updated API and UI builds**
+   Updated Storefront services will be deployed through standard ArgoCD pipelines to higher environments.
+
+No existing user workflows, business processes, or microservice integrations have been modified. This change only adds new capabilities and resolves security issues.
 
 # **Business Justification**
 
-This CR is required to ensure the continuity of Storefront operations following the expiration of the current GEICO intermediate certificate. Without updating the base images and redeploying the affected microservices, certificate validation failures may occur, potentially interrupting critical workflows such as device ordering processes, automated notifications, Remedy group-tag validation, and cross-platform integrations.
+This CR is required to enhance Storefront operational efficiency and improve platform security posture. The new functionality enables controlled, consistent inventory data extraction and removes dependency on manual or ad hoc methods currently used by internal teams.
 
-Updating the COSRT base images and redeploying ensures:
+Additionally, addressing severity vulnerabilities is mandatory for compliance with internal security policies, external audit requirements, and risk-mitigation standards. Failure to remediate these vulnerabilities could lead to security exposure, instability, or non-compliance.
 
-* Certificate compliance before the deadline
-* Elimination of potential service outages caused by expired certificates
-* Alignment with platform security guidelines and operational best practices
-* Maintaining uninterrupted availability across all Storefront applications and services
+Key business benefits include:
+
+* Enable secure, API-driven access to Storefront inventory data
+* Provide a user-friendly Admin UI page for downloading inventory
+* Improve workflow efficiency for operational and support teams
+* Resolve severity-level vulnerabilities identified by the security team
+* Maintain compliance with organizational security requirements
+* Strengthen maintainability through updated, stable dependencies
 
 # **Impact Analysis**
 
-1. **Functional Impact**
-   No functional impact is expected. There are no code changes being introduced, and the business logic, workflows, integrations, and UI components remain unchanged.
+### **1. Functional Impact**
 
-2. **Application Availability**
-   During the redeployment process, ArgoCD will manage rollout through controlled strategies. Traffic will only be routed to new pods once they are verified as healthy. If new pods fail health checks, ArgoCD will not proceed, preventing downtime.
+This release introduces new inventory-download functionality but does **not** modify any existing features, business rules, or workflows. All services will continue operating normally.
 
-3. **User Impact**
-   There is no impact to internal or external users. All interfaces and workflows will continue functioning normally.
+### **2. Application Availability**
 
-4. **Integration Impact**
-   Slack approvals, Remedy workflows, group-tag population, device ordering flows, and data synchronization will remain fully operational.
+Deployments use ArgoCD rolling-update strategies.
+No downtime is expected.
+New pods will receive traffic only after passing readiness and liveness checks.
 
-5. **Monitoring**
-   All logs and application performance data will be monitored continuously through Grafana (Titan) dashboards. Any anomalies will be immediately visible and triaged.
+### **3. User Impact**
+
+Storefront Admin users will see a new page in the UI.
+No negative impact or behavior change for existing users.
+
+### **4. Integration Impact**
+
+No downstream or upstream integrations are impacted.
+All existing API contracts and workflows remain unchanged.
+
+### **5. Security Impact**
+
+BugBot-identified severity vulnerabilities have been remediated.
+Updated dependencies have passed compatibility and regression checks.
+
+### **6. Monitoring**
+
+Grafana (Titan) dashboards will monitor log activity, API performance, error rates, and pod health during and after deployment.
 
 # **Implementation Plan**
 
-The implementation will follow a structured and controlled multi-step approach:
+The implementation will follow a structured and controlled approach:
 
-1. **Preparation Phase**
+## **1. Preparation Phase**
 
-* Confirm availability of updated COSRT base images
-* Validate that all required certificate updates are included in the base image
+* Review all new backend API and UI code changes
+* Validate dependency updates recommended by BugBot
 * Ensure ArgoCD pipelines are aligned and ready for deployment
+* Prepare validation scripts and test data for API and UI testing
 
-2. **Image Rebuild**
+## **2. Build Phase**
 
-* Build updated Docker images for:
-  a. Storefront API
-  b. Storefront External Service
-  c. Storefront UI
-  d. Storefront Admin UI
-* Verify that each image contains the updated certificate chain
+* Build Docker images for the updated Storefront API containing the new Inventory Download endpoint
+* Build the updated Storefront Admin UI with the new page
+* Apply all required dependency upgrades
+* Validate successful build and version consistency across repositories
 
-3. **Deployment Process**
+## **3. Deployment Process**
 
-* Deploy updated images to the DEV environment
-* Validate successful deployment:
+### **DEV Deployment**
 
-  * Pod readiness
-  * Endpoint accessibility
-  * UI rendering
-  * Internal API communication
-  * Log verification via Grafana
-* Promote changes to UAT
-* Perform the same set of validations
-* Schedule and execute PROD deployment using ArgoCD
+* Deploy updated API and UI images to DEV
+* Perform DEV validation tests:
 
-4. **Validation**
+  * API endpoint availability
+  * Inventory file download validation
+  * UI page rendering and navigation
+  * Log inspection
+  * Dependency upgrade validation
+  * Vulnerability mitigation confirmation
 
-* Application logs will be reviewed for certificate-related errors
-* Network and TLS handshake validation will be performed
-* Cross-service communication will be tested for certificate acceptance
+### **UAT Deployment**
 
-5. **Completion**
+* Promote the changes to UAT
+* Execute full regression suite:
 
-* Document deployment results
-* Notify dependent teams of successful rollout
+  * Admin UI usability testing
+  * End-to-end workflow validation
+  * Error handling checks
+  * Performance testing
+  * Security validation
+
+### **PROD Deployment**
+
+* Schedule deployment during approved window
+* Deploy via ArgoCD using rolling-update strategy
+* Perform post-deployment validation
+
+## **4. Completion**
+
+* Summarize test outcomes
+* Notify Storefront support teams, platform teams, and security
+* Confirm successful PROD rollout
 
 # **Back-Out Plan**
 
-The rollback strategy leverages ArgoCD's automated monitoring and rollback capabilities.
+A complete rollback strategy is in place:
 
-1. If new pods fail readiness checks, ArgoCD will not route traffic to them.
-2. Manual rollback can be triggered at any time through the ArgoCD interface to restore the previous stable version.
-3. Since no schema or configuration changes are introduced, rollback is instantaneous and risk-free.
-4. Backup contact: Michael Gardner
-
-No persistent data or system state changes are introduced by this CR, ensuring a safe and clean back-out path.
+1. If new pods fail health checks, ArgoCD will automatically prevent traffic routing.
+2. Manual rollback can be triggered via ArgoCD to restore previous stable images.
+3. No data, configuration, or schema changes were introduced.
+   Rollback is instant and low-risk.
+4. Backup contact for escalation: *<Your Team Contact>*
 
 # **Testing Results**
 
-**DEV Testing:**
+## **DEV Testing**
 
-* Application startup validation
-* Service-to-service communication
-* UI accessibility
-* API handshake checks
-* Log inspection in Grafana
-* Certificate chain validation
+* API response validation (success and failure cases)
+* Inventory file download verification
+* UI rendering and navigation checks
+* Log verification via Grafana
+* Dependency and version upgrade validation
+* Security and vulnerability checks
 
-**UAT Testing:**
+## **UAT Testing**
 
-* End-to-end workflow validation
-* UI and API behavior under expected load
-* Slack and Remedy workflow testing
-* Device ordering flow validation
-* TLS certificate validation
+* Full functional regression
+* Admin UI workflow validation
+* End-to-end download testing
+* Error-handling and boundary-case tests
+* Performance and stability checks
+* Final vulnerability confirmation
 
-All tests passed successfully with no performance issues or regressions.
+All tests passed successfully in both DEV and UAT.
 
 # **Monitoring and Verification**
 
-Monitoring will be conducted through Grafana (Titan). The team will validate:
+Post-deployment monitoring will include:
 
-* Pod health
-* Resource consumption
-* Response times
-* Error logs
-* TLS failures
-* Deployment success indicators
+* Pod readiness and health
+* CPU, memory, and network metrics
+* API response codes
+* Download performance metrics
+* UI error logs
+* Log anomalies or unexpected conditions
+* Regression in API / UI behavior
 
 # **Conclusion**
 
-This CR ensures uninterrupted Storefront operations after the November 30 certificate expiration. The approach is low-risk, reversible, and fully tested across environments. The Storefront engineering team has verified all components, and all microservices are prepared for a smooth and safe deployment.
+This CR introduces a new Inventory Download API, adds a corresponding Admin UI page for enhanced usability, and resolves multiple severity-level security vulnerabilities across Storefront services. All changes have been extensively tested in DEV and UAT and present minimal deployment risk. The enhancements support operational efficiency, improve security compliance, and maintain alignment with Storefront’s architectural and functional standards.
 
 ---
 
 If you want, I can also generate:
 
-* A polished **PDF version**
-* A shortened **CAB Summary**
-* A **risk matrix section** for leadership approval
+✔ A *short* “Change Call Summary – 5 lines”
+✔ A DOCX file with **headers, page numbers, and auto-TOC**
+✔ A version with your **microservice names inserted**
+✔ A version with your **actual CR number**
+
+Just tell me!
