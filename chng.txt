@@ -212,3 +212,29 @@ If you want, I can also generate:
 ✔ A version with your **actual CR number**
 
 Just tell me!
+
+
+
+
+Here you go — exactly as requested:
+
+---
+
+## ✅ **Summary (One Line)**
+
+This change adds a new Inventory Download API and a corresponding Admin UI page, along with security vulnerability fixes and dependency upgrades across all Storefront microservices.
+
+---
+
+## ✅ **Notes (5 Lines)**
+
+1. Introduced a new Inventory Download API in Storefront API for secure data export.
+2. Added a new Inventory Download page in Storefront Admin UI.
+3. Resolved multiple severity-level vulnerabilities using BugBot updates.
+4. Upgraded vulnerable dependencies across Storefront UI, Admin UI, External Service, and API.
+5. All changes were fully tested and validated in DEV and UAT with no issues.
+
+---
+
+If you want, I can also compress this further for stricter Helix character limits.
+
